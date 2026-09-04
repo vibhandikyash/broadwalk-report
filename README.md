@@ -28,7 +28,7 @@ uvicorn app.main:app --reload --port 8000
 ```bash
 cd frontend
 npm install
-npm start                                               # Angular dev server on http://localhost:4200, proxies /api to :8000
+npm start                                               # Angular dev server on http://localhost:4200, proxies /api to the backend port
 ```
 
 ## Environment variables (`.env` at the repo root)
@@ -39,6 +39,7 @@ npm start                                               # Angular dev server on 
 | `APP_WORKERS` | `3` | Parallel file-processing threads |
 | `APP_MAX_UPLOAD_MB` | `50` | Per-file upload limit |
 | `APP_CORS_ORIGINS` | `http://localhost:4200` | Allowed browser origins |
+| `BACKEND_PORT` | `8000` | Port the Angular dev proxy forwards `/api` to. If 8000 is busy, set this and start uvicorn with the same `--port` |
 | `ANTHROPIC_API_KEY` | unset | Optional. Enables the "Draft narratives with AI" button |
 | `ANTHROPIC_MODEL` | `claude-opus-5` | Model used for drafting |
 

@@ -99,16 +99,26 @@ def render_html(data: ReportData, project: dict | None = None) -> str:
 
 
 def chromium_available() -> bool:
-    """True when Playwright's Chromium is installed. Call from a worker thread, not the event loop."""
+    """True when a Playwright Chromium build is installed, checked on disk so no driver process is started."""
     try:
-        from playwright.sync_api import sync_playwright
+        import playwright
     except ImportError:
         return False
-    try:
-        with sync_playwright() as p:
-            return Path(p.chromium.executable_path).exists()
-    except Exception:  # noqa: BLE001
-        return False
+    import os
+    import sys
+
+    env = os.environ.get("PLAYWRIGHT_BROWSERS_PATH")
+    if env == "0":
+        base = Path(playwright.__file__).resolve().parent / "driver" / "package" / ".local-browsers"
+    elif env:
+        base = Path(env)
+    elif sys.platform == "darwin":
+        base = Path.home() / "Library" / "Caches" / "ms-playwright"
+    elif sys.platform.startswith("win"):
+        base = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "ms-playwright"
+    else:
+        base = Path(os.environ.get("XDG_CACHE_HOME", str(Path.home() / ".cache"))) / "ms-playwright"
+    return base.is_dir() and any(d.is_dir() and d.name.startswith("chromium") for d in base.iterdir())
 
 
 def render_pdf(html_path: Path, pdf_path: Path) -> None:

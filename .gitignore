@@ -13,3 +13,5 @@ frontend/.angular/
 .env
 # os
 .DS_Store
+# local tooling
+.claude/
