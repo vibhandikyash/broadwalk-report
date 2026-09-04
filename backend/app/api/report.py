@@ -1,0 +1,68 @@
+from __future__ import annotations
+
+import re
+
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse, HTMLResponse
+
+from .. import db
+from ..report.render import render_html
+from ..workers import jobs
+from ..workers.pool import pool
+from .projects import project_or_404
+
+router = APIRouter(tags=["report"])
+
+
+def report_public(r: dict) -> dict:
+    return {"id": r["id"], "project_id": r["project_id"], "version": r["version"], "status": r["status"], "error": r["error"],
+            "created_at": r["created_at"], "has_pdf": bool(r.get("pdf_path"))}
+
+
+def report_or_404(pid: str, rid: str) -> dict:
+    r = db.get_report(rid)
+    if r is None or r["project_id"] != pid:
+        raise HTTPException(404, "Report not found")
+    return r
+
+
+@router.get("/projects/{pid}/report/preview", response_class=HTMLResponse)
+def preview(pid: str) -> HTMLResponse:
+    project = project_or_404(pid)
+    try:
+        data, _issues, _row = jobs.load_effective(pid)
+    except LookupError as e:
+        raise HTTPException(409, str(e)) from e
+    return HTMLResponse(render_html(data, project))
+
+
+@router.post("/projects/{pid}/reports", status_code=202)
+def create_report(pid: str) -> dict:
+    project_or_404(pid)
+    rd = db.get_report_data(pid)
+    if rd is None or not rd.get("data"):
+        raise HTTPException(409, "Report data has not been built yet; upload and process files first")
+    r = db.create_report(pid)
+    pool.submit(f"report:{r['id']}", jobs.generate_report, r["id"])
+    return report_public(db.get_report(r["id"]))
+
+
+@router.get("/projects/{pid}/reports")
+def list_reports(pid: str) -> list[dict]:
+    project_or_404(pid)
+    return [report_public(r) for r in db.list_reports(pid)]
+
+
+@router.get("/projects/{pid}/reports/{rid}")
+def get_report(pid: str, rid: str) -> dict:
+    return report_public(report_or_404(pid, rid))
+
+
+@router.get("/projects/{pid}/reports/{rid}/download")
+def download_report(pid: str, rid: str) -> FileResponse:
+    r = report_or_404(pid, rid)
+    if r["status"] != "done" or not r.get("pdf_path"):
+        raise HTTPException(409, r.get("error") or "The PDF is not ready yet")
+    project = project_or_404(pid)
+    stem = re.sub(r"[^A-Za-z0-9]+", "-", project["name"]).strip("-").lower() or "report"
+    return FileResponse(r["pdf_path"], media_type="application/pdf", filename=f"{stem}-v{r['version']}.pdf")

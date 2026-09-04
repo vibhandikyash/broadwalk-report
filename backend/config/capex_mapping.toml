@@ -1,0 +1,150 @@
+# Which Budget Comparison sections count as capital spend, and how detail lines are regrouped.
+# Section decision walks the line's section path from the innermost header outward: the first header
+# matching an `exclude` pattern rejects the line; the first matching an `include` pattern accepts it.
+# Lines under a `negate` section are sign-flipped (Yardi shows balance-sheet capital items as negatives).
+[sections]
+include = ["renovation", "improvement", "capital", "non-operating items"]
+exclude = ["lease.?up", "depr", "amort", "non-operating expenses", "operating expenses"]
+negate = ["non-operating items"]
+
+# Regrouping rows, applied in order; each source line is consumed by the first row that matches it.
+# Lines matched by no row are shown under their own label. Edit freely for another property.
+[[rows]]
+key = "renovation_plumbing"
+label = "Renovation Program - Plumbing"
+match = ["^reno\\s*-\\s*plumbing"]
+
+[[rows]]
+key = "renovation_pm"
+label = "Renovation Program - Project Mgmt"
+match = ["^reno\\s*-\\s*project management"]
+
+[[rows]]
+key = "plumbing_water_heaters"
+label = "Plumbing & Water Heaters"
+match = ["plumbing", "water heater", "boiler"]
+
+[[rows]]
+key = "hvac"
+label = "HVAC Additions"
+match = ["hvac"]
+
+[[rows]]
+key = "paint"
+label = "Paint"
+match = ["^paint$", "^painting"]
+
+[[rows]]
+key = "appliances_equipment"
+label = "Appliances & Equipment"
+match = ["equipment/appliances", "appliance", "refrigerator", "stove", "dishwasher", "washer/dryer", "washer"]
+
+[[rows]]
+key = "interior_renovation_labor"
+label = "Interior Renovation & Labor"
+match = ["^labor$", "^materials$", "^interior renovation$"]
+
+[[rows]]
+key = "tub_resurfacing"
+label = "Resurfacing - Tub"
+match = ["resurfacing"]
+
+[[rows]]
+key = "flooring"
+label = "Flooring - Carpet & Vinyl"
+match = ["flooring", "carpet", "vinyl"]
+
+[[rows]]
+key = "paving"
+label = "Paving & Flatwork"
+match = ["paving", "flatwork"]
+
+[[rows]]
+key = "blinds"
+label = "Blinds"
+match = ["^blinds"]
+
+[[rows]]
+key = "electrical_lighting"
+label = "Electrical & Lighting"
+match = ["electrical", "lighting", "light bulbs"]
+
+[[rows]]
+key = "signage"
+label = "Signage"
+match = ["signage"]
+
+[[rows]]
+key = "roof"
+label = "Roof"
+match = ["^roof"]
+
+[[rows]]
+key = "windows_glass"
+label = "Windows & Glass"
+match = ["windows", "glass", "solar screens"]
+
+[[rows]]
+key = "structures"
+label = "Structures"
+match = ["^structures"]
+
+[[rows]]
+key = "landscape"
+label = "Landscape Additions"
+match = ["landscap"]
+
+[[rows]]
+key = "powerwashing"
+label = "Powerwashing"
+match = ["power ?wash"]
+
+[[rows]]
+key = "pool"
+label = "Pool Improvements"
+match = ["pool"]
+
+[[rows]]
+key = "irrigation"
+label = "Irrigation"
+match = ["irrigation"]
+
+[[rows]]
+key = "gutters"
+label = "Gutters & Downspouts"
+match = ["gutter"]
+
+[[rows]]
+key = "dog_park"
+label = "Dog Park"
+match = ["dog park"]
+
+[[rows]]
+key = "fire_control"
+label = "Fire Control"
+match = ["fire"]
+
+[[rows]]
+key = "office"
+label = "Office Furniture & Equipment"
+match = ["office furniture", "office equipment"]
+
+[[rows]]
+key = "golf_carts"
+label = "Golf Carts"
+match = ["golf cart"]
+
+[[rows]]
+key = "project_management"
+label = "Project Management"
+match = ["^project management"]
+
+[[rows]]
+key = "fencing"
+label = "Perimeter Fencing"
+match = ["fenc"]
+
+[[rows]]
+key = "fitness"
+label = "Fitness Center Equipment"
+match = ["fitness"]

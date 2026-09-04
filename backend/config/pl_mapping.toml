@@ -1,0 +1,158 @@
+# Canonical rows of the financial performance table, in report order.
+# `match` patterns are regexes tried in order against the normalised (lower-case) source label;
+# the first pattern that hits any line wins. `total = true` prefers lines whose label contains "total".
+# `sum = true` adds every line matched by the winning pattern (e.g. monthly + one-time concessions).
+# `expense = true` flips the variance sign so favourable is positive (Yardi convention).
+
+[[rows]]
+key = "gpr"
+label = "Gross Potential Rent"
+group = "revenue"
+match = ["^gross potential rent$", "^gross potential rent", "^gpr$"]
+
+[[rows]]
+key = "gain_loss_to_lease"
+label = "Loss/Gain to Lease"
+group = "revenue"
+match = ["loss/gain to lease", "gain/loss to lease", "^loss to lease", "^gain to lease"]
+
+[[rows]]
+key = "concessions"
+label = "Concessions"
+group = "revenue"
+sum = true
+match = ["^less:?\\s*concessions", "^concessions"]
+
+[[rows]]
+key = "vacancy"
+label = "Vacancy"
+group = "revenue"
+match = ["^less:?\\s*vacancy", "^vacancy loss", "^vacancy"]
+
+[[rows]]
+key = "pet_rent"
+label = "Pet Rent"
+group = "revenue"
+match = ["^pet rent"]
+
+[[rows]]
+key = "net_rental_income"
+label = "Net Rental Income"
+group = "revenue"
+total = true
+match = ["^net rental income", "^total rental income", "^net rent"]
+
+[[rows]]
+key = "utility_income"
+label = "Utility Income"
+group = "revenue"
+total = true
+match = ["^total utility income", "^utility income", "^total utilities income"]
+
+[[rows]]
+key = "other_income"
+label = "Other Income (net of bad debt)"
+group = "revenue"
+total = true
+match = ["^total other income", "^other income"]
+
+[[rows]]
+key = "total_revenue"
+label = "Total Revenue"
+group = "revenue"
+total = true
+match = ["^total revenue", "^total income", "^effective gross income"]
+
+[[rows]]
+key = "payroll"
+label = "Payroll"
+group = "opex"
+expense = true
+total = true
+match = ["^total payroll", "^payroll", "^salaries"]
+
+[[rows]]
+key = "g_and_a"
+label = "General & Administrative"
+group = "opex"
+expense = true
+total = true
+match = ["^total general (&|and) admin", "^general (&|and) admin", "^total administrative", "^administrative"]
+
+[[rows]]
+key = "marketing"
+label = "Marketing"
+group = "opex"
+expense = true
+total = true
+match = ["^total marketing", "^marketing$", "^total advertising", "^advertising"]
+
+[[rows]]
+key = "r_and_m"
+label = "Repairs & Maintenance"
+group = "opex"
+expense = true
+total = true
+match = ["^total repairs", "^repairs (&|and) maintenance", "^total maintenance", "^maintenance"]
+
+[[rows]]
+key = "utilities"
+label = "Utilities"
+group = "opex"
+expense = true
+total = true
+match = ["^total utilities$", "^utilities$", "^total utility expense", "^utilities expense"]
+
+[[rows]]
+key = "management_fees"
+label = "Management Fees"
+group = "opex"
+expense = true
+total = true
+match = ["^total management fee", "^management fee"]
+
+[[rows]]
+key = "property_taxes"
+label = "Property Taxes"
+group = "opex"
+expense = true
+total = true
+match = ["^total taxes", "^total property tax", "^property tax", "^real estate tax"]
+
+[[rows]]
+key = "insurance"
+label = "Insurance"
+group = "opex"
+expense = true
+total = true
+match = ["^total insurance", "^insurance"]
+
+[[rows]]
+key = "total_opex"
+label = "Total Operating Expenses"
+group = "opex"
+expense = true
+total = true
+match = ["^total expenses", "^total operating expenses", "^total opex"]
+
+[[rows]]
+key = "noi"
+label = "NOI"
+group = "noi"
+total = true
+match = ["^net operating income", "^noi"]
+
+[[rows]]
+key = "debt_service"
+label = "Debt Service"
+group = "noi"
+expense = true
+total = true
+match = ["^total debt service", "^debt service", "interest expense"]
+
+[[rows]]
+key = "net_cash_flow"
+label = "Net Cash Flow After Debt Service"
+group = "noi"
+total = true
+match = ["after ds", "after debt service", "^net cash flow"]

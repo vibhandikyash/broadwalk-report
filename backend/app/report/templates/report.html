@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ v('property.fields.name')|text }} {{ v('property.fields.quarter_label')|text }} Investor Report</title>
+<style>
+{{ fonts_css }}
+{{ css }}
+</style>
+</head>
+<body>
+{% set name = v('property.fields.name')|text %}
+{% set q = v('property.fields.quarter_label')|text %}
+{% set head = name ~ ' · ' ~ q %}
+{% macro header(title, tag='') %}
+<div class="hdr">
+  <div class="hdr-l"><span class="brand">{{ v('property.fields.prepared_by')|text }}</span><h1>{{ title }}</h1></div>
+  <div class="hdr-r mono">{{ head|upper }}{% if tag %}<span class="tag">{{ tag }}</span>{% endif %}</div>
+</div>
+{% endmacro %}
+{% macro footer(section, n) %}
+<div class="ftr mono"><span>{{ name|upper }} · {{ q }} · {{ section|upper }}</span><span>{{ '%02d' % n }} / 10</span></div>
+{% endmacro %}
+{% macro vcls(x) %}{{ 'neg' if (x or 0) < 0 else 'pos' }}{% endmacro %}
+
+{# ---------- 1 COVER ---------- #}
+<section class="page cover">
+  <div class="cover-photo"><span>{{ name }}</span></div>
+  <div>
+    <div class="mono small">{{ q }} · LP QUARTERLY REPORT · CONFIDENTIAL</div>
+    <div class="badge mono">{{ q }}<span>QUARTERLY INVESTOR REPORT</span></div>
+    <h1 class="cover-title">{{ name }}</h1>
+    <h2 class="cover-sub">{{ v('property.fields.city_state')|text }}</h2>
+    <p class="lede">{{ v('property.fields.units')|integer }}-unit multifamily community. Quarterly performance review for the period ending {{ v('property.fields.period_end')|date_long }}.</p>
+    <div class="kpi-grid">
+      <div><div class="kpi">{{ v('property.fields.units')|integer }}</div><div class="kpi-l mono">UNITS</div></div>
+      <div><div class="kpi">{{ v('property.fields.year_built')|text }}</div><div class="kpi-l mono">VINTAGE</div></div>
+      <div><div class="kpi">{{ v('property.fields.acquired_date')|date_short }}</div><div class="kpi-l mono">ACQUIRED</div></div>
+      <div><div class="kpi">{{ v('capital.fields.purchase_price')|money_m(0) }}</div><div class="kpi-l mono">PURCHASE PRICE</div></div>
+    </div>
+    <div class="prepared mono small">PREPARED BY<br><strong>{{ v('property.fields.prepared_by')|text }}</strong><br>Period ending {{ v('property.fields.period_end')|date_long }}</div>
+  </div>
+</section>
+
+{# ---------- 2 PROPERTY DESCRIPTION ---------- #}
+<section class="page">
+{{ header('Property Description', 'VINTAGE ' ~ (v('property.fields.year_built')|text) ~ ' · CLASS ' ~ (v('property.fields.building_class')|text) ~ ' · HOLD PERIOD ' ~ (v('property.fields.hold_period_years')|text) ~ ' YR') }}
+<div class="two-col">
+  <div class="photo-ph"><span>{{ name }}</span></div>
+  <div>
+    <p class="body">{{ v('property.fields.description')|text }}</p>
+    <div class="facts">
+      <div><div class="lab mono">Address</div>{{ v('property.fields.address')|text }}<br>{{ v('property.fields.city_state')|text }} {{ v('property.fields.zip')|text }}</div>
+      <div><div class="lab mono">Submarket</div>{{ v('property.fields.submarket')|text }}</div>
+      <div><div class="lab mono">MSA</div>{{ v('property.fields.msa')|text }}</div>
+      <div><div class="lab mono">Year built</div>{{ v('property.fields.year_built')|text }}</div>
+      <div><div class="lab mono">Building class</div>{{ v('property.fields.building_class')|text }}</div>
+      <div><div class="lab mono">Site / density</div>{% if v('property.fields.site_acres') %}{{ v('property.fields.site_acres')|num(1) }} ac · {{ v('property.fields.density')|num(1) }} u/ac{% else %}{{ MINUS }}{% endif %}</div>
+      <div><div class="lab mono">Acquired</div>{{ v('property.fields.acquired_date')|date_long }}</div>
+      <div><div class="lab mono">Avg unit size</div>{{ v('property.fields.avg_unit_sf')|sf }}</div>
+    </div>
+    <div class="rent-kpis">
+      <div><div class="lab mono">{{ q }} avg in-place rent</div><div class="kpi-m">{{ ipr_totals.current_rent|money }} <span class="unit">/ mo</span></div></div>
+      <div><div class="lab mono">Prior qtr ({{ v('in_place_rent.fields.prior_quarter_label')|text }})</div><div class="kpi-m">{{ ipr_totals.prior_rent|money }} <span class="unit">/ mo</span></div></div>
+      <div><div class="lab mono">QoQ variance</div><div class="kpi-m {{ vcls(ipr_totals.variance) }}">{{ ipr_totals.variance|signed_money }} / {{ ipr_totals.variance_pct|pct(1, true) }}</div>{% if v('in_place_rent.fields.prior_variance_note') %}<div class="sub">{{ v('in_place_rent.fields.prior_variance_note') }}</div>{% endif %}</div>
+    </div>
+    <table class="tbl dense">
+      <thead><tr><th>Type</th><th class="r">Units</th><th class="r">Avg SF</th><th class="r">{{ v('in_place_rent.fields.prior_quarter_label')|text }} in-place rent</th><th class="r">{{ q }} in-place rent</th><th class="r">QoQ variance</th></tr></thead>
+      <tbody>
+      {% for r in ipr_rows %}
+      <tr><td>{{ r.c.type|text }}</td><td class="r">{{ r.c.units|integer }}</td><td class="r">{{ r.c.avg_sf|integer }}</td><td class="r">{{ r.c.prior_rent|money }}</td><td class="r">{{ r.c.current_rent|money }}</td><td class="r {{ vcls(r.c.variance) }}">{{ r.c.variance|signed_money }} / {{ r.c.variance_pct|pct(1, true) }}</td></tr>
+      {% endfor %}
+      <tr class="total"><td>{{ ipr_totals.type|text }}</td><td class="r">{{ ipr_totals.units|integer }}</td><td class="r">{{ ipr_totals.avg_sf|integer }}</td><td class="r">{{ ipr_totals.prior_rent|money }}</td><td class="r">{{ ipr_totals.current_rent|money }}</td><td class="r {{ vcls(ipr_totals.variance) }}">{{ ipr_totals.variance|signed_money }} / {{ ipr_totals.variance_pct|pct(1, true) }}</td></tr>
+      </tbody>
+    </table>
+    <p class="note">{{ v('in_place_rent.fields.narrative')|text }}</p>
+  </div>
+</div>
+{{ footer('Property Description', 2) }}
+</section>
+
+{# ---------- 3 PROPERTY SUMMARY & BUSINESS PLAN ---------- #}
+<section class="page">
+{{ header('Property Summary & Business Plan') }}
+<div class="grid-4">
+  <div><div class="lab mono">Purchase price</div><div class="kpi">{{ v('capital.fields.purchase_price')|money_m(1) }}</div><div class="sub">{{ v('capital.fields.price_per_unit')|money }} / unit · {{ v('property.fields.units')|integer }} units</div></div>
+  <div><div class="lab mono">Equity invested (ITD)</div><div class="kpi">{{ v('capital.fields.equity_invested')|money_m(1) }}</div></div>
+  <div><div class="lab mono">{{ q }} equity contributions</div><div class="kpi">{{ v('capital.fields.quarter_contributions')|money }}</div><div class="sub">{{ v('capital.fields.contributions_note')|text }}</div></div>
+  <div><div class="lab mono">Cash distributions (ITD)</div><div class="kpi">{{ v('capital.fields.distributions_itd')|money }}</div><div class="sub">{{ v('capital.fields.distributions_note')|text }}</div></div>
+</div>
+<div class="grid-2" style="margin-top:10pt">
+  <div>
+    <div class="col-h"><span>Original business plan</span></div>
+    <p class="col-body">{{ v('capital.fields.business_plan_summary')|text }}</p>
+    <div class="col-h"><span>Original underwriting budget</span></div>
+    <table class="tbl dense">
+      <thead><tr><th>Category</th><th class="r">Original UW</th><th class="r">Spent to date*</th><th class="r">% spent</th></tr></thead>
+      <tbody>
+      {% for gkey, gtitle in (('value_add', 'Value add projects'), ('recurring', 'Recurring capex')) %}
+      <tr class="group"><td colspan="4">{{ gtitle|upper }}</td></tr>
+      {% for r in uw_groups[gkey] %}
+      <tr><td>{{ r.c.category|text }}</td><td class="r">{{ r.c.original_budget|money }}</td><td class="r">{{ r.c.spent_to_date|money }}</td><td class="r">{{ r.c.pct_spent|pct(0) }}</td></tr>
+      {% endfor %}
+      <tr class="total"><td>Total {{ gtitle|lower }}</td><td class="r">{{ uw_sub[gkey].original_budget|money }}</td><td class="r">{{ uw_sub[gkey].spent_to_date|money }}</td><td class="r">{{ uw_sub[gkey].pct_spent|pct(0) }}</td></tr>
+      {% endfor %}
+      <tr class="total"><td>Total underwritten capital</td><td class="r">{{ uw_totals.original_budget|money }}</td><td class="r">{{ uw_totals.spent_to_date|money }}</td><td class="r">{{ uw_totals.pct_spent|pct(0) }}</td></tr>
+      </tbody>
+    </table>
+    <div class="small">*{{ v('underwriting.fields.spent_period_note')|text }}</div>
+  </div>
+  <div>
+    <div class="col-h"><span>Submarket rent trends</span><span class="v">{{ v('rent_trend.fields.chart_subtitle')|text }}</span></div>
+    <div class="mono small" style="text-align:center">{{ v('rent_trend.fields.chart_title')|text }}</div>
+    {{ chart_svg|safe }}
+    <p class="note">{{ v('rent_trend.fields.caption')|text }}</p>
+  </div>
+</div>
+{{ footer('Property Summary', 3) }}
+</section>
+
+{# ---------- 4 FINANCING ---------- #}
+<section class="page">
+{{ header('Financing Overview', (v('financing.fields.lender')|text|upper) ~ ' · ' ~ (v('financing.fields.rate_type')|text|upper) ~ ' ' ~ (v('financing.fields.rate')|pct(2)) ~ ' · ' ~ (v('financing.fields.recourse')|text|upper)) }}
+<div class="grid-2">
+  <div>
+    <div class="col-h"><span>Senior loan</span></div>
+    <div class="kpi">{{ v('financing.fields.loan_amount')|money_m(2) }}</div>
+    <div class="sub">Initial principal · {{ v('financing.fields.rate_type')|text }} {{ v('financing.fields.rate')|pct(2) }} · IO through {{ v('financing.fields.io_end_date')|date_long }} · matures {{ v('financing.fields.maturity_date')|date_long }}</div>
+    <div class="term" style="margin-top:8pt">
+      <div><div class="lab mono">Lender</div>{{ v('financing.fields.lender')|text }}{% if v('financing.fields.servicer') %} (svcd. {{ v('financing.fields.servicer') }}){% endif %}</div>
+      <div><div class="lab mono">Borrower</div>{{ v('financing.fields.borrower')|text }}</div>
+      <div><div class="lab mono">Effective date</div>{{ v('financing.fields.effective_date')|date_long }}</div>
+      <div><div class="lab mono">Maturity date</div>{{ v('financing.fields.maturity_date')|date_long }}</div>
+      <div><div class="lab mono">Loan term</div>{% if v('financing.fields.term_months') %}{{ v('financing.fields.term_months')|integer }} months{% else %}{{ MINUS }}{% endif %}</div>
+      <div><div class="lab mono">Rate</div>{{ v('financing.fields.rate')|pct(2) }}{% if v('financing.fields.rate') is none and v('financing.fields.implied_rate') %} (implied {{ v('financing.fields.implied_rate')|pct(2) }}){% endif %}</div>
+      <div><div class="lab mono">IO period</div>{% if v('financing.fields.io_months') %}{{ v('financing.fields.io_months')|integer }} mo to {{ v('financing.fields.io_end_date')|date_long }}{% else %}{{ MINUS }}{% endif %}</div>
+      <div><div class="lab mono">Amortization</div>{% if v('financing.fields.amort_years') %}{{ v('financing.fields.amort_years')|integer }} yrs{% else %}{{ MINUS }}{% endif %}</div>
+      <div><div class="lab mono">IO payment (monthly)</div>{{ v('financing.fields.interest_monthly')|money }}</div>
+      <div><div class="lab mono">P&amp;I payment (monthly)</div>{{ v('financing.fields.pi_payment')|money }}</div>
+      <div><div class="lab mono">Recourse</div>{{ v('financing.fields.recourse')|text }}</div>
+      <div><div class="lab mono">Reserve balance</div>{{ v('financing.fields.reserve_balance')|money }}</div>
+    </div>
+  </div>
+  <div>
+    <div class="col-h"><span>Structure, prepayment &amp; reserves</span></div>
+    <div class="card"><h3>Prepayment</h3>{{ v('financing.fields.prepayment')|text }}{% if v('financing.fields.yield_maintenance_through') %}<div class="sub">Yield maintenance through {{ v('financing.fields.yield_maintenance_through')|date_long }}{% if v('financing.fields.open_prepay_months') %} · open prepay last {{ v('financing.fields.open_prepay_months')|integer }} mo{% endif %}</div>{% endif %}</div>
+    <div class="card" style="margin-top:6pt"><h3>Replacement reserve</h3>{{ v('financing.fields.replacement_reserve_monthly')|money }} / mo{% if v('financing.fields.replacement_reserve_annual') %} · {{ v('financing.fields.replacement_reserve_annual')|money_k }} / yr{% endif %}</div>
+    <div class="card" style="margin-top:6pt"><h3>Repairs escrow</h3>{{ v('financing.fields.repairs_escrow')|money }} one-time</div>
+    <p class="note">{{ v('financing.fields.narrative')|text }}</p>
+  </div>
+</div>
+{{ footer('Financing', 4) }}
+</section>
+
+{# ---------- 5 COMMENTARY ---------- #}
+<section class="page">
+{{ header('Financial & Capital Commentary') }}
+<div class="callout"><span class="mono small">{{ q }} TAKEAWAY</span><br>{{ v('commentary.fields.takeaway')|text }}</div>
+<div class="three-col">
+  <div>
+    <div class="col-h"><span>01 · Revenue</span><span class="v {{ vcls(v('commentary.fields.revenue_var')) }}">{{ v('commentary.fields.revenue_var')|signed_money }} vs. budget</span></div>
+    <div class="col-body">
+      <p>Total revenue of {{ v('commentary.fields.revenue_actual')|money }} finished {{ v('commentary.fields.revenue_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.revenue_budget')|money }} budget. Gain/loss to lease was {{ v('commentary.fields.gain_to_lease_actual')|money }} versus a {{ v('commentary.fields.gain_to_lease_budget')|money }} budget ({{ v('commentary.fields.gain_to_lease_var_pct')|pct(1, true) }}).</p>
+      <p>{{ v('commentary.fields.revenue_body')|text }}</p>
+      <h4>Outlook</h4><p>{{ v('commentary.fields.revenue_outlook')|text }}</p>
+    </div>
+  </div>
+  <div>
+    <div class="col-h"><span>02 · Operating expenses</span><span class="v {{ vcls(v('commentary.fields.opex_var')) }}">{{ v('commentary.fields.opex_var')|signed_money }} vs. budget</span></div>
+    <div class="col-body">
+      <p>Total operating expenses of {{ v('commentary.fields.opex_actual')|money }} finished {{ v('commentary.fields.opex_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.opex_budget')|money }} budget. Insurance {{ v('commentary.fields.insurance_var')|signed_money }} and utilities {{ v('commentary.fields.utilities_var')|signed_money }} versus budget.</p>
+      <p>{{ v('commentary.fields.opex_body')|text }}</p>
+      <h4>Outlook</h4><p>{{ v('commentary.fields.opex_outlook')|text }}</p>
+    </div>
+  </div>
+  <div>
+    <div class="col-h"><span>03 · NOI &amp; cash flow</span><span class="v {{ vcls(v('commentary.fields.noi_var')) }}">{{ v('commentary.fields.noi_var')|signed_money }} vs. budget</span></div>
+    <div class="col-body">
+      <p>NOI of {{ v('commentary.fields.noi_actual')|money }} finished {{ v('commentary.fields.noi_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.noi_budget')|money }} budget. Net cash flow after debt service was {{ v('commentary.fields.ncf_actual')|money }} versus {{ v('commentary.fields.ncf_budget')|money }} budgeted ({{ v('commentary.fields.ncf_var')|signed_money }}). Capital spend was {{ v('commentary.fields.capex_actual')|money }} against a {{ v('commentary.fields.capex_budget')|money }} quarterly budget; year to date {{ v('commentary.fields.capex_ytd_actual')|money }} of the {{ v('commentary.fields.capex_annual_budget')|money }} annual budget.</p>
+      <p>{{ v('commentary.fields.noi_body')|text }}</p>
+      <h4>Outlook</h4><p>{{ v('commentary.fields.noi_outlook')|text }}</p>
+    </div>
+  </div>
+</div>
+{{ footer('Financial & Capital Commentary', 5) }}
+</section>
+
+{# ---------- 6 FINANCIAL PERFORMANCE ---------- #}
+<section class="page">
+{{ header('Financial Performance', (v('financials.fields.period_label')|text|upper) ~ ' VS. BUDGET & YTD') }}
+<table class="tbl dense">
+  <thead><tr><th>$ in actuals</th><th class="r">{{ q }} actual</th><th class="r">{{ q }} budget</th><th class="r">Var %</th><th class="r">YTD actual</th><th class="r">YTD budget</th><th class="r">Var %</th></tr></thead>
+  <tbody>
+  {% set ns = namespace(group=none) %}
+  {% for r in fin_rows %}
+    {% set g = fin_meta[r.key].group if r.key in fin_meta else '' %}
+    {% if g != ns.group %}{% set ns.group = g %}<tr class="group"><td colspan="7">{{ {'revenue': 'Revenue', 'opex': 'Operating expenses', 'noi': 'Net operating income'}[g] if g in ('revenue', 'opex', 'noi') else g }}</td></tr>{% endif %}
+    <tr class="{{ 'total' if r.key in ('net_rental_income', 'total_revenue', 'total_opex', 'noi', 'net_cash_flow') else '' }}">
+      <td>{{ r.label }}</td>
+      <td class="r">{{ r.c.ptd_actual|num }}</td><td class="r">{{ r.c.ptd_budget|num }}</td>
+      <td class="r {{ vcls(r.c.ptd_var) }}">{% if r.key == 'net_cash_flow' %}{{ r.c.ptd_var|num }}{% elif r.key == 'debt_service' %}{% else %}{{ r.c.ptd_var_pct|var_pct }}{% endif %}</td>
+      <td class="r">{{ r.c.ytd_actual|num }}</td><td class="r">{{ r.c.ytd_budget|num }}</td>
+      <td class="r {{ vcls(r.c.ytd_var) }}">{% if r.key == 'net_cash_flow' %}{{ r.c.ytd_var|num }}{% elif r.key == 'debt_service' %}{% else %}{{ r.c.ytd_var_pct|var_pct }}{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{{ footer('Financial Performance', 6) }}
+</section>
+
+{# ---------- 7 CAPITAL PROJECTS ---------- #}
+<section class="page">
+{{ header('Capital Projects', (q ~ ' ACTIVITY')) }}
+<table class="tbl dense">
+  <thead><tr><th>Line item</th><th class="r">{{ q }} actual</th><th class="r">{{ q }} budget</th><th class="r">Var $</th><th class="r">YTD actual</th><th class="r">YTD budget</th><th class="r">Var $</th><th class="r">Annual budget</th></tr></thead>
+  <tbody>
+  {% for r in capex_rows %}
+  <tr><td>{{ r.label }}</td><td class="r">{{ r.c.ptd_actual|num }}</td><td class="r">{{ r.c.ptd_budget|num }}</td><td class="r {{ vcls(r.c.ptd_var) }}">{{ r.c.ptd_var|signed_num }}</td><td class="r">{{ r.c.ytd_actual|num }}</td><td class="r">{{ r.c.ytd_budget|num }}</td><td class="r {{ vcls(r.c.ytd_var) }}">{{ r.c.ytd_var|signed_num }}</td><td class="r">{{ r.c.annual_budget|num }}</td></tr>
+  {% endfor %}
+  <tr class="total"><td>Total capital spend</td><td class="r">{{ capex_totals.ptd_actual|num }}</td><td class="r">{{ capex_totals.ptd_budget|num }}</td><td class="r {{ vcls(capex_totals.ptd_var) }}">{{ capex_totals.ptd_var|signed_num }}</td><td class="r">{{ capex_totals.ytd_actual|num }}</td><td class="r">{{ capex_totals.ytd_budget|num }}</td><td class="r {{ vcls(capex_totals.ytd_var) }}">{{ capex_totals.ytd_var|signed_num }}</td><td class="r">{{ capex_totals.annual_budget|num }}</td></tr>
+  </tbody>
+</table>
+<p class="note">{{ v('capex.fields.narrative')|text }}</p>
+{{ footer('Capital Projects', 7) }}
+</section>
+
+{# ---------- 8 SUBMARKET ---------- #}
+<section class="page">
+{{ header('Submarket Comparison', (v('submarket.fields.source_note')|text|upper) ~ ' · ' ~ (v('submarket.fields.submarket_name')|text|upper) ~ ' · ' ~ (v('submarket.fields.data_quarter')|text)) }}
+<div class="three-col" style="margin-bottom:8pt">
+  <div><div class="lab mono">Submarket vacancy</div><div class="kpi">{{ v('submarket.fields.vacancy')|pct(1) }}</div><div class="sub">CoStar {{ v('submarket.fields.submarket_name')|text }} · prior quarter {{ v('submarket.fields.prior_vacancy')|pct(1) }}</div></div>
+  <div><div class="lab mono">YoY asking rent</div><div class="kpi">{{ v('submarket.fields.rent_growth_yoy')|pct(1, true) }}</div><div class="sub">{{ v('submarket.fields.avg_asking_rent')|money }}/unit avg market asking · prior quarter {{ v('submarket.fields.prior_rent_growth')|pct(1, true) }}</div></div>
+  <div><div class="lab mono">Under construction</div><div class="kpi">{{ v('submarket.fields.under_construction')|integer }} units</div><div class="sub">{{ v('submarket.fields.pipeline_note')|text }}{% if v('submarket.fields.recent_deliveries') %} · recent deliveries: {{ v('submarket.fields.recent_deliveries') }}{% endif %}</div></div>
+</div>
+<table class="tbl dense">
+  <thead><tr><th>Property name</th><th class="r">Units</th><th class="r">Vintage</th><th class="r">Leased %</th><th class="r">Asking rent</th><th class="r">Eff. rent (NER)</th><th class="r">Concession</th></tr></thead>
+  <tbody>
+  {% for r in comp_rows %}
+  <tr class="{{ 'subject' if r.subject else '' }}"><td>{{ r.c.name|text }}{% if r.subject %} <span class="mono small">SUBJECT</span>{% endif %}</td><td class="r">{{ r.c.units|integer }}</td><td class="r">{{ r.c.vintage|text }}</td><td class="r">{{ r.c.leased_pct|pct(1) }}</td><td class="r">{{ r.c.asking_rent|money }}</td><td class="r">{{ r.c.effective_rent|money }}</td><td class="r">{% if r.c.concession %}{{ r.c.concession|money }}/mo ({{ r.c.concession_pct|pct(0) }}){% else %}{{ MINUS }}{% endif %}</td></tr>
+  {% endfor %}
+  <tr class="total"><td>{{ comp_totals.name|text }}</td><td class="r">{{ comp_totals.units|integer }}</td><td class="r">{{ comp_totals.vintage|text }}</td><td class="r">{{ comp_totals.leased_pct|pct(1) }}</td><td class="r">{{ comp_totals.asking_rent|money }}</td><td class="r">{{ comp_totals.effective_rent|money }}</td><td class="r">{{ comp_totals.concession|money }}</td></tr>
+  </tbody>
+</table>
+<div class="three-col" style="margin-top:8pt">
+  <div><div class="col-h"><span>Occupancy</span></div><div class="col-body">{{ v('submarket.fields.occupancy_narrative')|text }}</div></div>
+  <div><div class="col-h"><span>Effective rent</span></div><div class="col-body">{{ v('submarket.fields.rent_narrative')|text }}</div></div>
+  <div><div class="col-h"><span>Concessions</span></div><div class="col-body">{{ v('submarket.fields.concession_narrative')|text }}</div></div>
+</div>
+<div class="small" style="margin-top:6pt">{{ v('submarket.fields.footnote')|text }} Subject leased % is physical occupancy per the Yardi rent roll.</div>
+{{ footer('Submarket Comparison', 8) }}
+</section>
+
+{# ---------- 9 OCCUPANCY & LEASING ---------- #}
+<section class="page">
+{{ header('Occupancy & Leasing', (q ~ ' EXECUTED · ' ~ (v('occupancy.fields.new_lease_count')|integer) ~ ' NEW LEASES · ' ~ (v('occupancy.fields.renewal_count')|integer) ~ ' RENEWALS')) }}
+<div class="three-col" style="margin-bottom:8pt">
+  <div><div class="lab mono">{{ v('occupancy.fields.prior_date')|date_long|upper }}</div><div class="kpi">{{ v('occupancy.fields.prior_pct')|pct(2) }}</div><div class="sub">{{ v('occupancy.fields.prior_occupied')|integer }} / {{ v('occupancy.fields.total_units')|integer }} occupied</div></div>
+  <div><div class="lab mono">{{ v('occupancy.fields.current_date')|date_long|upper }}</div><div class="kpi">{{ v('occupancy.fields.current_pct')|pct(2) }}</div><div class="sub">{{ v('occupancy.fields.current_occupied')|integer }} / {{ v('occupancy.fields.total_units')|integer }} occupied · {{ v('occupancy.fields.future_applicants')|integer }} future / applicants</div></div>
+  <div><div class="lab mono">Quarter change</div><div class="kpi {{ vcls(v('occupancy.fields.change_bps')) }}">{{ v('occupancy.fields.change_bps')|bps }}</div><div class="sub">{{ v('occupancy.fields.occupancy_narrative')|text }}</div></div>
+</div>
+<div class="grid-2">
+  {% for title, rows, totals, narrative, pctf in (('New Leases', nl_rows, nl_totals, 'occupancy.fields.new_lease_narrative', 'occupancy.fields.new_lease_lto_pct'), ('Renewals', rn_rows, rn_totals, 'occupancy.fields.renewal_narrative', 'occupancy.fields.renewal_lto_pct')) %}
+  <div>
+    <div class="col-h"><span>{{ title }} · {{ q }} · by floor plan</span><span class="v {{ vcls(v(pctf)) }}">Overall {{ v(pctf)|pct(1, true) }}</span></div>
+    <div class="col-body" style="margin-bottom:4pt">{{ v(narrative)|text }}</div>
+    <table class="tbl dense">
+      <thead><tr><th>Floor plan</th><th class="r">Count</th><th class="r">Avg prior</th><th class="r">Avg current</th><th class="r">$ LTO</th><th class="r">% LTO</th></tr></thead>
+      <tbody>
+      {% for r in rows %}
+      <tr><td>{{ r.c.floor_plan|text }}{% if r.c.sqft %} · {{ r.c.sqft|integer }} sf{% endif %}</td><td class="r">{{ r.c.count|integer }}</td><td class="r">{{ r.c.avg_prior|money }}</td><td class="r">{{ r.c.avg_current|money }}</td><td class="r {{ vcls(r.c.lto) }}">{{ r.c.lto|signed_money }}</td><td class="r {{ vcls(r.c.lto_pct) }}">{{ r.c.lto_pct|pct(2, true) }}</td></tr>
+      {% endfor %}
+      <tr class="total"><td>{{ title }} total</td><td class="r">{{ totals.count|integer }}</td><td class="r">{{ totals.avg_prior|money }}</td><td class="r">{{ totals.avg_current|money }}</td><td class="r {{ vcls(totals.lto) }}">{{ totals.lto|signed_money }}</td><td class="r {{ vcls(totals.lto_pct) }}">{{ totals.lto_pct|pct(2, true) }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+</div>
+<div class="small mono" style="margin-top:6pt">{{ v('occupancy.fields.lto_period_note')|text|upper }}</div>
+{{ footer('Occupancy & Leasing', 9) }}
+</section>
+
+{# ---------- 10 STATUS UPDATE & GOALS ---------- #}
+<section class="page">
+{{ header('Status Update & ' ~ (v('status.fields.next_quarter_label')|text) ~ ' Goals') }}
+<div class="grid-2">
+  <div>
+    <div class="col-h"><span>Status update</span></div>
+    {% for i in (1, 2, 3) %}
+    {% if v('status.fields.status' ~ i ~ '_title') or v('status.fields.status' ~ i ~ '_body') %}
+    <div class="status-block"><div class="t">{{ v('status.fields.status' ~ i ~ '_title')|text }}</div><div class="s">{{ v('status.fields.status' ~ i ~ '_subtitle')|text }}</div><div class="b">{{ v('status.fields.status' ~ i ~ '_body')|text }}</div></div>
+    {% endif %}
+    {% endfor %}
+    <div class="small">{{ q }} collections recovered: {{ v('status.fields.collections_recovered')|money }} · bad debt write-offs: {{ v('status.fields.bad_debt_writeoff')|money }}</div>
+  </div>
+  <div>
+    <div class="col-h"><span>{{ v('status.fields.next_quarter_label')|text }} goals / initiatives</span></div>
+    {% for i in (1, 2, 3) %}
+    {% if v('status.fields.goal' ~ i ~ '_title') or v('status.fields.goal' ~ i ~ '_body') %}
+    <div class="status-block"><div class="t">{{ v('status.fields.goal' ~ i ~ '_title')|text }}</div><div class="s">{{ v('status.fields.goal' ~ i ~ '_subtitle')|text }}</div><div class="b">{{ v('status.fields.goal' ~ i ~ '_body')|text }}</div></div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{{ footer('Status Update & Goals', 10) }}
+</section>
+</body>
+</html>
