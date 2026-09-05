@@ -5,7 +5,7 @@
       "quarter_label": "3Q26",
       "start": "2026-07-01"
     },
-    "project_id": "167d0fbe2617",
+    "project_id": "6f030ea781f9",
     "project_name": "Harbor Point 3Q26 Investor Report",
     "property_name": "Harbor Point",
     "sources": [
@@ -109,7 +109,7 @@
           "note": "Yardi's own capital total; used to cross-check the table",
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Q3 Financial Detail' row 49",
             "text": null
@@ -202,7 +202,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 46",
                   "text": "HVAC Additions"
@@ -217,7 +217,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 46",
                   "text": "HVAC Additions"
@@ -232,7 +232,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 46",
                   "text": "HVAC Additions"
@@ -257,7 +257,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 46",
                   "text": "HVAC Additions"
@@ -272,7 +272,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 46",
                   "text": "HVAC Additions"
@@ -299,7 +299,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 47",
                   "text": "Paint"
@@ -314,7 +314,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 47",
                   "text": "Paint"
@@ -329,7 +329,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 47",
                   "text": "Paint"
@@ -354,7 +354,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 47",
                   "text": "Paint"
@@ -369,7 +369,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 47",
                   "text": "Paint"
@@ -396,7 +396,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 45",
                   "text": "Plumbing Replacement"
@@ -411,7 +411,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 45",
                   "text": "Plumbing Replacement"
@@ -426,7 +426,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 45",
                   "text": "Plumbing Replacement"
@@ -451,7 +451,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 45",
                   "text": "Plumbing Replacement"
@@ -466,7 +466,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 45",
                   "text": "Plumbing Replacement"
@@ -592,7 +592,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "cddf80e9eb7c",
+            "file_id": "3e8017b386e3",
             "filename": "notice_beta.pdf",
             "locator": "pages 1-1",
             "text": null
@@ -617,7 +617,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Balance Detail' row 16",
             "text": "Owner Contributions"
@@ -642,7 +642,7 @@
           "note": "Land + Building + FF&E at cost from the balance sheet",
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Balance Detail' rows 8, 9",
             "text": "Total Building + Total Furniture & Fixtures"
@@ -657,7 +657,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "d82c7e0014c3",
+            "file_id": "c30fd7239be8",
             "filename": "notice_alpha.pdf",
             "locator": "pages 1-1",
             "text": null
@@ -672,7 +672,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "cddf80e9eb7c",
+            "file_id": "3e8017b386e3",
             "filename": "notice_beta.pdf",
             "locator": "pages 1-1",
             "text": null
@@ -687,7 +687,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "d82c7e0014c3",
+            "file_id": "c30fd7239be8",
             "filename": "notice_alpha.pdf",
             "locator": "pages 1-1",
             "text": null
@@ -1320,7 +1320,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 11",
                   "text": "Less: Concessions"
@@ -1335,7 +1335,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 11",
                   "text": "Less: Concessions"
@@ -1350,7 +1350,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 11",
                   "text": "Less: Concessions"
@@ -1385,7 +1385,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 11",
                   "text": "Less: Concessions"
@@ -1400,7 +1400,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 11",
                   "text": "Less: Concessions"
@@ -1437,7 +1437,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 42",
                   "text": "TOTAL DEBT SERVICE"
@@ -1452,7 +1452,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 42",
                   "text": "TOTAL DEBT SERVICE"
@@ -1467,7 +1467,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 42",
                   "text": "TOTAL DEBT SERVICE"
@@ -1502,7 +1502,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 42",
                   "text": "TOTAL DEBT SERVICE"
@@ -1517,7 +1517,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 42",
                   "text": "TOTAL DEBT SERVICE"
@@ -1554,7 +1554,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 26",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1569,7 +1569,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 26",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1584,7 +1584,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 26",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1619,7 +1619,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 26",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1634,7 +1634,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 26",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1671,7 +1671,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 10",
                   "text": "Loss/Gain to Lease"
@@ -1686,7 +1686,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 10",
                   "text": "Loss/Gain to Lease"
@@ -1701,7 +1701,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 10",
                   "text": "Loss/Gain to Lease"
@@ -1736,7 +1736,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 10",
                   "text": "Loss/Gain to Lease"
@@ -1751,7 +1751,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 10",
                   "text": "Loss/Gain to Lease"
@@ -1788,7 +1788,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 9",
                   "text": "Gross Potential Rent"
@@ -1803,7 +1803,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 9",
                   "text": "Gross Potential Rent"
@@ -1818,7 +1818,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 9",
                   "text": "Gross Potential Rent"
@@ -1853,7 +1853,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 9",
                   "text": "Gross Potential Rent"
@@ -1868,7 +1868,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 9",
                   "text": "Gross Potential Rent"
@@ -1905,7 +1905,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 38",
                   "text": "TOTAL INSURANCE"
@@ -1920,7 +1920,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 38",
                   "text": "TOTAL INSURANCE"
@@ -1935,7 +1935,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 38",
                   "text": "TOTAL INSURANCE"
@@ -1970,7 +1970,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 38",
                   "text": "TOTAL INSURANCE"
@@ -1985,7 +1985,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 38",
                   "text": "TOTAL INSURANCE"
@@ -2022,7 +2022,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 34",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2037,7 +2037,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 34",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2052,7 +2052,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 34",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2087,7 +2087,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 34",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2102,7 +2102,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 34",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2139,7 +2139,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 28",
                   "text": "TOTAL MARKETING"
@@ -2154,7 +2154,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 28",
                   "text": "TOTAL MARKETING"
@@ -2169,7 +2169,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 28",
                   "text": "TOTAL MARKETING"
@@ -2204,7 +2204,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 28",
                   "text": "TOTAL MARKETING"
@@ -2219,7 +2219,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 28",
                   "text": "TOTAL MARKETING"
@@ -2256,7 +2256,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 43",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2271,7 +2271,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 43",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2286,7 +2286,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 43",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2321,7 +2321,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 43",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2336,7 +2336,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 43",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2373,7 +2373,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 14",
                   "text": "NET RENTAL INCOME"
@@ -2388,7 +2388,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 14",
                   "text": "NET RENTAL INCOME"
@@ -2403,7 +2403,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 14",
                   "text": "NET RENTAL INCOME"
@@ -2438,7 +2438,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 14",
                   "text": "NET RENTAL INCOME"
@@ -2453,7 +2453,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 14",
                   "text": "NET RENTAL INCOME"
@@ -2490,7 +2490,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 40",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2505,7 +2505,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 40",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2520,7 +2520,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 40",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2555,7 +2555,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 40",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2570,7 +2570,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 40",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2607,7 +2607,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 20",
                   "text": "TOTAL OTHER INCOME"
@@ -2622,7 +2622,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 20",
                   "text": "TOTAL OTHER INCOME"
@@ -2637,7 +2637,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 20",
                   "text": "TOTAL OTHER INCOME"
@@ -2672,7 +2672,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 20",
                   "text": "TOTAL OTHER INCOME"
@@ -2687,7 +2687,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 20",
                   "text": "TOTAL OTHER INCOME"
@@ -2724,7 +2724,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 24",
                   "text": "TOTAL PAYROLL"
@@ -2739,7 +2739,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 24",
                   "text": "TOTAL PAYROLL"
@@ -2754,7 +2754,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 24",
                   "text": "TOTAL PAYROLL"
@@ -2789,7 +2789,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 24",
                   "text": "TOTAL PAYROLL"
@@ -2804,7 +2804,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 24",
                   "text": "TOTAL PAYROLL"
@@ -2841,7 +2841,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 13",
                   "text": "Pet Rent"
@@ -2856,7 +2856,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 13",
                   "text": "Pet Rent"
@@ -2871,7 +2871,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 13",
                   "text": "Pet Rent"
@@ -2906,7 +2906,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 13",
                   "text": "Pet Rent"
@@ -2921,7 +2921,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 13",
                   "text": "Pet Rent"
@@ -2958,7 +2958,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 36",
                   "text": "TOTAL TAXES"
@@ -2973,7 +2973,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 36",
                   "text": "TOTAL TAXES"
@@ -2988,7 +2988,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 36",
                   "text": "TOTAL TAXES"
@@ -3023,7 +3023,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 36",
                   "text": "TOTAL TAXES"
@@ -3038,7 +3038,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 36",
                   "text": "TOTAL TAXES"
@@ -3075,7 +3075,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 30",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3090,7 +3090,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 30",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3105,7 +3105,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 30",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3140,7 +3140,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 30",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3155,7 +3155,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 30",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3192,7 +3192,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 39",
                   "text": "TOTAL EXPENSES"
@@ -3207,7 +3207,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 39",
                   "text": "TOTAL EXPENSES"
@@ -3222,7 +3222,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 39",
                   "text": "TOTAL EXPENSES"
@@ -3257,7 +3257,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 39",
                   "text": "TOTAL EXPENSES"
@@ -3272,7 +3272,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 39",
                   "text": "TOTAL EXPENSES"
@@ -3309,7 +3309,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 21",
                   "text": "TOTAL REVENUE"
@@ -3324,7 +3324,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 21",
                   "text": "TOTAL REVENUE"
@@ -3339,7 +3339,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 21",
                   "text": "TOTAL REVENUE"
@@ -3374,7 +3374,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 21",
                   "text": "TOTAL REVENUE"
@@ -3389,7 +3389,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 21",
                   "text": "TOTAL REVENUE"
@@ -3426,7 +3426,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 32",
                   "text": "TOTAL UTILITIES"
@@ -3441,7 +3441,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 32",
                   "text": "TOTAL UTILITIES"
@@ -3456,7 +3456,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 32",
                   "text": "TOTAL UTILITIES"
@@ -3491,7 +3491,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 32",
                   "text": "TOTAL UTILITIES"
@@ -3506,7 +3506,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 32",
                   "text": "TOTAL UTILITIES"
@@ -3543,7 +3543,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 16",
                   "text": "TOTAL UTILITY INCOME"
@@ -3558,7 +3558,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 16",
                   "text": "TOTAL UTILITY INCOME"
@@ -3573,7 +3573,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 16",
                   "text": "TOTAL UTILITY INCOME"
@@ -3608,7 +3608,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 16",
                   "text": "TOTAL UTILITY INCOME"
@@ -3623,7 +3623,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 16",
                   "text": "TOTAL UTILITY INCOME"
@@ -3660,7 +3660,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 12",
                   "text": "Less: Vacancy"
@@ -3675,7 +3675,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 12",
                   "text": "Less: Vacancy"
@@ -3690,7 +3690,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 12",
                   "text": "Less: Vacancy"
@@ -3725,7 +3725,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 12",
                   "text": "Less: Vacancy"
@@ -3740,7 +3740,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Q3 Financial Detail' rows 12",
                   "text": "Less: Vacancy"
@@ -3795,7 +3795,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "d82c7e0014c3",
+            "file_id": "c30fd7239be8",
             "filename": "notice_alpha.pdf",
             "locator": "pages 1-1 entity header",
             "text": null
@@ -3830,7 +3830,7 @@
           "note": "Accrued interest at period end (one month of interest)",
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Balance Detail' row 12",
             "text": "Accrued Interest"
@@ -3875,7 +3875,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Balance Detail' row 14",
             "text": "TOTAL MORTGAGE PAYABLE"
@@ -4148,7 +4148,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 7",
                   "text": "HP.S1"
@@ -4163,7 +4163,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 7",
                   "text": "HP.S1"
@@ -4178,7 +4178,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'June Unit Mix' rows 5",
                   "text": null
@@ -4193,7 +4193,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 7",
                   "text": "HP.S1"
@@ -4208,7 +4208,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 7",
                   "text": "HP.S1"
@@ -4245,7 +4245,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 8",
                   "text": "HP.A1"
@@ -4260,7 +4260,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 8",
                   "text": "HP.A1"
@@ -4275,7 +4275,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'June Unit Mix' rows 6",
                   "text": null
@@ -4290,7 +4290,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 8",
                   "text": "HP.A1"
@@ -4305,7 +4305,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 8",
                   "text": "HP.A1"
@@ -4342,7 +4342,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 9",
                   "text": "HP.B2"
@@ -4357,7 +4357,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 9",
                   "text": "HP.B2"
@@ -4372,7 +4372,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'June Unit Mix' rows 7",
                   "text": null
@@ -4387,7 +4387,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 9",
                   "text": "HP.B2"
@@ -4402,7 +4402,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 9",
                   "text": "HP.B2"
@@ -4439,7 +4439,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 10",
                   "text": "HP.C2"
@@ -4454,7 +4454,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 10",
                   "text": "HP.C2"
@@ -4469,7 +4469,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'June Unit Mix' rows 8",
                   "text": null
@@ -4484,7 +4484,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 10",
                   "text": "HP.C2"
@@ -4499,7 +4499,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Unit Mix' rows 10",
                   "text": "HP.C2"
@@ -4538,7 +4538,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "6c85c63ffc8c",
+                "file_id": "12547215c222",
                 "filename": "opaque_bundle_71.xlsx",
                 "locator": "sheet 'September Unit Mix' grand total",
                 "text": null
@@ -4553,7 +4553,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "6c85c63ffc8c",
+                "file_id": "12547215c222",
                 "filename": "opaque_bundle_71.xlsx",
                 "locator": "sheet 'September Unit Mix' grand total",
                 "text": null
@@ -4568,7 +4568,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "6c85c63ffc8c",
+                "file_id": "12547215c222",
                 "filename": "opaque_bundle_71.xlsx",
                 "locator": "sheet 'June Unit Mix' grand total",
                 "text": null
@@ -4640,7 +4640,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' header",
             "text": null
@@ -4655,7 +4655,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' summary block",
             "text": null
@@ -4670,7 +4670,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' summary block",
             "text": null
@@ -4685,7 +4685,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' summary block",
             "text": null
@@ -4700,7 +4700,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Lease Activity' section headers",
             "text": null
@@ -4765,7 +4765,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'June Rent Position' header",
             "text": null
@@ -4780,7 +4780,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'June Rent Position' summary block",
             "text": null
@@ -4795,7 +4795,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'June Rent Position' summary block",
             "text": null
@@ -4840,7 +4840,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' summary block",
             "text": null
@@ -4917,7 +4917,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 15-15",
                   "text": "HP.A1"
@@ -4932,7 +4932,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 15-15",
                   "text": "HP.A1"
@@ -4947,7 +4947,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 15-15",
                   "text": "HP.A1"
@@ -4962,7 +4962,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 15-15",
                   "text": "HP.A1"
@@ -4997,7 +4997,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 15-15",
                   "text": "HP.A1"
@@ -5014,7 +5014,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 16-16",
                   "text": "HP.C2"
@@ -5029,7 +5029,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 16-16",
                   "text": "HP.C2"
@@ -5044,7 +5044,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 16-16",
                   "text": "HP.C2"
@@ -5059,7 +5059,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 16-16",
                   "text": "HP.C2"
@@ -5094,7 +5094,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 16-16",
                   "text": "HP.C2"
@@ -5233,7 +5233,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 7-7",
                   "text": "HP.A1"
@@ -5248,7 +5248,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 7-7",
                   "text": "HP.A1"
@@ -5263,7 +5263,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 7-7",
                   "text": "HP.A1"
@@ -5278,7 +5278,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 7-7",
                   "text": "HP.A1"
@@ -5313,7 +5313,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 7-7",
                   "text": "HP.A1"
@@ -5330,7 +5330,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 8-8",
                   "text": "HP.B2"
@@ -5345,7 +5345,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 8-8",
                   "text": "HP.B2"
@@ -5360,7 +5360,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 8-8",
                   "text": "HP.B2"
@@ -5375,7 +5375,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 8-8",
                   "text": "HP.B2"
@@ -5410,7 +5410,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Lease Activity' rows 8-8",
                   "text": "HP.B2"
@@ -5506,7 +5506,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Peer Summary' row 4",
             "text": "Harbor Point"
@@ -5521,7 +5521,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Unit Mix' grand total",
             "text": null
@@ -5546,7 +5546,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Peer Summary' row 4",
             "text": "Harbor Point"
@@ -5601,7 +5601,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' title",
             "text": null
@@ -5686,7 +5686,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'September Rent Position' summary block",
             "text": "Totals"
@@ -5701,7 +5701,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Peer Summary' row 4",
             "text": "Harbor Point"
@@ -5716,7 +5716,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Peer Summary' row 4",
             "text": "Harbor Point"
@@ -5749,7 +5749,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'New Lease Trend' row 2",
             "text": null
@@ -5764,7 +5764,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'New Lease Trend' row 1",
             "text": null
@@ -5779,7 +5779,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'New Lease Trend' header row",
             "text": null
@@ -5804,7 +5804,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'New Lease Trend' header row",
             "text": null
@@ -5921,7 +5921,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -5936,7 +5936,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -5951,7 +5951,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -5966,7 +5966,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -5981,7 +5981,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -5996,7 +5996,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -6011,7 +6011,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 5",
                   "text": "2025-10"
@@ -6028,7 +6028,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6043,7 +6043,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6058,7 +6058,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6073,7 +6073,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6088,7 +6088,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6103,7 +6103,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6118,7 +6118,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 6",
                   "text": "2025-11"
@@ -6135,7 +6135,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6150,7 +6150,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6165,7 +6165,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6180,7 +6180,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6195,7 +6195,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6210,7 +6210,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6225,7 +6225,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 7",
                   "text": "2025-12"
@@ -6242,7 +6242,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6257,7 +6257,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6272,7 +6272,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6287,7 +6287,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6302,7 +6302,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6317,7 +6317,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6332,7 +6332,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 8",
                   "text": "2026-01"
@@ -6349,7 +6349,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6364,7 +6364,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6379,7 +6379,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6394,7 +6394,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6409,7 +6409,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6424,7 +6424,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6439,7 +6439,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 9",
                   "text": "2026-02"
@@ -6456,7 +6456,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6471,7 +6471,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6486,7 +6486,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6501,7 +6501,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6516,7 +6516,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6531,7 +6531,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6546,7 +6546,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 10",
                   "text": "2026-03"
@@ -6563,7 +6563,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6578,7 +6578,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6593,7 +6593,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6608,7 +6608,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6623,7 +6623,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6638,7 +6638,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6653,7 +6653,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 11",
                   "text": "2026-04"
@@ -6670,7 +6670,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6685,7 +6685,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6700,7 +6700,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6715,7 +6715,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6730,7 +6730,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6745,7 +6745,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6760,7 +6760,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 12",
                   "text": "2026-05"
@@ -6777,7 +6777,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6792,7 +6792,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6807,7 +6807,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6822,7 +6822,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6837,7 +6837,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6852,7 +6852,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6867,7 +6867,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 13",
                   "text": "2026-06"
@@ -6884,7 +6884,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6899,7 +6899,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6914,7 +6914,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6929,7 +6929,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6944,7 +6944,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6959,7 +6959,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6974,7 +6974,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 14",
                   "text": "2026-07"
@@ -6991,7 +6991,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7006,7 +7006,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7021,7 +7021,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7036,7 +7036,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7051,7 +7051,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7066,7 +7066,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7081,7 +7081,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 15",
                   "text": "2026-08"
@@ -7098,7 +7098,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7113,7 +7113,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7128,7 +7128,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7143,7 +7143,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7158,7 +7158,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7173,7 +7173,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7188,7 +7188,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'New Lease Trend' row 16",
                   "text": "2026-09"
@@ -7213,7 +7213,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Q3 Financial Detail' row 18",
             "text": "Less: Write Off Bad Debt"
@@ -7228,7 +7228,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Q3 Financial Detail' row 19",
             "text": "Former Resident Collections"
@@ -7441,7 +7441,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7486,7 +7486,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7531,7 +7531,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 5",
             "text": "2026 Q2"
@@ -7546,7 +7546,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 5",
             "text": "2026 Q2"
@@ -7571,7 +7571,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7616,7 +7616,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7631,7 +7631,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7646,7 +7646,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "6c85c63ffc8c",
+            "file_id": "12547215c222",
             "filename": "opaque_bundle_71.xlsx",
             "locator": "sheet 'Submarket History' row 4",
             "text": "2026 Q3"
@@ -7731,7 +7731,7 @@
                 "note": "Mean asking rent across all listing rows",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 5",
                   "text": "2 listings"
@@ -7766,7 +7766,7 @@
                 "note": "Mean effective rent across all listing rows",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 5",
                   "text": "2 listings"
@@ -7781,7 +7781,7 @@
                 "note": "Physical occupancy per the Yardi rent roll",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'September Rent Position' summary block",
                   "text": null
@@ -7796,7 +7796,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 5",
                   "text": "2 listings"
@@ -7811,7 +7811,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Peer Summary' row 4",
                   "text": "Harbor Point"
@@ -7826,7 +7826,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Peer Summary' row 4",
                   "text": "Harbor Point"
@@ -7843,7 +7843,7 @@
                 "note": "Mean asking rent across all listing rows",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 7",
                   "text": "2 listings"
@@ -7878,7 +7878,7 @@
                 "note": "Mean effective rent across all listing rows",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 7",
                   "text": "2 listings"
@@ -7893,7 +7893,7 @@
                 "note": "Leased listings / all listings",
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 7",
                   "text": "2 listings"
@@ -7908,7 +7908,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Market Listings' rows from 7",
                   "text": "2 listings"
@@ -7923,7 +7923,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Peer Summary' row 5",
                   "text": "Mariner Flats"
@@ -7938,7 +7938,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "6c85c63ffc8c",
+                  "file_id": "12547215c222",
                   "filename": "opaque_bundle_71.xlsx",
                   "locator": "sheet 'Peer Summary' row 5",
                   "text": "Mariner Flats"

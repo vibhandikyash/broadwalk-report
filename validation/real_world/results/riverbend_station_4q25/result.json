@@ -146,19 +146,6 @@
   "files": [
     {
       "error": null,
-      "name": "portal-b.pdf",
-      "parts": [
-        {
-          "confidence": 0.9,
-          "doc_type": "slate_distributions",
-          "locator": "pages 1-1",
-          "warnings": []
-        }
-      ],
-      "status": "processed"
-    },
-    {
-      "error": null,
       "name": "mkt_final_v3.xlsx",
       "parts": [
         {
@@ -208,6 +195,19 @@
           "confidence": 0.0,
           "doc_type": "unknown",
           "locator": "sheet 'Junk Sheet'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "portal-b.pdf",
+      "parts": [
+        {
+          "confidence": 0.9,
+          "doc_type": "slate_distributions",
+          "locator": "pages 1-1",
           "warnings": []
         }
       ],
@@ -721,7 +721,7 @@
     }
   },
   "passed": true,
-  "project_id": "cbaa2905de0e",
+  "project_id": "393bcb838302",
   "provenance": {
     "1": {
       "conflict": 0,
@@ -816,11 +816,11 @@
   },
   "report": {
     "complete": true,
-    "created_at": "2026-09-05T12:48:35+00:00",
+    "created_at": "2026-09-05T12:58:45+00:00",
     "error": null,
     "gap_count": 0,
     "has_pdf": true,
-    "id": "81da9e3e6470",
+    "id": "0fba685f948e",
     "images_per_page": [
       1,
       2,
@@ -848,7 +848,7 @@
     ],
     "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/report.pdf",
     "pdf_text_excerpt": "4Q25 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n4Q25\r\nRiverbend Station\r\nDenver, CO\r\n228-unit multifamily community. Quarterly performance review for the period\r\nending Dec 31, 2025.\r\n228\r\nUNITS\r\n1997\r\nVINTAGE\r\nMay ’23\r\nACQUIRED\r\n$41M PURCHASE PRICE\r\nPREPARED BY\r\nSummit Peak Advisors\r\nPeriod ending Dec 31, 2025\r\nQUARTERLY INVESTOR REPORT\nProperty Description\r\nRIVERBEND STATION · 4Q25\r\nVINTAGE 1997 · CLASS B · HOLD PERIOD 7 YR\r\nRiverbend Station is a 228-unit mid-rise community in Denver's River North district, built in 1997\r\non 9.4 acres with structured parking, a fitness center and a riverside courtyard. The plan upgrades\r\nunit interiors and amenities over a seven-year hold.\r\nADDRESS\r\n2450 Riverbend Drive\r\nDenver, CO 80216\r\nSUBMARKET\r\nRiver North\r\nMSA\r\nDenver-Aurora-Lakewood\r\nYEAR BUILT\r\n1997\r\nBUILDING CLASS\r\nB\r\nSITE / DENSITY\r\n9.4 ac · 24.3 u/ac\r\nACQUIRED\r\nMay 18, 2023\r\nAVG UNIT SIZE\r\n854 sf\r\n4Q25 AVG IN-PLACE RENT\r\n$1,727 / mo\r\nPRIOR QTR (3Q25)\r\n$1,697 / mo\r\nQOQ VARIANCE\r\n+$30 / +1.8%\r\nType Units Avg SF 3Q25 in-place rent 4Q25 in-place rent QoQ variance\r\nStudio · 1 BA 28 560 $1,310 $1,340 +$30 / +2.3%\r\n1 BR · 1 BA 96 720 $1,525 $1,555 +$30 / +2.0%\r\n2 BR · 2 BA 84 1,015 $1,900 $1,930 +$30 / +1.6%\r\n3 BR · 2 BA 20 1,230 $2,235 $2,265 +$30 / +1.3%\r\nTotal / Weighted 228 854 $1,697 $1,727 +$30 / +1.8%\r\nMock draft for Riverbend Station (4Q25): describe how in-place rents moved quarter over quarter by floor plan and\r\noverall. Figures used: by floor plan units 228; by floor plan avg sf 854; by floor plan current rent 1,727; by floor plan\r\nprior rent 1,697; by floor plan variance 30.05; by floor plan variance pct 0.0177.\r\nRIVERBEND STATION · 4Q25 · PROPERTY DESCRIPTION 02 / 10\nProperty Summary & Business Plan RIVERBEND STATION · 4Q25\r\nPURCHASE PRICE\r\n$41.0M\r\n$179,825 / unit · 228 units\r\nEQUITY INVESTED (ITD)\r\n$12.9M\r\n4Q25 EQUITY CONTRIBUTIONS\r\n$350,000\r\n$350,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$180,000\r\n$180,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\nSeven-",
-    "project_id": "cbaa2905de0e",
+    "project_id": "393bcb838302",
     "status": "done",
     "version": 1
   },

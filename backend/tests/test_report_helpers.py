@@ -22,6 +22,25 @@ def test_line_chart_svg():
     assert line_chart_svg([], []) == ""
 
 
+def test_line_chart_legend_wraps_instead_of_running_off_the_chart():
+    import re
+
+    def legend_boxes(svg):
+        return [(int(x), int(y)) for x, y in re.findall(r'<text x="(\d+)" y="(\d+)" class="legend">', svg)]
+
+    short = [{"name": f"{p} {k}", "values": [1.0, 2.0], "color": "#000000"} for p in ("The Boardwalk", "Comp Set") for k in ("gross", "effective")]
+    one_row = line_chart_svg(["Jan", "Feb"], short)
+    assert len({y for _, y in legend_boxes(one_row)}) == 1 and 'viewBox="0 0 760 380"' in one_row
+
+    long = [{"name": f"{p} {k}", "values": [1.0, 2.0], "color": "#000000"}
+            for p in ("Pine Ridge", "West Raleigh Comp Set") for k in ("gross", "effective")]
+    wrapped = line_chart_svg(["Jan", "Feb"], long)
+    boxes = legend_boxes(wrapped)
+    assert len({y for _, y in boxes}) == 2, "the fourth entry must move to a second row"
+    assert all(x + 6.2 * len(s["name"]) <= 760 - 16 for (x, _), s in zip(boxes, long)), "every label ends inside the chart"
+    assert 'viewBox="0 0 760 394"' in wrapped, "the extra row is paid for by a taller viewBox, not by covering the x axis"
+
+
 def test_formatters_round_half_away_from_zero():
     from app.report.formatters import bps, integer, money, num, pct, signed_money, signed_num
 

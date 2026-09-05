@@ -926,7 +926,7 @@
     }
   },
   "passed": true,
-  "project_id": "167d0fbe2617",
+  "project_id": "6f030ea781f9",
   "provenance": {
     "1": {
       "conflict": 0,
@@ -1021,11 +1021,11 @@
   },
   "report": {
     "complete": false,
-    "created_at": "2026-09-05T12:48:31+00:00",
+    "created_at": "2026-09-05T12:58:41+00:00",
     "error": null,
     "gap_count": 40,
     "has_pdf": true,
-    "id": "1cbeb86a8672",
+    "id": "85fa17085895",
     "images_per_page": [
       0,
       0,
@@ -1053,7 +1053,7 @@
     ],
     "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/report.pdf",
     "pdf_text_excerpt": "Harbor Point\r\n3Q26 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n3Q26\r\nDRAFT · 40 items outstanding on the review screen\r\nHarbor Point\r\nCorpus Christi, TX\r\n264-unit multifamily community. Quarterly performance review for the period\r\nending Sep 30, 2026.\r\n264\r\nUNITS\r\n1988\r\nVINTAGE\r\nNov ’24\r\nACQUIRED\r\n$42M PURCHASE PRICE\r\nPREPARED BY\r\nNorthstar Asset Management\r\nPeriod ending Sep 30, 2026\r\nQUARTERLY INVESTOR REPORT\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Description\r\nHARBOR POINT · 3Q26\r\nVINTAGE 1988 · CLASS — · HOLD PERIOD — YR\r\nHarbor Point\r\nA 264-unit garden-style community serving a diversified coastal employment base.\r\nADDRESS\r\n880 Marina Drive\r\nCorpus Christi, TX 78401\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n1988\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nNov 15, 2024\r\nAVG UNIT SIZE\r\n886 sf\r\n3Q26 AVG IN-PLACE RENT\r\n$1,829 / mo\r\nPRIOR QTR (2Q26)\r\n$1,794 / mo\r\nQOQ VARIANCE\r\n+$35 / +2.0%\r\nType Units Avg SF 2Q26 in-place rent 3Q26 in-place rent QoQ variance\r\nStudio · 1 BA 24 540 $1,340 $1,375 +$35 / +2.6%\r\n1 BR · 1 BA 96 710 $1,570 $1,605 +$35 / +2.2%\r\n2 BR · 2 BA 112 1,010 $1,950 $1,985 +$35 / +1.8%\r\n3 BR · 2 BA 32 1,240 $2,285 $2,320 +$35 / +1.5%\r\nTotal / Weighted 264 886 $1,794 $1,829 +$35 / +2.0%\r\nHARBOR POINT · 3Q26 · PROPERTY DESCRIPTION · DRAFT (40 outstanding) 02 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Summary & Business Plan HARBOR POINT · 3Q26\r\nPURCHASE PRICE\r\n$42.2M\r\n$160,000 / unit · 264 units\r\nEQUITY INVESTED (ITD)\r\n$12.5M\r\n3Q26 EQUITY CONTRIBUTIONS\r\n$500,000\r\n$500,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$125,000\r\n$125,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS HARBOR POINT VS. COASTAL COMP SET\r\n—\r\n$2.03\r\n$2.13\r\n$2.23\r\n$2.34\r\n$2.44\r\nOct '25 Nov '25 Dec '25 Jan '26 Feb '26 Mar '26 Apr '26 May '26 Jun '26 Jul '26 A",
-    "project_id": "167d0fbe2617",
+    "project_id": "6f030ea781f9",
     "status": "done",
     "version": 1
   },

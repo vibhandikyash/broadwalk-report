@@ -435,6 +435,44 @@
   "files": [
     {
       "error": null,
+      "name": "Archive_Export.xlsx",
+      "parts": [
+        {
+          "confidence": 0.76,
+          "doc_type": "yardi_budget_comparison",
+          "locator": "sheet 'Re-exported Current Quarter'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_budget_comparison",
+          "locator": "sheet 'Historical Quarter'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "capital_activity.pdf",
+      "parts": [
+        {
+          "confidence": 0.8,
+          "doc_type": "slate_capital_calls",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": "PDF has no extractable text (scanned image?). OCR is not supported in this version. Export a text-based PDF from the source system, or enter the values on the Review page.",
+      "name": "scanned_vendor_report.pdf",
+      "parts": [],
+      "status": "needs_ocr"
+    },
+    {
+      "error": null,
       "name": "Current_Quarter_Pack.xlsx",
       "parts": [
         {
@@ -489,12 +527,6 @@
       "status": "processed"
     },
     {
-      "error": "PDF has no extractable text (scanned image?). OCR is not supported in this version. Export a text-based PDF from the source system, or enter the values on the Review page.",
-      "name": "scanned_vendor_report.pdf",
-      "parts": [],
-      "status": "needs_ocr"
-    },
-    {
       "error": null,
       "name": "Regional_Support.xlsx",
       "parts": [
@@ -502,38 +534,6 @@
           "confidence": 1.0,
           "doc_type": "yardi_rent_roll",
           "locator": "sheet 'Regional Occupancy'",
-          "warnings": []
-        }
-      ],
-      "status": "processed"
-    },
-    {
-      "error": null,
-      "name": "capital_activity.pdf",
-      "parts": [
-        {
-          "confidence": 0.8,
-          "doc_type": "slate_capital_calls",
-          "locator": "pages 1-1",
-          "warnings": []
-        }
-      ],
-      "status": "processed"
-    },
-    {
-      "error": null,
-      "name": "Archive_Export.xlsx",
-      "parts": [
-        {
-          "confidence": 0.76,
-          "doc_type": "yardi_budget_comparison",
-          "locator": "sheet 'Re-exported Current Quarter'",
-          "warnings": []
-        },
-        {
-          "confidence": 0.92,
-          "doc_type": "yardi_budget_comparison",
-          "locator": "sheet 'Historical Quarter'",
           "warnings": []
         }
       ],
@@ -1009,7 +1009,7 @@
     }
   },
   "passed": true,
-  "project_id": "35dead291bca",
+  "project_id": "6fe7bdeaf218",
   "provenance": {
     "1": {
       "conflict": 0,
@@ -1104,11 +1104,11 @@
   },
   "report": {
     "complete": false,
-    "created_at": "2026-09-05T12:48:32+00:00",
+    "created_at": "2026-09-05T12:58:42+00:00",
     "error": null,
     "gap_count": 43,
     "has_pdf": true,
-    "id": "4626b7e2d976",
+    "id": "4af8c01279ba",
     "images_per_page": [
       0,
       0,
@@ -1136,7 +1136,7 @@
     ],
     "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/lakeside_commons_1q27/report.pdf",
     "pdf_text_excerpt": "Lakeside Commons\r\n1Q27 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n1Q27\r\nDRAFT · 43 items outstanding on the review screen\r\nLakeside Commons\r\nOrlando, FL\r\n196-unit multifamily community. Quarterly performance review for the period\r\nending Mar 31, 2027.\r\n196\r\nUNITS\r\n2011\r\nVINTAGE\r\nFeb ’25\r\nACQUIRED\r\n$39M PURCHASE PRICE\r\nPREPARED BY\r\nBluewater Capital Group\r\nPeriod ending Mar 31, 2027\r\nQUARTERLY INVESTOR REPORT\nBLUEWATER CAPITAL GROUP\r\nProperty Description\r\nLAKESIDE COMMONS · 1Q27\r\nVINTAGE 2011 · CLASS — · HOLD PERIOD — YR\r\nLakeside Commons\r\nA 196-unit lakeside community with recent interior and amenity upgrades.\r\nADDRESS\r\n77 Lakefront Avenue\r\nOrlando, FL 32801\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n2011\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nFeb 3, 2025\r\nAVG UNIT SIZE\r\n880 sf\r\n1Q27 AVG IN-PLACE RENT\r\n$1,914 / mo\r\nPRIOR QTR (4Q26)\r\n$1,886 / mo\r\nQOQ VARIANCE\r\n+$28 / +1.5%\r\nType Units Avg SF 4Q26 in-place rent 1Q27 in-place rent QoQ variance\r\nStudio · 1 BA 20 515 $1,452 $1,480 +$28 / +1.9%\r\n1 BR · 1 BA 80 735 $1,697 $1,725 +$28 / +1.6%\r\n2 BR · 2 BA 80 1,035 $2,082 $2,110 +$28 / +1.3%\r\n3 BR · 2 BA 16 1,285 $2,422 $2,450 +$28 / +1.2%\r\nTotal / Weighted 196 880 $1,886 $1,914 +$28 / +1.5%\r\nLAKESIDE COMMONS · 1Q27 · PROPERTY DESCRIPTION · DRAFT (43 outstanding) 02 / 10\nBLUEWATER CAPITAL GROUP\r\nProperty Summary & Business Plan LAKESIDE COMMONS · 1Q27\r\nPURCHASE PRICE\r\n$39.2M\r\n$200,000 / unit · 196 units\r\nEQUITY INVESTED (ITD)\r\n$13.7M\r\n1Q27 EQUITY CONTRIBUTIONS\r\n$275,000\r\n$275,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n—\r\n—\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS T12 NEW LEASE RENT TREND\r\nLakeside Commons vs. Central Orlando Comp Set\r\n$2.18\r\n$2.29\r\n$2.40\r\n$2.50\r\n$2.61\r\nApr '26 May '26 Jun '26 Jul '26 Aug '26 Sep '26 Oct '26 Nov '26 Dec '26 Jan '27 Feb '2",
-    "project_id": "35dead291bca",
+    "project_id": "6fe7bdeaf218",
     "status": "done",
     "version": 1
   },

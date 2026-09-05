@@ -25,6 +25,10 @@ per-scenario table and the page-by-page provenance matrix for every report; this
   computed from available values only (the footnote states per column whether the average is unit-weighted or
   simple). A summary that names properties outside the defining set raises an informational issue instead of
   silently merging two comp sets.
+- The page 3 rent-trend legend wraps onto a second row when the subject and comp-set names are long. The first
+  evidence pages for Pine Ridge, Lakeside and Riverbend clipped the fourth legend label at the chart edge, which
+  the overflow check cannot see because the text is cut inside the SVG; the visual inspection caught it, the
+  chart now wraps, and the regenerated page images show every label.
 - The Boardwalk regression stays intact: original extraction and calculation tests pass unchanged, the deliverable
   regenerates as a complete report with the same ten comparables and the same averages as before, and no
   alternate-property identity appears in its data.
@@ -62,7 +66,7 @@ cannot be complete without a reviewer, and the suite proves a reviewer can compl
 
 ## Verification totals at this commit
 
-- Backend: 138 passed, 4 skipped (opt-in live checks) in the standard suite; 7 passed in the real-world scenario
+- Backend: 139 passed, 4 skipped (opt-in live checks) in the standard suite; 7 passed in the real-world scenario
   suite (four scenarios, contract, tolerance helpers, reversed upload order).
 - Supplied plus mutated Boardwalk dataset: 2 passed.
 - Frontend: 35 passed; production build passed; npm audit clean.
