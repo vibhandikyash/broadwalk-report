@@ -1,7 +1,9 @@
 """HTML rendering of ReportData with Jinja. PDF rendering is added in Task 25."""
 from __future__ import annotations
 
+import base64
 import calendar
+from functools import lru_cache
 from pathlib import Path
 from typing import Callable
 
@@ -23,10 +25,17 @@ FONT_FACES = (
 )
 
 
+@lru_cache(maxsize=1)
 def _fonts_css() -> str:
+    """@font-face rules with the TTFs inlined as data URIs (Chromium refuses file:// fonts from a file:// page)."""
     fonts = REPORT_DIR / "static" / "fonts"
-    faces = [f"@font-face{{font-family:'{fam}';src:url('{(fonts / file).as_uri()}');font-weight:{w};font-style:{style};}}"
-             for fam, file, w, style in FONT_FACES if (fonts / file).exists()]
+    faces = []
+    for fam, file, w, style in FONT_FACES:
+        path = fonts / file
+        if path.exists():
+            b64 = base64.b64encode(path.read_bytes()).decode()
+            faces.append(f"@font-face{{font-family:'{fam}';src:url(data:font/ttf;base64,{b64}) format('truetype');"
+                         f"font-weight:{w};font-style:{style};}}")
     return "\n".join(faces)
 
 

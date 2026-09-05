@@ -35,7 +35,7 @@ import { TableEditorComponent } from './table-editor.component';
           @if (health()?.llm_enabled) {
             <button type="button" class="secondary" (click)="draft()" [disabled]="drafting()">{{ drafting() ? 'Drafting…' : 'Draft narratives with AI' }}</button>
           }
-          <button type="button" (click)="save()" [disabled]="!pending().size || saving()">{{ saving() ? 'Saving…' : 'Save ' + (pending().size ? '(' + pending().size + ')' : '') }}</button>
+          <button type="button" (click)="save()" [disabled]="!pending().size || saving()">{{ saving() ? 'Saving…' : 'Save' + (pending().size ? ' (' + pending().size + ')' : '') }}</button>
         </div>
       </div>
       @if (d.narrative_error) { <p class="warn small">AI drafting: {{ d.narrative_error }}</p> }

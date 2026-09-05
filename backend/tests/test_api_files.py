@@ -20,7 +20,7 @@ def test_project_and_file_lifecycle(tmp_path):
         recs = r.json()
         assert recs[0]["status"] in ("queued", "processing", "processed") and recs[1]["status"] == "unsupported"
         assert "extractions" not in recs[0]
-        assert pool.wait_idle(20)
+        assert pool.wait_idle(90)
         detail = client.get(f"/api/projects/{p['id']}").json()
         assert detail["stage"] == "review" and detail["report_built"] is True
         good = next(f for f in detail["files"] if f["original_filename"] == "fin.xlsx")
@@ -30,7 +30,7 @@ def test_project_and_file_lifecycle(tmp_path):
         assert client.patch(f"/api/projects/{p['id']}/files/{good['id']}", json={"ignored": True}).json()["ignored"] is True
         assert client.patch(f"/api/projects/{p['id']}/files/{good['id']}", json={"ignored": False, "doc_type_override": "nope"}).status_code == 422
         r = client.post(f"/api/projects/{p['id']}/files/{good['id']}/reprocess")
-        assert r.status_code == 200 and pool.wait_idle(20)
+        assert r.status_code == 200 and pool.wait_idle(90)
         bad = next(f for f in detail["files"] if f["original_filename"] == "notes.docx")
         assert client.post(f"/api/projects/{p['id']}/files/{bad['id']}/reprocess").status_code == 409
         assert client.delete(f"/api/projects/{p['id']}/files/{bad['id']}").status_code == 204

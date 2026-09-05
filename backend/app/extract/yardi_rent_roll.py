@@ -37,11 +37,14 @@ def extract(part: Part) -> Extraction:
     hrow, k, headers = hb
     c_units = Sheet.col(headers, r"# of units", r"^units$")
     c_pct = Sheet.col(headers, r"% unit occupancy", r"occupancy")
+    c_label = Sheet.col(headers, r"summary groups")
     if c_units is None:
         raise ExtractionError("'# Of Units' column not found in the summary block")
+    if c_label is None:
+        c_label = 0
     found: dict[str, tuple] = {}
     for r in range(hrow + k, min(hrow + k + 20, sh.nrows)):
-        label = norm(sh.text(r, 0))
+        label = norm(sh.text(r, c_label))
         if not label:
             continue
         pct = to_number(sh.cell(r, c_pct)) if c_pct is not None else None

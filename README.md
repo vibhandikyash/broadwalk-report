@@ -101,6 +101,7 @@ Files are processed by an in-process thread pool; each file is an isolated job. 
 - The rent trend chart needs the pre-built rent chart workbook for a full 12-month history; without it the chart is computed from whatever months the LTO and HelloData listings cover.
 - Comp unit counts and vintages come from a HelloData comp summary when one is supplied; the unit-level listings export does not contain them.
 - Image-only (scanned) PDFs are reported as unsupported; no OCR is implemented.
+- The frontend has no unit tests; it is covered by the browser end-to-end test below.
 - The optional AI drafting sends section values (not files) to the Anthropic API and requires the user's key.
 - No authentication or multi-user support; single local user by design.
 
@@ -117,6 +118,12 @@ Files are processed by an in-process thread pool; each file is an isolated job. 
 ## Running the tests
 
 ```bash
-cd backend && pytest -q
-TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_dataset.py -v   # optional, needs the real files
+cd backend && pytest -q                                                    # unit and API tests (synthetic data)
+TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_dataset.py -v   # optional: the real files, plus a mutated copy
+                                                                           # (random names, renamed sheets, shifted rows/columns)
+UI_E2E_URL=http://localhost:4200 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_ui_e2e.py -v
+                                                                           # optional: drives the Angular app in headless Chromium
+                                                                           # (upload, every Files-page control, edits, PDF); both servers must be running
 ```
+
+The report embeds Source Serif 4 and JetBrains Mono (SIL Open Font License, licences in `backend/app/report/static/fonts/`).

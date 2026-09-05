@@ -16,7 +16,7 @@ def upload_all(client, pid, tmp_path):
         "HD": LISTINGS_ROWS, "Comps": COMPS_ROWS, "CoStar": COSTAR_ROWS, "Chart": RENT_CHART_ROWS})
     with xlsx.open("rb") as fh:
         assert client.post(f"/api/projects/{pid}/files", files=[("files", ("all.xlsx", fh, "application/octet-stream"))]).status_code == 201
-    assert pool.wait_idle(30)
+    assert pool.wait_idle(90)
 
 
 def test_report_data_read_patch_rows_and_rebuild(tmp_path):

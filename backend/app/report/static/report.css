@@ -59,8 +59,8 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .term .lab { margin-bottom: 0; }
 .chart { width: 100%; height: auto; }
 .chart .grid { stroke: var(--line); stroke-width: 1; }
-.chart .ylab { font-size: 9px; fill: var(--mute); text-anchor: end; font-family: Menlo, monospace; }
-.chart .xlab { font-size: 9px; fill: var(--mute); text-anchor: middle; font-family: Menlo, monospace; }
+.chart .ylab { font-size: 9px; fill: var(--mute); text-anchor: end; font-family: "JetBrains Mono", Menlo, monospace; }
+.chart .xlab { font-size: 9px; fill: var(--mute); text-anchor: middle; font-family: "JetBrains Mono", Menlo, monospace; }
 .chart .legend { font-size: 10px; fill: var(--ink); }
 .status-block { margin-bottom: 8pt; }
 .status-block .t { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6pt; color: var(--navy); letter-spacing: 0.08em; text-transform: uppercase; }

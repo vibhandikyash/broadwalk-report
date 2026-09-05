@@ -92,8 +92,11 @@ def extract(part: Part) -> Extraction:
             lease_rent, prev_rent = num("lease_rent"), num("prev_lease_rent")
             if not unit_type or (lease_rent is None and prev_rent is None):
                 continue
-            if property_name is None and sh.text(r, 0) and to_number(sh.cell(r, 0)) is None:
-                property_name = sh.text(r, 0)
+            if property_name is None:  # property name sits in a text column left of the resident name
+                for c in range(cm.get("resident_name", 0)):
+                    if sh.text(r, c) and to_number(sh.cell(r, c)) is None:
+                        property_name = sh.text(r, c)
+                        break
             start = to_date(sh.cell(r, cm["start"])) if "start" in cm else None
             rows.append({
                 "unit_type": unit_type, "sqft": num("sqft"), "unit": sh.text(r, cm["unit"]) if "unit" in cm else None,
