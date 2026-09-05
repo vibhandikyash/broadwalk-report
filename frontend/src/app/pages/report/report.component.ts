@@ -4,7 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { interval, switchMap, takeWhile } from 'rxjs';
 import { ApiService } from '../../core/api.service';
-import { ProjectDetail, Report, ReportDataUi, errorText } from '../../core/models';
+import { Completeness, ProjectDetail, Report, ReportDataUi, errorText } from '../../core/models';
 import { StatusChipComponent } from '../../shared/status-chip.component';
 import { StepperComponent } from '../../shared/stepper.component';
 
@@ -21,12 +21,18 @@ const BUSY = new Set(['queued', 'rendering']);
         <h1>{{ p.name }} <span class="muted">· report</span></h1>
         <nav class="row" aria-label="Project pages">
           <a [routerLink]="['/projects', p.id, 'review']" class="btn secondary">← Review</a>
-          <button type="button" (click)="generate()" [disabled]="generating()">{{ generating() ? 'Rendering…' : 'Generate PDF' }}</button>
+          <button type="button" (click)="generate()" [disabled]="generating()">{{ generating() ? 'Rendering…' : (completeness()?.complete === false ? 'Generate draft PDF' : 'Generate PDF') }}</button>
         </nav>
       </div>
+      @if (completeness(); as c) {
+        <p class="small completeness-line" [class.warn]="!c.complete" [class.ok]="c.complete">
+          @if (c.complete) { <span class="chip chip-done">complete</span> Every item a finished investor report needs has been reviewed. }
+          @else { <span class="chip chip-conflict">draft</span> {{ c.gap_count }} item{{ c.gap_count === 1 ? '' : 's' }} outstanding on the Review page. A PDF can still be generated; it is marked as a draft on every page until the review is complete. }
+        </p>
+      }
       @if (summary(); as s) {
-        @if (s.missing || s.conflicts || s.errors) {
-          <p class="warn small">{{ s.missing }} missing values will print as "—", {{ s.conflicts }} unresolved conflicts use the primary source, {{ s.errors }} errors. You can still generate; fix them on the Review page and regenerate.</p>
+        @if (s.conflicts || s.errors) {
+          <p class="warn small">{{ s.conflicts }} unresolved conflicts use the primary source, {{ s.errors }} errors. Fix them on the Review page and regenerate.</p>
         }
       }
       <p class="status small" role="status" aria-live="polite">{{ status() }}</p>
@@ -40,6 +46,8 @@ const BUSY = new Set(['queued', 'rendering']);
             <li class="version">
               <div><strong>v{{ r.version }}</strong> <span class="small muted">{{ r.created_at.slice(0, 16) }}</span></div>
               <div class="row"><app-status-chip [status]="r.status" />
+                @if (r.complete === false) { <span class="chip chip-conflict" [title]="r.gap_count + ' items were outstanding when this version was generated'">draft · {{ r.gap_count }} outstanding</span> }
+                @else if (r.complete === true) { <span class="chip chip-done">complete</span> }
                 @if (r.status === 'done') {
                   <a class="btn small" [href]="api.downloadUrl(pid, r.id)" target="_blank" rel="noopener">Download PDF<span class="sr-only"> version {{ r.version }}</span></a>
                   <a class="link small" [href]="api.snapshotUrl(pid, r.id)" target="_blank" rel="noopener">data snapshot<span class="sr-only"> for version {{ r.version }}</span></a>
@@ -64,6 +72,7 @@ export class ReportComponent {
   project = signal<ProjectDetail | null>(null);
   reports = signal<Report[]>([]);
   summary = signal<ReportDataUi['summary'] | null>(null);
+  completeness = signal<Completeness | null>(null);
   previewUrl = signal<SafeResourceUrl>(this.sanitizer.bypassSecurityTrustResourceUrl(this.api.previewUrl(this.pid)));
   generating = signal(false);
   error = signal<string | null>(null);
@@ -74,7 +83,7 @@ export class ReportComponent {
       next: (p) => { this.project.set(p); this.reports.set(p.reports); if (p.reports.some((r) => BUSY.has(r.status))) this.watch(); },
       error: (e) => this.fail(errorText(e)),
     });
-    this.api.reportData(this.pid).subscribe({ next: (d) => this.summary.set(d.summary), error: () => this.summary.set(null) });
+    this.api.reportData(this.pid).subscribe({ next: (d) => { this.summary.set(d.summary); this.completeness.set(d.summary.completeness ?? null); }, error: () => this.summary.set(null) });
   }
 
   fail(msg: string): void {

@@ -63,3 +63,5 @@ button.issue:disabled { cursor: default; opacity: 1; }
   .toolbar { position: static; }
   h1 { font-size: 18px; }
 }
+.ok { color: var(--green); }
+.completeness { margin-top: 10px; font-size: 12px; } .completeness .pg { color: var(--mute); font-size: 11px; margin-right: 4px; }

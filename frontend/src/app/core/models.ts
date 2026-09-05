@@ -8,7 +8,10 @@ export interface ProjectFile {
   id: string; project_id: string; original_filename: string; ext: string; size: number; status: FileStatus;
   error: string | null; parts: Part[]; doc_type_override: string | null; ignored: boolean; uploaded_at: string; processed_at: string | null;
 }
-export interface Report { id: string; project_id: string; version: number; status: string; error: string | null; created_at: string; has_pdf: boolean; }
+export interface Report {
+  id: string; project_id: string; version: number; status: string; error: string | null; created_at: string; has_pdf: boolean;
+  complete: boolean | null; gap_count: number | null;
+}
 export interface ProjectDetail extends Project {
   files: ProjectFile[]; reports: Report[]; stage: Stage; report_built: boolean; processing: string[]; assets: Record<AssetKind, boolean>;
 }
@@ -27,7 +30,11 @@ export interface UiRow { key: string; label: string; manual: boolean; subject: b
 export interface UiTable { path: string; key: string; title: string; columns: UiColumn[]; rows: UiRow[]; totals: UiField[]; editable_rows: boolean; }
 export interface UiSection { key: string; title: string; page: number; fields: UiField[]; tables: UiTable[]; }
 export interface Issue { path: string | null; severity: 'error' | 'warning' | 'info'; message: string; }
-export interface Summary { missing: number; conflicts: number; ai_drafts: number; errors: number; warnings: number; infos: number; }
+export interface Gap { path: string; label: string; page: number; group: string; reason: string; }
+export interface GapGroup { key: string; label: string; page: number; complete: boolean; gap_count: number; }
+/** Structural means a PDF can be generated; complete means every requirement of a finished report is met. */
+export interface Completeness { complete: boolean; gap_count: number; ai_drafts_pending: number; gaps: Gap[]; groups: GapGroup[]; }
+export interface Summary { missing: number; conflicts: number; ai_drafts: number; errors: number; warnings: number; infos: number; completeness?: Completeness; }
 export interface ReportDataUi {
   built_at: string | null; summary: Summary; issues: Issue[]; sections: UiSection[]; meta: Record<string, unknown>;
   narrative_status: string | null; narrative_error: string | null;

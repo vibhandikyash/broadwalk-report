@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AssetKind, DocTypeOption, FileExtraction, Health, Overrides, PatchBody, Project, ProjectDetail, ProjectFile, Report, ReportDataUi } from './models';
+import { AssetKind, Completeness, DocTypeOption, FileExtraction, Health, Overrides, PatchBody, Project, ProjectDetail, ProjectFile, Report, ReportDataUi } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -36,6 +36,7 @@ export class ApiService {
   deleteAsset(pid: string, kind: AssetKind): Observable<Record<AssetKind, boolean>> { return this.http.delete<Record<AssetKind, boolean>>(`${this.base}/projects/${pid}/assets/${kind}`); }
   assetUrl(pid: string, kind: AssetKind): string { return `${this.base}/projects/${pid}/assets/${kind}?t=${Date.now()}`; }
 
+  completeness(pid: string): Observable<Completeness> { return this.http.get<Completeness>(`${this.base}/projects/${pid}/completeness`); }
   reportData(pid: string): Observable<ReportDataUi> { return this.http.get<ReportDataUi>(`${this.base}/projects/${pid}/report-data`); }
   rebuildReportData(pid: string): Observable<ReportDataUi> { return this.http.post<ReportDataUi>(`${this.base}/projects/${pid}/report-data/rebuild`, {}); }
   patchReportData(pid: string, body: PatchBody): Observable<ReportDataUi> { return this.http.patch<ReportDataUi>(`${this.base}/projects/${pid}/report-data`, body); }

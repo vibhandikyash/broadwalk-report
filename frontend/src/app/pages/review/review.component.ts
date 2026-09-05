@@ -54,6 +54,17 @@ export interface OverrideEntry { path: string; text: string; }
               @if (attentionCount(s); as n) { <span class="badge"><span class="sr-only">, </span>{{ n }}<span class="sr-only"> need attention</span></span> }
             </button>
           }
+          @if (d.summary.completeness; as c) {
+            <details class="completeness" [open]="!c.complete" aria-labelledby="completeness-h">
+              <summary id="completeness-h">Report completeness: <strong>{{ c.complete ? 'complete' : c.gap_count + ' item' + (c.gap_count === 1 ? '' : 's') + ' outstanding' }}</strong></summary>
+              <p class="small muted">A PDF can always be generated. It is marked as a draft until every item below is reviewed.@if (c.ai_drafts_pending) { {{ c.ai_drafts_pending }} AI draft{{ c.ai_drafts_pending === 1 ? '' : 's' }} still need review. }</p>
+              <ul class="plain small">
+                @for (g of c.gaps; track g.path) {
+                  <li><button type="button" class="issue issue-warning small" (click)="jumpTo(g.path)"><span class="pg">p{{ g.page }}</span> {{ g.label }} <span class="muted">({{ g.reason }})</span></button></li>
+                }
+              </ul>
+            </details>
+          }
           <details class="issues"><summary>Issues ({{ d.issues.length }})</summary>
             <ul class="plain">
               @for (i of d.issues; track $index) {
@@ -175,7 +186,10 @@ export class ReviewComponent {
   }
   jump(i: Issue): void {
     if (!i.path) return;
-    this.selected.set(i.path.split('.')[0]);
+    this.jumpTo(i.path);
+  }
+  jumpTo(path: string): void {
+    this.selected.set(path.split('.')[0]);
     setTimeout(() => this.heading()?.nativeElement.focus(), 0);
   }
 

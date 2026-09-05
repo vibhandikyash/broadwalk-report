@@ -102,7 +102,7 @@ describe('ReviewComponent', () => {
 
   it('jumps from an issue to its section and moves focus to the heading', async () => {
     const fixture = setup({});
-    const buttons = fixture.nativeElement.querySelectorAll('button.issue') as NodeListOf<HTMLButtonElement>;
+    const buttons = fixture.nativeElement.querySelectorAll('details.issues button.issue') as NodeListOf<HTMLButtonElement>;
     expect(buttons.length).toBe(2);
     expect(buttons[1].disabled).toBe(true);  // no path to jump to
     buttons[0].click();
@@ -123,6 +123,22 @@ describe('ReviewComponent', () => {
     expect(items).toEqual(['property.fields.units', 'underwriting.tables.budget.rows.manual-1', 'submarket.tables.comps.deleted', 'capex.fields.narrative']);
     (fixture.nativeElement.querySelector('button[aria-label="Reset correction property.fields.units"]') as HTMLButtonElement).click();
     expect(reset).toHaveBeenCalledWith('p1', { paths: ['property.fields.units'] });
+  });
+
+  it('lists completeness gaps by page and jumps to the section of a gap', async () => {
+    const fixture = setup({});
+    const el: HTMLElement = fixture.nativeElement;
+    const panel = el.querySelector('details.completeness') as HTMLDetailsElement;
+    expect(panel.open).toBe(true);
+    expect(panel.querySelector('summary')!.textContent).toContain('2 items outstanding');
+    const buttons = panel.querySelectorAll('button.issue') as NodeListOf<HTMLButtonElement>;
+    expect(buttons.length).toBe(2);
+    expect(buttons[0].textContent).toContain('p4');
+    buttons[0].click();
+    fixture.detectChanges();
+    await tick();
+    expect(fixture.componentInstance.selected()).toBe('financing');
+    expect(document.activeElement).toBe(el.querySelector('#section-heading'));
   });
 
   it('explains an unreachable backend', () => {

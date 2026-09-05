@@ -14,7 +14,7 @@ export function file(over: Partial<ProjectFile> = {}): ProjectFile {
 }
 
 export function report(over: Partial<Report> = {}): Report {
-  return { id: 'r1', project_id: 'p1', version: 1, status: 'done', error: null, created_at: '2026-09-05T00:00:00', has_pdf: true, ...over };
+  return { id: 'r1', project_id: 'p1', version: 1, status: 'done', error: null, created_at: '2026-09-05T00:00:00', has_pdf: true, complete: true, gap_count: 0, ...over };
 }
 
 export function detail(over: Partial<ProjectDetail> = {}): ProjectDetail {
@@ -58,7 +58,13 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
     { key: 'commentary', title: 'Commentary', page: 5, fields: [noi], tables: [] },
   ];
   return {
-    built_at: '2026-09-05T00:00:00', summary: { missing: 1, conflicts: 1, ai_drafts: 0, errors: 0, warnings: 1, infos: 0 },
+    built_at: '2026-09-05T00:00:00',
+    summary: { missing: 1, conflicts: 1, ai_drafts: 0, errors: 0, warnings: 1, infos: 0, completeness: {
+      complete: false, gap_count: 2, ai_drafts_pending: 0,
+      gaps: [{ path: 'financing.fields.lender', label: 'Lender', page: 4, group: 'financing', reason: 'needed for a complete report' },
+             { path: 'status.fields.status1_title', label: 'Status item 1: title', page: 10, group: 'status', reason: 'at least one status item with a title and body' }],
+      groups: [{ key: 'financing', label: 'Financing terms', page: 4, complete: false, gap_count: 1 }, { key: 'status', label: 'Status update', page: 10, complete: false, gap_count: 1 }],
+    } },
     issues: [{ path: 'financing.fields.lender', severity: 'warning', message: 'Missing: Lender' }, { path: null, severity: 'info', message: 'notes.docx: unsupported' }],
     sections, meta: {}, narrative_status: null, narrative_error: null, ...over,
   };

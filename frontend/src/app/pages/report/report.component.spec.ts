@@ -24,7 +24,7 @@ describe('ReportComponent', () => {
     expect(links).toEqual(['/api/projects/p1/reports/r1/download', '/api/projects/p1/reports/r1/snapshot']);
     expect(el.textContent).toContain('page 8 is 40 pt too tall');
     expect(el.querySelector('iframe')!.getAttribute('sandbox')).toBe('');
-    expect(el.querySelector('.warn')!.textContent).toContain('1 missing values');
+    expect(el.querySelector('.completeness-line')!.textContent).toContain('2 items outstanding');
   });
 
   it('generates a version and announces completion after polling', () => {
@@ -72,6 +72,16 @@ describe('ReportComponent', () => {
     await tick();
     expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('not been built');
     expect(fixture.componentInstance.generating()).toBe(false);
+  });
+
+  it('shows the completeness state, labels the button and marks draft versions', () => {
+    const fixture = setup({ getProject: () => of(detail({ reports: [report({ complete: false, gap_count: 7 }), report({ id: 'r2', version: 2, complete: true, gap_count: 0 })] })) });
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('nav button')!.textContent).toContain('Generate draft PDF');
+    expect(el.querySelector('.completeness-line')!.textContent).toContain('2 items outstanding');
+    const chips = Array.from(el.querySelectorAll('.version .chip') as NodeListOf<HTMLElement>).map((c) => c.textContent!.trim());
+    expect(chips).toContain('draft · 7 outstanding');
+    expect(chips).toContain('complete');
   });
 
   it('explains an unreachable backend', () => {
