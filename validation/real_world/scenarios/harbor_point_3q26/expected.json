@@ -1,0 +1,47 @@
+{
+  "id": "harbor_point_3q26",
+  "project_name": "Harbor Point 3Q26 Investor Report",
+  "description": "Complete alternate-property package with all supported operational domains.",
+  "sources": [
+    {"name": "2026_Q3_reporting_export.xlsx", "upload_as": "opaque_bundle_71.xlsx", "status": "processed"},
+    {"name": "capital_calls_2026Q3.pdf", "upload_as": "notice_alpha.pdf", "status": "processed"},
+    {"name": "cash_distributions_2026Q3.pdf", "upload_as": "notice_beta.pdf", "status": "processed"}
+  ],
+  "expected_values": {
+    "property.fields.name": {"value": "Harbor Point"},
+    "property.fields.units": {"value": 264},
+    "property.fields.year_built": {"value": 1988},
+    "property.fields.quarter_label": {"value": "3Q26"},
+    "property.fields.period_end": {"value": "2026-09-30"},
+    "occupancy.fields.current_pct": {"value": 0.9318181818, "tolerance": 0.000001},
+    "occupancy.fields.current_occupied": {"value": 246},
+    "occupancy.fields.prior_occupied": {"value": 242},
+    "occupancy.tables.new_leases.totals.count": {"value": 2},
+    "occupancy.tables.renewals.totals.count": {"value": 2},
+    "financials.tables.lines.rows.total_revenue.ptd_actual": {"value": 1340000},
+    "financials.tables.lines.rows.total_opex.ptd_actual": {"value": 745000},
+    "financials.tables.lines.rows.noi.ptd_actual": {"value": 595000},
+    "financials.tables.lines.rows.net_cash_flow.ptd_actual": {"value": 175000},
+    "capital.fields.purchase_price": {"value": 42240000},
+    "capital.fields.equity_invested": {"value": 12500000},
+    "capital.fields.quarter_contributions": {"value": 500000},
+    "capital.fields.quarter_distributions": {"value": 125000},
+    "financing.fields.loan_amount": {"value": 28000000},
+    "financing.fields.implied_rate": {"value": 0.0514285714, "tolerance": 0.000001},
+    "submarket.fields.vacancy": {"value": 0.08, "tolerance": 0.000001},
+    "submarket.fields.avg_asking_rent": {"value": 1780}
+  },
+  "corrections": [
+    {"path": "property.fields.acquired_date", "value": "2024-11-15"},
+    {"path": "property.fields.prepared_by", "value": "Northstar Asset Management"},
+    {"path": "property.fields.description", "value": "A 264-unit garden-style community serving a diversified coastal employment base."}
+  ],
+  "expected_after_corrections": {
+    "property.fields.acquired_date": {"value": "2024-11-15"},
+    "property.fields.prepared_by": {"value": "Northstar Asset Management"}
+  },
+  "issues_contains": [],
+  "forbidden_text": ["The Boardwalk", "Lakeside Commons", "Regional Oaks"],
+  "report": {"page_count": 10, "text_contains": ["HARBOR POINT", "3Q26"]},
+  "immutability_patch": {"path": "property.fields.description", "value": "This later edit must not change the saved report snapshot."}
+}

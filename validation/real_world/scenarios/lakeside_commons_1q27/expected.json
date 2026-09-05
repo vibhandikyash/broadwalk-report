@@ -1,0 +1,48 @@
+{
+  "id": "lakeside_commons_1q27",
+  "project_name": "Lakeside Commons 1Q27 Investor Report",
+  "description": "Conflict and contamination-resistance package with duplicate periods, a decoy property, and an image-only PDF.",
+  "sources": [
+    {"name": "Current_Quarter_Pack.xlsx", "status": "processed"},
+    {"name": "Archive_Export.xlsx", "status": "processed"},
+    {"name": "Regional_Support.xlsx", "status": "processed"},
+    {"name": "capital_activity.pdf", "status": "processed"},
+    {"name": "scanned_vendor_report.pdf", "status": "needs_ocr"}
+  ],
+  "expected_values": {
+    "property.fields.name": {"value": "Lakeside Commons"},
+    "property.fields.units": {"value": 196},
+    "property.fields.year_built": {"value": 2011},
+    "property.fields.quarter_label": {"value": "1Q27"},
+    "property.fields.period_end": {"value": "2027-03-31"},
+    "occupancy.fields.current_pct": {"value": 0.9234693878, "tolerance": 0.000001},
+    "occupancy.fields.current_occupied": {"value": 181},
+    "financials.tables.lines.rows.total_revenue.ptd_actual": {"value": 1050000},
+    "financials.tables.lines.rows.total_opex.ptd_actual": {"value": 610000},
+    "financials.tables.lines.rows.noi.ptd_actual": {"value": 440000},
+    "capital.fields.quarter_contributions": {"value": 275000},
+    "submarket.fields.vacancy": {"value": 0.067, "tolerance": 0.000001}
+  },
+  "corrections": [
+    {"path": "property.fields.acquired_date", "value": "2025-02-03"},
+    {"path": "property.fields.prepared_by", "value": "Bluewater Capital Group"},
+    {"path": "capital.fields.purchase_price", "value": 39200000},
+    {"path": "capital.fields.equity_invested", "value": 13700000},
+    {"path": "financing.fields.loan_amount", "value": 25500000},
+    {"path": "property.fields.description", "value": "A 196-unit lakeside community with recent interior and amenity upgrades."}
+  ],
+  "expected_after_corrections": {
+    "capital.fields.purchase_price": {"value": 39200000},
+    "capital.fields.equity_invested": {"value": 13700000},
+    "financing.fields.loan_amount": {"value": 25500000}
+  },
+  "issues_contains": [
+    "Financials source: using",
+    "Regional Oaks",
+    "set aside",
+    "no extractable text"
+  ],
+  "forbidden_text": ["The Boardwalk", "Harbor Point", "Regional Oaks"],
+  "report": {"page_count": 10, "text_contains": ["LAKESIDE COMMONS", "1Q27"]},
+  "immutability_patch": {"path": "property.fields.description", "value": "This later edit must not change the saved report snapshot."}
+}

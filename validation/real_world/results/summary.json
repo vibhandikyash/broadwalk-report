@@ -1,0 +1,29 @@
+{
+  "failed_count": 0,
+  "passed": true,
+  "passed_count": 3,
+  "scenario_count": 3,
+  "scenarios": [
+    {
+      "failures": [],
+      "id": "harbor_point_3q26",
+      "passed": true,
+      "report_page_count": 10,
+      "stage_after_report": "generated"
+    },
+    {
+      "failures": [],
+      "id": "lakeside_commons_1q27",
+      "passed": true,
+      "report_page_count": 10,
+      "stage_after_report": "generated"
+    },
+    {
+      "failures": [],
+      "id": "pine_ridge_4q26",
+      "passed": true,
+      "report_page_count": 10,
+      "stage_after_report": "generated"
+    }
+  ]
+}

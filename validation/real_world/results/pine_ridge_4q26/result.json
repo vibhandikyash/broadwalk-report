@@ -1,0 +1,522 @@
+{
+  "description": "Sparse but valid package with manual completion through the correction API.",
+  "failures": [],
+  "files": [
+    {
+      "error": null,
+      "name": "ops_packet_final.xlsx",
+      "parts": [
+        {
+          "confidence": 1.0,
+          "doc_type": "costar_submarket_excel",
+          "locator": "sheet 'Market Conditions'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'Prior Unit Mix'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_budget_comparison",
+          "locator": "sheet 'December Operations'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'December Occupancy'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'September Occupancy'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'Current Unit Mix'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_lease_trade_out",
+          "locator": "sheet 'Trade Outs'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "hellodata_comps",
+          "locator": "sheet 'Competitive Set'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "rent_chart",
+          "locator": "sheet 'Lease Trend'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    }
+  ],
+  "issues_before_corrections": [
+    {
+      "message": "No balance sheet found; purchase price, equity and loan principal are missing",
+      "path": "capital",
+      "severity": "warning"
+    },
+    {
+      "message": "No HelloData listings export or comp summary found; the comp table is empty (add rows manually)",
+      "path": "submarket",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Acquisition date",
+      "path": "property.fields.acquired_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket",
+      "path": "property.fields.submarket",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market / MSA",
+      "path": "property.fields.msa",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepared by",
+      "path": "property.fields.prepared_by",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Building class",
+      "path": "property.fields.building_class",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Site size (acres)",
+      "path": "property.fields.site_acres",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Hold period (years)",
+      "path": "property.fields.hold_period_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prior quarter variance note",
+      "path": "in_place_rent.fields.prior_variance_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Purchase price",
+      "path": "capital.fields.purchase_price",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Equity invested (ITD)",
+      "path": "capital.fields.equity_invested",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: 4Q26 equity contributions",
+      "path": "capital.fields.quarter_contributions",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Total called (ITD)",
+      "path": "capital.fields.total_called",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Cash distributions (ITD)",
+      "path": "capital.fields.distributions_itd",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: 4Q26 distributions",
+      "path": "capital.fields.quarter_distributions",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Spent-to-date period note",
+      "path": "underwriting.fields.spent_period_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Business plan headline",
+      "path": "underwriting.fields.business_plan_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Chart title",
+      "path": "rent_trend.fields.chart_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Chart subtitle",
+      "path": "rent_trend.fields.chart_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Methodology note",
+      "path": "rent_trend.fields.methodology_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Loan principal",
+      "path": "financing.fields.loan_amount",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Replacement reserve balance",
+      "path": "financing.fields.reserve_balance",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Borrower",
+      "path": "financing.fields.borrower",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Lender",
+      "path": "financing.fields.lender",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Servicer",
+      "path": "financing.fields.servicer",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest rate",
+      "path": "financing.fields.rate",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Rate type",
+      "path": "financing.fields.rate_type",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Effective date",
+      "path": "financing.fields.effective_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Maturity date",
+      "path": "financing.fields.maturity_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Loan term (months)",
+      "path": "financing.fields.term_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest-only period (months)",
+      "path": "financing.fields.io_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: IO end date",
+      "path": "financing.fields.io_end_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Amortization (years)",
+      "path": "financing.fields.amort_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: P&I payment (monthly)",
+      "path": "financing.fields.pi_payment",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Recourse",
+      "path": "financing.fields.recourse",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepayment terms",
+      "path": "financing.fields.prepayment",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Yield maintenance through",
+      "path": "financing.fields.yield_maintenance_through",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Open prepayment window (months)",
+      "path": "financing.fields.open_prepay_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Replacement reserve (monthly)",
+      "path": "financing.fields.replacement_reserve_monthly",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Repairs escrow (one-time)",
+      "path": "financing.fields.repairs_escrow",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket",
+      "path": "submarket.fields.submarket_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market",
+      "path": "submarket.fields.market_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Recent deliveries",
+      "path": "submarket.fields.recent_deliveries",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 1: title",
+      "path": "status.fields.status1_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 1: headline",
+      "path": "status.fields.status1_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 2: title",
+      "path": "status.fields.status2_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 2: headline",
+      "path": "status.fields.status2_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 3: title",
+      "path": "status.fields.status3_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 3: headline",
+      "path": "status.fields.status3_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 1: title",
+      "path": "status.fields.goal1_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 1: headline",
+      "path": "status.fields.goal1_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 2: title",
+      "path": "status.fields.goal2_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 2: headline",
+      "path": "status.fields.goal2_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 3: title",
+      "path": "status.fields.goal3_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 3: headline",
+      "path": "status.fields.goal3_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "The original underwriting budget is not in any source file; add rows on the review screen",
+      "path": "underwriting",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Property description",
+      "path": "property.fields.description",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: In-place rent commentary",
+      "path": "in_place_rent.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Business plan summary",
+      "path": "capital.fields.business_plan_summary",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Chart caption",
+      "path": "rent_trend.fields.caption",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Financing commentary",
+      "path": "financing.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Quarter takeaway",
+      "path": "commentary.fields.takeaway",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Revenue commentary",
+      "path": "commentary.fields.revenue_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Revenue outlook",
+      "path": "commentary.fields.revenue_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Operating expense commentary",
+      "path": "commentary.fields.opex_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Operating expense outlook",
+      "path": "commentary.fields.opex_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: NOI and cash flow commentary",
+      "path": "commentary.fields.noi_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: NOI outlook",
+      "path": "commentary.fields.noi_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Capital commentary",
+      "path": "capex.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Occupancy commentary",
+      "path": "submarket.fields.occupancy_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Effective rent commentary",
+      "path": "submarket.fields.rent_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Concessions commentary",
+      "path": "submarket.fields.concession_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Occupancy commentary",
+      "path": "occupancy.fields.occupancy_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: New lease commentary",
+      "path": "occupancy.fields.new_lease_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Renewal commentary",
+      "path": "occupancy.fields.renewal_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 1: body",
+      "path": "status.fields.status1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 2: body",
+      "path": "status.fields.status2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 3: body",
+      "path": "status.fields.status3_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 1: body",
+      "path": "status.fields.goal1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 2: body",
+      "path": "status.fields.goal2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 3: body",
+      "path": "status.fields.goal3_body",
+      "severity": "info"
+    }
+  ],
+  "observed_values": {
+    "after_corrections": {
+      "capital.fields.equity_invested": 22500000.0,
+      "capital.fields.purchase_price": 67500000.0,
+      "financing.fields.lender": "Summit Commercial Bank",
+      "financing.fields.loan_amount": 45000000.0,
+      "financing.fields.rate": 0.0575
+    },
+    "before_corrections": {
+      "financials.tables.lines.rows.noi.ptd_actual": 790000.0,
+      "financials.tables.lines.rows.total_opex.ptd_actual": 1090000.0,
+      "financials.tables.lines.rows.total_revenue.ptd_actual": 1880000.0,
+      "occupancy.fields.current_occupied": 350.0,
+      "occupancy.fields.current_pct": 0.8495145631067961,
+      "occupancy.tables.new_leases.totals.count": 2.0,
+      "occupancy.tables.renewals.totals.count": 1.0,
+      "property.fields.name": "Pine Ridge",
+      "property.fields.period_end": "2026-12-31",
+      "property.fields.quarter_label": "4Q26",
+      "property.fields.units": 412.0,
+      "property.fields.year_built": 2004,
+      "submarket.fields.vacancy": 0.112
+    }
+  },
+  "passed": true,
+  "project_id": "3d206c62907f",
+  "report": {
+    "created_at": "2026-09-05T05:54:58+00:00",
+    "error": null,
+    "has_pdf": true,
+    "id": "e0a4ea03e9b8",
+    "page_count": 10,
+    "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/pine_ridge_4q26/report.pdf",
+    "pdf_text": "Pine Ridge\r\n4Q26 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n4Q26\r\nPine Ridge\r\nRaleigh, NC\r\n412-unit multifamily community. Quarterly performance review for the period\r\nending Dec 31, 2026.\r\n412\r\nUNITS\r\n2004\r\nVINTAGE\r\nJun ’22\r\nACQUIRED\r\n$68M PURCHASE PRICE\r\nPREPARED BY\r\nRedwood Residential Partners\r\nPeriod ending Dec 31, 2026\r\nQUARTERLY INVESTOR REPORT\nREDWOOD RESIDENTIAL PARTNERS\r\nProperty Description\r\nPINE RIDGE · 4Q26\r\nVINTAGE 2004 · CLASS — · HOLD PERIOD — YR\r\nPine Ridge\r\nA suburban workforce-housing community with 412 units across multiple low-rise buildings.\r\nADDRESS\r\n4100 Cedar Loop\r\nRaleigh, NC 27606\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n2004\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nJun 17, 2022\r\nAVG UNIT SIZE\r\n868 sf\r\n4Q26 AVG IN-PLACE RENT\r\n$1,641 / mo\r\nPRIOR QTR (3Q26)\r\n$1,619 / mo\r\nQOQ VARIANCE\r\n+$22 / +1.4%\r\nType Units Avg SF 3Q26 in-place rent 4Q26 in-place rent QoQ variance\r\n1 BR · 1 BA 160 690 $1,413 $1,435 +$22 / +1.6%\r\n2 BR · 1-2 BA 228 952 $1,718 $1,740 +$22 / +1.3%\r\n3 BR · 2 BA 24 1,260 $2,083 $2,105 +$22 / +1.1%\r\nTotal / Weighted 412 868 $1,619 $1,641 +$22 / +1.4%\r\nPINE RIDGE · 4Q26 · PROPERTY DESCRIPTION 02 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nProperty Summary & Business Plan PINE RIDGE · 4Q26\r\nPURCHASE PRICE\r\n$67.5M\r\n$163,835 / unit · 412 units\r\nEQUITY INVESTED (ITD)\r\n$22.5M\r\n4Q26 EQUITY CONTRIBUTIONS\r\n—\r\n—\r\nCASH DISTRIBUTIONS (ITD)\r\n—\r\n—\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS —\r\n—\r\n$1.81\r\n$1.90\r\n$1.99\r\n$2.08\r\n$2.17\r\nJan '26 Feb '26 Mar '26 Apr '26 May '26 Jun '26 Jul '26 Aug '26 Sep '26 Oct '26 Nov '26 Dec '26\r\nPine Ridge gross Pine Ridge effective West Raleigh Comp Set gross West Raleigh Comp Set effectiv\r\nPINE RIDGE · 4Q26 · PROPERTY SUMMARY 03 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nFinancing Overview\r\nPINE RIDGE · 4Q26\r\nSUMMIT COMMERCIAL BANK · — 5.75% · —\r\nSENIOR LOAN\r\n$45.00M\r\nInitial principal · — 5.75% · IO through — · matures —\r\nLENDER\r\nSummit Commercial Bank\r\nBORROWER\r\n—\r\nEFFECTIVE DATE\r\n—\r\nMATURITY DATE\r\n—\r\nLOAN TERM\r\n−\r\nRATE\r\n5.75%\r\nIO PERIOD\r\n−\r\nAMORTIZATION\r\n−\r\nIO PAYMENT (MONTHLY)\r\n$166,667\r\nP&I PAYMENT (MONTHLY)\r\n—\r\nRECOURSE\r\n—\r\nRESERVE BALANCE\r\n—\r\nSTRUCTURE, PREPAYMENT & RESERVES\r\nLOAN PHASES\r\nIO period · — to — $166,667 / mo\r\nP&I phase · — to — — / mo\r\nPREPAYMENT\r\n—\r\nRESERVES & ESCROWS\r\nReplacement reserve — / mo\r\nRepairs escrow (one-time) —\r\nPINE RIDGE · 4Q26 · FINANCING 04 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nFinancial & Capital Commentary PINE RIDGE · 4Q26\r\n4Q26 TAKEAWAY\r\n—\r\n01 · REVENUE −$50,000 VS. BUDGET\r\nTotal revenue of $1,880,000 finished −2.6% against the\r\n$1,930,000 budget. Gain/loss to lease was $45,000 versus a\r\n$55,000 budget (−18.2%).\r\n02 · OPERATING EXPENSES −$25,000 VS. BUDGET\r\nTotal operating expenses of $1,090,000 finished −2.3% against\r\nthe $1,065,000 budget. Insurance −$7,000 and utilities −\r\n$10,000 versus budget.\r\n03 · NOI & CASH FLOW −$75,000 VS. BUDGET\r\nNOI of $790,000 finished −8.7% against the $865,000 budget.\r\nNet cash flow after debt service was $290,000 versus $365,000\r\nbudgeted (−$75,000). Capital spend was $93,000 against a\r\n$95,000 quarterly budget; year to date $372,000 of the\r\n$380,000 annual budget.\r\nPINE RIDGE · 4Q26 · FINANCIAL & CAPITAL COMMENTARY 05 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nFinancial Performance\r\nPINE RIDGE · 4Q26\r\nOCT-DEC 2026 VS. BUDGET & YTD\r\n$ in actuals 4Q26 actual 4Q26 budget Var % YTD actual YTD budget Var %\r\nRevenue\r\nGross Potential Rent 1,750,000 1,780,000 −1.7% 7,000,000 7,120,000 −1.7%\r\nLoss/Gain to Lease 45,000 55,000 −18.2% 180,000 220,000 −18.2%\r\nConcessions (55,000) (45,000) −22.2% (220,000) (180,000) −22.2%\r\nVacancy (135,000) (120,000) −12.5% (540,000) (480,000) −12.5%\r\nPet Rent 15,000 14,000 +7.1% 60,000 56,000 +7.1%\r\nNet Rental Income 1,620,000 1,684,000 −3.8% 6,480,000 6,736,000 −3.8%\r\nUtility Income 180,000 175,000 +2.9% 720,000 700,000 +2.9%\r\nOther Income (net of bad debt) 80,000 71,000 +12.7% 320,000 284,000 +12.7%\r\nTotal Revenue 1,880,000 1,930,000 −2.6% 7,520,000 7,720,000 −2.6%\r\nOperating expenses\r\nPayroll 250,000 245,000 −2.0% 1,000,000 980,000 −2.0%\r\nGeneral & Administrative 70,000 68,000 −2.9% 280,000 272,000 −2.9%\r\nMarketing 35,000 40,000 +12.5% 140,000 160,000 +12.5%\r\nRepairs & Maintenance 90,000 85,000 −5.9% 360,000 340,000 −5.9%\r\nUtilities 250,000 240,000 −4.2% 1,000,000 960,000 −4.2%\r\nManagement Fees 70,000 69,000 −1.4% 280,000 276,000 −1.4%\r\nProperty Taxes 210,000 210,000 flat 840,000 840,000 flat\r\nInsurance 115,000 108,000 −6.5% 460,000 432,000 −6.5%\r\nTotal Operating Expenses 1,090,000 1,065,000 −2.3% 4,360,000 4,260,000 −2.3%\r\nNet operating income\r\nNOI 790,000 865,000 −8.7% 3,160,000 3,460,000 −8.7%\r\nDebt Service 500,000 500,000 2,000,000 2,000,000\r\nNet Cash Flow After Debt Service 290,000 365,000 (75,000) 1,160,000 1,460,000 (300,000)\r\nPINE RIDGE · 4Q26 · FINANCIAL PERFORMANCE 06 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nCapital Projects\r\nPINE RIDGE · 4Q26\r\n4Q26 ACTIVITY\r\nLine item 4Q26 actual 4Q26 budget Var $ YTD actual YTD budget Var $ Annual budget\r\nPlumbing & Water Heaters 40,000 45,000 +5,000 160,000 180,000 +20,000 180,000\r\nHVAC Additions 35,000 30,000 (5,000) 140,000 120,000 (20,000) 120,000\r\nPaint 18,000 20,000 +2,000 72,000 80,000 +8,000 80,000\r\nTotal capital spend 93,000 95,000 +2,000 372,000 380,000 +8,000 380,000\r\nPINE RIDGE · 4Q26 · CAPITAL PROJECTS 07 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nSubmarket Comparison\r\nPINE RIDGE · 4Q26\r\nSOURCE: HELLODATA.AI LISTINGS AND COSTAR SUBMARKET DATA · — · 4Q26\r\nSUBMARKET VACANCY\r\n11.2%\r\nCoStar — · prior quarter 10.6%\r\nYOY ASKING RENT\r\n−0.8%\r\n$1,645/unit avg market asking · prior quarter +0.4%\r\nUNDER CONSTRUCTION\r\n720 units\r\n720 units under construction (3.2% of inventory)\r\nProperty name Units Vintage Leased % Asking rent Eff. rent (NER) Concession\r\nComp set average — — — — — —\r\nOCCUPANCY\r\n—\r\nEFFECTIVE RENT\r\n—\r\nCONCESSIONS\r\n—\r\nComp set average across 0 properties (simple average; unit counts incomplete). Subject leased % is physical occupancy per the Yardi rent roll.\r\nPINE RIDGE · 4Q26 · SUBMARKET COMPARISON 08 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nOccupancy & Leasing\r\nPINE RIDGE · 4Q26\r\n4Q26 EXECUTED · 2 NEW LEASES · 1 RENEWALS\r\nSEP 30, 2026\r\n86.17%\r\n355 / 412 occupied\r\nDEC 31, 2026\r\n84.95%\r\n350 / 412 occupied · 12 future / applicants\r\nQUARTER CHANGE\r\n−121 bps\r\n—\r\nNEW LEASES · 4Q26 · BY FLOOR PLAN OVERALL +2.5%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nPR.B1 · 905 sf 1 $1,640 $1,675 +$35 +2.13%\r\nPR.B2 · 1,040 sf 1 $1,780 $1,830 +$50 +2.81%\r\nNew Leases total 2 $1,710 $1,753 +$43 +2.49%\r\nRENEWALS · 4Q26 · BY FLOOR PLAN OVERALL +3.2%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nPR.A1 · 690 sf 1 $1,395 $1,440 +$45 +3.23%\r\nRenewals total 1 $1,395 $1,440 +$45 +3.23%\r\nLTO REFLECTS LEASES OF ALL TERMS WITH A RENEWAL COMMENCEMENT OR NEW LEASE START DATE WITHIN 4Q26 (2026-10-01 TO 2026-12-31). SOURCE: YARDI LEASE\r\nTRADE-OUT REPORT.\r\nPINE RIDGE · 4Q26 · OCCUPANCY & LEASING 09 / 10\nREDWOOD RESIDENTIAL PARTNERS\r\nStatus Update & 1Q27 Goals PINE RIDGE · 4Q26\r\nSTATUS UPDATE\r\n4Q26 collections recovered: $5,000 · bad debt write-offs: $10,000\r\n1Q27 GOALS / INITIATIVES\r\nPINE RIDGE · 4Q26 · STATUS UPDATE & GOALS 10 / 10",
+    "project_id": "3d206c62907f",
+    "snapshot_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/pine_ridge_4q26/snapshot.json",
+    "status": "done",
+    "version": 1
+  },
+  "scenario": "pine_ridge_4q26",
+  "stage_after_ingestion": "review",
+  "stage_after_report": "generated",
+  "warnings": []
+}

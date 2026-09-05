@@ -1,0 +1,5 @@
+node_modules
+rendered_sources/
+*.inspect.ndjson
+results/*/contact-sheet.png
+results/*/rendered/

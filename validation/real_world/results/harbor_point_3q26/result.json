@@ -1,0 +1,527 @@
+{
+  "description": "Complete alternate-property package with all supported operational domains.",
+  "failures": [],
+  "files": [
+    {
+      "error": null,
+      "name": "notice_beta.pdf",
+      "parts": [
+        {
+          "confidence": 0.9,
+          "doc_type": "slate_distributions",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "notice_alpha.pdf",
+      "parts": [
+        {
+          "confidence": 0.8,
+          "doc_type": "slate_capital_calls",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "opaque_bundle_71.xlsx",
+      "parts": [
+        {
+          "confidence": 0.0,
+          "doc_type": "unknown",
+          "locator": "sheet 'Read Me'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_lease_trade_out",
+          "locator": "sheet 'Lease Activity'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_budget_comparison",
+          "locator": "sheet 'Q3 Financial Detail'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'June Rent Position'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'September Unit Mix'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'September Rent Position'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'June Unit Mix'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.9,
+          "doc_type": "yardi_balance_sheet",
+          "locator": "sheet 'Balance Detail'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "hellodata_listings",
+          "locator": "sheet 'Market Listings'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "hellodata_comps",
+          "locator": "sheet 'Peer Summary'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "costar_submarket_excel",
+          "locator": "sheet 'Submarket History'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "rent_chart",
+          "locator": "sheet 'New Lease Trend'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    }
+  ],
+  "issues_before_corrections": [
+    {
+      "message": "Capital calls: notice_alpha.pdf was exported on 2026-09-05, before the period end 2026-09-30; activity after that date would be missing",
+      "path": "capital.fields.quarter_contributions",
+      "severity": "warning"
+    },
+    {
+      "message": "Distributions: notice_beta.pdf was exported on 2026-09-05, before the period end 2026-09-30; activity after that date would be missing",
+      "path": "capital.fields.quarter_distributions",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Acquisition date",
+      "path": "property.fields.acquired_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket",
+      "path": "property.fields.submarket",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market / MSA",
+      "path": "property.fields.msa",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepared by",
+      "path": "property.fields.prepared_by",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Building class",
+      "path": "property.fields.building_class",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Site size (acres)",
+      "path": "property.fields.site_acres",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Hold period (years)",
+      "path": "property.fields.hold_period_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prior quarter variance note",
+      "path": "in_place_rent.fields.prior_variance_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Spent-to-date period note",
+      "path": "underwriting.fields.spent_period_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Business plan headline",
+      "path": "underwriting.fields.business_plan_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Chart title",
+      "path": "rent_trend.fields.chart_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Methodology note",
+      "path": "rent_trend.fields.methodology_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Replacement reserve balance",
+      "path": "financing.fields.reserve_balance",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Lender",
+      "path": "financing.fields.lender",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Servicer",
+      "path": "financing.fields.servicer",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest rate",
+      "path": "financing.fields.rate",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Rate type",
+      "path": "financing.fields.rate_type",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Effective date",
+      "path": "financing.fields.effective_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Maturity date",
+      "path": "financing.fields.maturity_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Loan term (months)",
+      "path": "financing.fields.term_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest-only period (months)",
+      "path": "financing.fields.io_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: IO end date",
+      "path": "financing.fields.io_end_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Amortization (years)",
+      "path": "financing.fields.amort_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: P&I payment (monthly)",
+      "path": "financing.fields.pi_payment",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Recourse",
+      "path": "financing.fields.recourse",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepayment terms",
+      "path": "financing.fields.prepayment",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Yield maintenance through",
+      "path": "financing.fields.yield_maintenance_through",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Open prepayment window (months)",
+      "path": "financing.fields.open_prepay_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Replacement reserve (monthly)",
+      "path": "financing.fields.replacement_reserve_monthly",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Repairs escrow (one-time)",
+      "path": "financing.fields.repairs_escrow",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket",
+      "path": "submarket.fields.submarket_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market",
+      "path": "submarket.fields.market_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Recent deliveries",
+      "path": "submarket.fields.recent_deliveries",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 1: title",
+      "path": "status.fields.status1_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 1: headline",
+      "path": "status.fields.status1_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 2: title",
+      "path": "status.fields.status2_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 2: headline",
+      "path": "status.fields.status2_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 3: title",
+      "path": "status.fields.status3_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Status item 3: headline",
+      "path": "status.fields.status3_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 1: title",
+      "path": "status.fields.goal1_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 1: headline",
+      "path": "status.fields.goal1_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 2: title",
+      "path": "status.fields.goal2_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 2: headline",
+      "path": "status.fields.goal2_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 3: title",
+      "path": "status.fields.goal3_title",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Goal 3: headline",
+      "path": "status.fields.goal3_subtitle",
+      "severity": "warning"
+    },
+    {
+      "message": "The original underwriting budget is not in any source file; add rows on the review screen",
+      "path": "underwriting",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Property description",
+      "path": "property.fields.description",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: In-place rent commentary",
+      "path": "in_place_rent.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Business plan summary",
+      "path": "capital.fields.business_plan_summary",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Chart caption",
+      "path": "rent_trend.fields.caption",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Financing commentary",
+      "path": "financing.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Quarter takeaway",
+      "path": "commentary.fields.takeaway",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Revenue commentary",
+      "path": "commentary.fields.revenue_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Revenue outlook",
+      "path": "commentary.fields.revenue_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Operating expense commentary",
+      "path": "commentary.fields.opex_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Operating expense outlook",
+      "path": "commentary.fields.opex_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: NOI and cash flow commentary",
+      "path": "commentary.fields.noi_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: NOI outlook",
+      "path": "commentary.fields.noi_outlook",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Capital commentary",
+      "path": "capex.fields.narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Occupancy commentary",
+      "path": "submarket.fields.occupancy_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Effective rent commentary",
+      "path": "submarket.fields.rent_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Concessions commentary",
+      "path": "submarket.fields.concession_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Occupancy commentary",
+      "path": "occupancy.fields.occupancy_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: New lease commentary",
+      "path": "occupancy.fields.new_lease_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Renewal commentary",
+      "path": "occupancy.fields.renewal_narrative",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 1: body",
+      "path": "status.fields.status1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 2: body",
+      "path": "status.fields.status2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 3: body",
+      "path": "status.fields.status3_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 1: body",
+      "path": "status.fields.goal1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 2: body",
+      "path": "status.fields.goal2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 3: body",
+      "path": "status.fields.goal3_body",
+      "severity": "info"
+    }
+  ],
+  "observed_values": {
+    "after_corrections": {
+      "property.fields.acquired_date": "2024-11-15",
+      "property.fields.prepared_by": "Northstar Asset Management"
+    },
+    "before_corrections": {
+      "capital.fields.equity_invested": 12500000.0,
+      "capital.fields.purchase_price": 42240000.0,
+      "capital.fields.quarter_contributions": 500000.0,
+      "capital.fields.quarter_distributions": 125000.0,
+      "financials.tables.lines.rows.net_cash_flow.ptd_actual": 175000.0,
+      "financials.tables.lines.rows.noi.ptd_actual": 595000.0,
+      "financials.tables.lines.rows.total_opex.ptd_actual": 745000.0,
+      "financials.tables.lines.rows.total_revenue.ptd_actual": 1340000.0,
+      "financing.fields.implied_rate": 0.05142857142857143,
+      "financing.fields.loan_amount": 28000000.0,
+      "occupancy.fields.current_occupied": 246.0,
+      "occupancy.fields.current_pct": 0.9318181818181818,
+      "occupancy.fields.prior_occupied": 242.0,
+      "occupancy.tables.new_leases.totals.count": 2.0,
+      "occupancy.tables.renewals.totals.count": 2.0,
+      "property.fields.name": "Harbor Point",
+      "property.fields.period_end": "2026-09-30",
+      "property.fields.quarter_label": "3Q26",
+      "property.fields.units": 264.0,
+      "property.fields.year_built": 1988,
+      "submarket.fields.avg_asking_rent": 1780.0,
+      "submarket.fields.vacancy": 0.08
+    }
+  },
+  "passed": true,
+  "project_id": "803afd199010",
+  "report": {
+    "created_at": "2026-09-05T05:54:57+00:00",
+    "error": null,
+    "has_pdf": true,
+    "id": "4491fa6b81a5",
+    "page_count": 10,
+    "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/report.pdf",
+    "pdf_text": "Harbor Point\r\n3Q26 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n3Q26\r\nHarbor Point\r\nCorpus Christi, TX\r\n264-unit multifamily community. Quarterly performance review for the period\r\nending Sep 30, 2026.\r\n264\r\nUNITS\r\n1988\r\nVINTAGE\r\nNov ’24\r\nACQUIRED\r\n$42M PURCHASE PRICE\r\nPREPARED BY\r\nNorthstar Asset Management\r\nPeriod ending Sep 30, 2026\r\nQUARTERLY INVESTOR REPORT\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Description\r\nHARBOR POINT · 3Q26\r\nVINTAGE 1988 · CLASS — · HOLD PERIOD — YR\r\nHarbor Point\r\nA 264-unit garden-style community serving a diversified coastal employment base.\r\nADDRESS\r\n880 Marina Drive\r\nCorpus Christi, TX 78401\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n1988\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nNov 15, 2024\r\nAVG UNIT SIZE\r\n886 sf\r\n3Q26 AVG IN-PLACE RENT\r\n$1,829 / mo\r\nPRIOR QTR (2Q26)\r\n$1,794 / mo\r\nQOQ VARIANCE\r\n+$35 / +2.0%\r\nType Units Avg SF 2Q26 in-place rent 3Q26 in-place rent QoQ variance\r\nStudio · 1 BA 24 540 $1,340 $1,375 +$35 / +2.6%\r\n1 BR · 1 BA 96 710 $1,570 $1,605 +$35 / +2.2%\r\n2 BR · 2 BA 112 1,010 $1,950 $1,985 +$35 / +1.8%\r\n3 BR · 2 BA 32 1,240 $2,285 $2,320 +$35 / +1.5%\r\nTotal / Weighted 264 886 $1,794 $1,829 +$35 / +2.0%\r\nHARBOR POINT · 3Q26 · PROPERTY DESCRIPTION 02 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Summary & Business Plan HARBOR POINT · 3Q26\r\nPURCHASE PRICE\r\n$42.2M\r\n$160,000 / unit · 264 units\r\nEQUITY INVESTED (ITD)\r\n$12.5M\r\n3Q26 EQUITY CONTRIBUTIONS\r\n$500,000\r\n$500,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$125,000\r\n$125,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS HARBOR POINT VS. COASTAL COMP SET\r\n—\r\n$2.03\r\n$2.13\r\n$2.23\r\n$2.34\r\n$2.44\r\nOct '25 Nov '25 Dec '25 Jan '26 Feb '26 Mar '26 Apr '26 May '26 Jun '26 Jul '26 Aug '26 Sep '26\r\nHarbor Point gross Harbor Point effective Coastal Comp Set gross Coastal Comp Set effective\r\nHARBOR POINT · 3Q26 · PROPERTY SUMMARY 03 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancing Overview\r\nHARBOR POINT · 3Q26\r\n— · — — · —\r\nSENIOR LOAN\r\n$28.00M\r\nInitial principal · — — · IO through — · matures —\r\nLENDER\r\n—\r\nBORROWER\r\nHarbor Point Holdings LLC\r\nEFFECTIVE DATE\r\n—\r\nMATURITY DATE\r\n—\r\nLOAN TERM\r\n−\r\nRATE\r\n— (implied 5.14%)\r\nIO PERIOD\r\n−\r\nAMORTIZATION\r\n−\r\nIO PAYMENT (MONTHLY)\r\n$120,000\r\nP&I PAYMENT (MONTHLY)\r\n—\r\nRECOURSE\r\n—\r\nRESERVE BALANCE\r\n—\r\nSTRUCTURE, PREPAYMENT & RESERVES\r\nLOAN PHASES\r\nIO period · — to — $120,000 / mo\r\nP&I phase · — to — — / mo\r\nPREPAYMENT\r\n—\r\nRESERVES & ESCROWS\r\nReplacement reserve — / mo\r\nRepairs escrow (one-time) —\r\nHARBOR POINT · 3Q26 · FINANCING 04 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancial & Capital Commentary HARBOR POINT · 3Q26\r\n3Q26 TAKEAWAY\r\n—\r\n01 · REVENUE +$8,000 VS. BUDGET\r\nTotal revenue of $1,340,000 finished +0.6% against the\r\n$1,332,000 budget. Gain/loss to lease was $50,000 versus a\r\n$60,000 budget (−16.7%).\r\n02 · OPERATING EXPENSES +$8,000 VS. BUDGET\r\nTotal operating expenses of $745,000 finished +1.1% against\r\nthe $753,000 budget. Insurance +$20,000 and utilities −$5,000\r\nversus budget.\r\n03 · NOI & CASH FLOW +$16,000 VS. BUDGET\r\nNOI of $595,000 finished +2.8% against the $579,000 budget.\r\nNet cash flow after debt service was $175,000 versus $159,000\r\nbudgeted (+$16,000). Capital spend was $60,000 against a\r\n$68,000 quarterly budget; year to date $180,000 of the\r\n$272,000 annual budget.\r\nHARBOR POINT · 3Q26 · FINANCIAL & CAPITAL COMMENTARY 05 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancial Performance\r\nHARBOR POINT · 3Q26\r\nJUL-SEP 2026 VS. BUDGET & YTD\r\n$ in actuals 3Q26 actual 3Q26 budget Var % YTD actual YTD budget Var %\r\nRevenue\r\nGross Potential Rent 1,200,000 1,180,000 +1.7% 3,600,000 3,540,000 +1.7%\r\nLoss/Gain to Lease 50,000 60,000 −16.7% 150,000 180,000 −16.7%\r\nConcessions (30,000) (24,000) −25.0% (90,000) (72,000) −25.0%\r\nVacancy (80,000) (90,000) +11.1% (240,000) (270,000) +11.1%\r\nPet Rent 5,000 4,500 +11.1% 15,000 13,500 +11.1%\r\nNet Rental Income 1,145,000 1,130,500 +1.3% 3,435,000 3,391,500 +1.3%\r\nUtility Income 150,000 145,000 +3.4% 450,000 435,000 +3.4%\r\nOther Income (net of bad debt) 45,000 56,500 −20.4% 135,000 169,500 −20.4%\r\nTotal Revenue 1,340,000 1,332,000 +0.6% 4,020,000 3,996,000 +0.6%\r\nOperating expenses\r\nPayroll 170,000 168,000 −1.2% 510,000 504,000 −1.2%\r\nGeneral & Administrative 40,000 38,000 −5.3% 120,000 114,000 −5.3%\r\nMarketing 25,000 27,000 +7.4% 75,000 81,000 +7.4%\r\nRepairs & Maintenance 55,000 50,000 −10.0% 165,000 150,000 −10.0%\r\nUtilities 180,000 175,000 −2.9% 540,000 525,000 −2.9%\r\nManagement Fees 45,000 45,000 flat 135,000 135,000 flat\r\nProperty Taxes 160,000 160,000 flat 480,000 480,000 flat\r\nInsurance 70,000 90,000 +22.2% 210,000 270,000 +22.2%\r\nTotal Operating Expenses 745,000 753,000 +1.1% 2,235,000 2,259,000 +1.1%\r\nNet operating income\r\nNOI 595,000 579,000 +2.8% 1,785,000 1,737,000 +2.8%\r\nDebt Service 420,000 420,000 1,260,000 1,260,000\r\nNet Cash Flow After Debt Service 175,000 159,000 16,000 525,000 477,000 48,000\r\nHARBOR POINT · 3Q26 · FINANCIAL PERFORMANCE 06 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nCapital Projects\r\nHARBOR POINT · 3Q26\r\n3Q26 ACTIVITY\r\nLine item 3Q26 actual 3Q26 budget Var $ YTD actual YTD budget Var $ Annual budget\r\nPlumbing & Water Heaters 30,000 35,000 +5,000 90,000 105,000 +15,000 140,000\r\nHVAC Additions 20,000 25,000 +5,000 60,000 75,000 +15,000 100,000\r\nPaint 10,000 8,000 (2,000) 30,000 24,000 (6,000) 32,000\r\nTotal capital spend 60,000 68,000 +8,000 180,000 204,000 +24,000 272,000\r\nHARBOR POINT · 3Q26 · CAPITAL PROJECTS 07 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nSubmarket Comparison\r\nHARBOR POINT · 3Q26\r\nSOURCE: HELLODATA.AI LISTINGS AND COSTAR SUBMARKET DATA · — · 3Q26\r\nSUBMARKET VACANCY\r\n8.0%\r\nCoStar — · prior quarter 8.5%\r\nYOY ASKING RENT\r\n+2.5%\r\n$1,780/unit avg market asking · prior quarter +2.0%\r\nUNDER CONSTRUCTION\r\n380 units\r\n380 units under construction (2.5% of inventory)\r\nProperty name Units Vintage Leased % Asking rent Eff. rent (NER) Concession\r\nHarbor Point SUBJECT 264 1988 93.2% $1,900 $1,828 $73/mo (4%)\r\nMariner Flats 308 1996 100.0% $1,988 $1,903 $85/mo (4%)\r\nComp set average 308 1996 100.0% $1,988 $1,903 $85\r\nOCCUPANCY\r\n—\r\nEFFECTIVE RENT\r\n—\r\nCONCESSIONS\r\n—\r\nComp set average across 1 property (unit-weighted). Subject leased % is physical occupancy per the Yardi rent roll.\r\nHARBOR POINT · 3Q26 · SUBMARKET COMPARISON 08 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nOccupancy & Leasing\r\nHARBOR POINT · 3Q26\r\n3Q26 EXECUTED · 2 NEW LEASES · 2 RENEWALS\r\nJUN 30, 2026\r\n91.67%\r\n242 / 264 occupied\r\nSEP 30, 2026\r\n93.18%\r\n246 / 264 occupied · 8 future / applicants\r\nQUARTER CHANGE\r\n+152 bps\r\n—\r\nNEW LEASES · 3Q26 · BY FLOOR PLAN OVERALL +2.7%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nHP.A1 · 710 sf 1 $1,580 $1,625 +$45 +2.85%\r\nHP.C2 · 1,240 sf 1 $2,290 $2,350 +$60 +2.62%\r\nNew Leases total 2 $1,935 $1,988 +$53 +2.71%\r\nRENEWALS · 3Q26 · BY FLOOR PLAN OVERALL +3.7%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nHP.A1 · 710 sf 1 $1,540 $1,600 +$60 +3.90%\r\nHP.B2 · 1,010 sf 1 $1,940 $2,010 +$70 +3.61%\r\nRenewals total 2 $1,740 $1,805 +$65 +3.74%\r\nLTO REFLECTS LEASES OF ALL TERMS WITH A RENEWAL COMMENCEMENT OR NEW LEASE START DATE WITHIN 3Q26 (2026-07-01 TO 2026-09-30). SOURCE: YARDI LEASE\r\nTRADE-OUT REPORT.\r\nHARBOR POINT · 3Q26 · OCCUPANCY & LEASING 09 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nStatus Update & 4Q26 Goals HARBOR POINT · 3Q26\r\nSTATUS UPDATE\r\n3Q26 collections recovered: $5,000 · bad debt write-offs: $10,000\r\n4Q26 GOALS / INITIATIVES\r\nHARBOR POINT · 3Q26 · STATUS UPDATE & GOALS 10 / 10",
+    "project_id": "803afd199010",
+    "snapshot_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/snapshot.json",
+    "status": "done",
+    "version": 1
+  },
+  "scenario": "harbor_point_3q26",
+  "stage_after_ingestion": "review",
+  "stage_after_report": "generated",
+  "warnings": []
+}
