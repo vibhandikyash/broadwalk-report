@@ -9674,7 +9674,7 @@
     "footnote": {
      "label": "Comp table footnote",
      "kind": "text",
-     "value": "Comp set average across 10 properties (unit-weighted).",
+     "value": "Comp set average across 10 comparables: leased % unit-weighted; asking rent unit-weighted; effective rent unit-weighted.",
      "status": "derived",
      "source": null,
      "alternatives": [],
@@ -9917,7 +9917,7 @@
         "source": null,
         "alternatives": [],
         "override": 428,
-        "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
+        "note": "Unit count is not in the supplied files; enter it"
        },
        "vintage": {
         "label": "Vintage",
@@ -9927,7 +9927,7 @@
         "source": null,
         "alternatives": [],
         "override": 1998,
-        "note": "Year built is not in the listings export; enter it"
+        "note": "Year built is not in the supplied files; enter it"
        },
        "leased_pct": {
         "label": "Leased %",
@@ -10467,7 +10467,7 @@
         "source": null,
         "alternatives": [],
         "override": 340,
-        "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
+        "note": "Unit count is not in the supplied files; enter it"
        },
        "vintage": {
         "label": "Vintage",
@@ -10477,7 +10477,7 @@
         "source": null,
         "alternatives": [],
         "override": 2000,
-        "note": "Year built is not in the listings export; enter it"
+        "note": "Year built is not in the supplied files; enter it"
        },
        "leased_pct": {
         "label": "Leased %",
@@ -10681,7 +10681,7 @@
         "source": null,
         "alternatives": [],
         "override": 397,
-        "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
+        "note": "Unit count is not in the supplied files; enter it"
        },
        "vintage": {
         "label": "Vintage",
@@ -10691,7 +10691,7 @@
         "source": null,
         "alternatives": [],
         "override": 1985,
-        "note": "Year built is not in the listings export; enter it"
+        "note": "Year built is not in the supplied files; enter it"
        },
        "leased_pct": {
         "label": "Leased %",
@@ -11361,6 +11361,16 @@
      "alternatives": [],
      "override": null,
      "note": "Not found in any source file; enter manually"
+    },
+    "no_activity_note": {
+     "label": "No leasing activity statement",
+     "kind": "longtext",
+     "value": null,
+     "status": "missing",
+     "source": null,
+     "alternatives": [],
+     "override": null,
+     "note": "Only needed when a leasing table is empty: state that no new leases or renewals commenced, so an empty table reads as reviewed rather than missing"
     }
    },
    "tables": {

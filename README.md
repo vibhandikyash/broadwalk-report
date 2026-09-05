@@ -51,7 +51,7 @@ npm start                    # Angular dev server on http://localhost:4200, prox
 | `APP_MAX_UPLOAD_MB` | `50` | Per-file upload limit |
 | `APP_CORS_ORIGINS` | `http://localhost:4200` | Allowed browser origins |
 | `BACKEND_PORT` | `8000` | Port the Angular dev proxy forwards `/api` to. If 8000 is busy, set this and start uvicorn with the same `--port` (`scripts/run.sh start` does both) |
-| `NARRATIVE_PROVIDER` | `auto` | `api` (Anthropic SDK with an API key), `agent-sdk` (Claude Agent SDK on the local Claude Code login), `off`. `auto` picks `api` when a key is set, else `agent-sdk` when that package is installed |
+| `NARRATIVE_PROVIDER` | `auto` | `api` (Anthropic SDK with an API key), `agent-sdk` (Claude Agent SDK on the local Claude Code login), `mock` (deterministic drafts built only from the structured figures; for tests and offline demonstrations), `off`. `auto` picks `api` when a key is set, else `agent-sdk` when that package is installed |
 | `ANTHROPIC_API_KEY` | unset | Enables the `api` provider |
 | `ANTHROPIC_MODEL` | unset | Model override. `api` defaults to `claude-opus-5`; `agent-sdk` defaults to the Claude Code CLI's configured model |
 
@@ -73,8 +73,20 @@ Nothing else leaves the machine. Playwright's Chromium is downloaded once at set
    Optional report images (cover photo, logo) are uploaded on the same page and embedded in the PDF.
 3. **Review extracted data**: Review page. Left: report sections in page order with a count of items needing attention. Every value shows a status chip (extracted, derived, edited, AI draft, missing, conflict) and a "source" button naming the file, sheet or page, and row it came from. "Needs attention" filters to missing and conflicting values. Issues are listed per section; selecting one jumps to its section.
 4. **Correct data**: type into any editable field or table cell and Save. Every batch is validated before anything is stored: unknown paths, calculated fields, wrong types (text in a number, a percent above 100%, a malformed date, negative unit counts) are refused with a message and nothing from that batch is saved. Percentages are entered as percents in the UI and stored as fractions. Derived values recompute immediately. Conflicts show the alternatives; pick one. The underwriting budget, comp set and rent-trend tables accept new rows. "Reset" restores the extracted value; "Stored corrections" lists every saved correction and can reset any of them, or everything.
-5. **Generate the report**: Report page shows a live HTML preview. Generate PDF snapshots the reviewed data at that moment and renders it; versions are immutable, each with a downloadable PDF and its data snapshot (JSON). If a page would overflow its fixed box, the version fails with the page, section and amount instead of producing a clipped PDF.
-6. **Regenerate**: edit on the Review page and press Generate again. Uploads are not reprocessed; earlier versions do not change.
+5. **Check completeness**: the Review page's "Report completeness" panel and `GET /projects/{id}/completeness` list every item a finished investor report still needs, page by page (see "Structural versus complete" below). Each item jumps to its section.
+6. **Generate the report**: Report page shows a live HTML preview. Generate PDF snapshots the reviewed data at that moment and renders it; versions are immutable, each with a downloadable PDF and its data snapshot (JSON). A version generated while items are outstanding is a **draft**: it is marked as such on the cover and in every footer, downloads as `...-draft.pdf`, and carries `complete: false` with its `gap_count` in the API and the versions list. If a page would overflow its fixed box, the version fails with the page, section and amount instead of producing a clipped PDF.
+7. **Regenerate**: edit on the Review page and press Generate again. Uploads are not reprocessed; earlier versions do not change.
+
+### Structural versus complete
+
+Two different statements, kept apart on purpose:
+
+- **Structural**: files were ingested, every supported value was extracted, and a ten-page PDF renders without overflow. This always works, whatever is missing, so a reviewer can preview a partly reviewed report at any time.
+- **Complete**: every value and table a finished investor report needs has been reviewed and populated. One specification, `backend/app/consolidate/completeness.py`, decides this; the review screen, the API, the version record and the draft marker all read from it. The requirements, by page: property identity and facts (2), current and prior in-place rent (2), capital summary and business plan (3), at least one underwriting row (3), the rent trend (3), financing terms and commentary (4), the core financial lines with no reconciliation warning (6), capital projects (7), submarket KPIs and a usable comp set (8), current and prior occupancy plus leasing rows or a reviewed no-activity statement (9), at least one status item and one goal (10), and the narratives on pages 2, 5, 7, 8 and 9.
+
+A genuine zero (a Slate export stating no calls, or a reviewer entering 0) satisfies a requirement; an empty value does not. An empty leasing table counts as "no activity" only when the reviewer fills the no-activity statement on the Occupancy section; otherwise it is missing. Reviewer text, extracted values and AI drafts all count as populated; the number of drafts still awaiting review is reported separately. Missing values that the specification requires are warnings on the review screen (naming their page); other missing values are informational.
+
+The fields that no supported export contains, and therefore always need a reviewer, are: acquisition date (when no CoStar sale record is supplied), submarket and market names (when no CoStar PDF is supplied), building class, site acres, hold period, description, business plan summary, the underwriting rows and their period note, the loan terms other than principal, monthly interest and reserve balance, the outlook and financing commentary, the rent-trend caption, status items and goals, and the no-activity statement when leasing tables are empty.
 
 ### Where files are
 
@@ -148,7 +160,9 @@ Interactive controls are real buttons and links with accessible names, the workf
 - Comp unit counts and vintages come from a HelloData comp summary when one is supplied; the unit-level listings export does not contain them.
 - Image-only (scanned) PDFs get the `needs OCR` status; no OCR is implemented.
 - Tables that do not fit a page are refused rather than continued on an extra page; the report keeps the reference's ten-page format.
-- The optional AI drafting sends section values (not files) to Claude, through an API key or the local Claude Code login. Drafts are marked `AI draft` and must be reviewed.
+- Comparable properties appear whenever any supported data names them (the listings export or the HelloData comp sheet define the set; the one-page comp PDF only enriches matching rows, or defines the set when it is the only source). Cells with no source stay empty and editable, averages use available values only, and the footnote states per column whether the average is unit-weighted or simple.
+- The optional AI drafting sends section values (not files) to Claude, through an API key or the local Claude Code login. Drafts are marked `AI draft` with their provenance and must be reviewed. Each draft remembers the figures it was written from: when a reviewer later changes one of those figures the draft is flagged as out of date, and the next drafting run replaces flagged and empty drafts only, never reviewer text. Drafting never invents property events, repair status, lender actions or goals; those stay reviewer-supplied.
+- Only what the supported exports contain is extracted. Loan documents, the original underwriting, property photos and logos, qualitative status updates and next-quarter goals are entered by the reviewer (photos and logos through the image slots on the Files page).
 - No authentication or multi-user support; single local user by design.
 
 ### Next steps (another 40 hours)
@@ -171,6 +185,8 @@ TEST_DATASET_DIR="/path/to/SOURCE FILES" UI_E2E_URL=http://localhost:4200 script
 # or individually
 cd backend && pytest                                                        # unit, API, reliability, corrections, render tests
 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_dataset.py -v    # the supplied files plus the mutated copy
+pytest tests/test_real_world_scenarios.py -v                               # four independent property packages (see validation/real_world/README.md)
+python ../validation/real_world/run_validation.py                          # the same scenarios with preserved evidence and the assessment matrix
 python -m pip_audit -r requirements.lock                                    # Python dependency vulnerabilities
 cd ../frontend && npx ng test --watch=false && npx ng build && npm audit --audit-level=high
 cd ../backend && UI_E2E_URL=http://localhost:4200 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_ui_e2e.py -v
