@@ -293,3 +293,26 @@ The Boardwalk    34    45    52    500    841    1,130    $995    $1,314    $1,6
 Westchase    0    3    328    702    945    1,143    $1,078    $1,289    $1,496    $1.36    $1,289    $1.36    0.0%    +2.2%
 Comp Average    105    673    859    1,132    $1,124    $1,368    $1,728    $1.59    $1,172    $1.36    14.0%
 """
+
+
+SKIP_DIRS = {".git", ".venv", "node_modules", "dist", ".angular", "data", "deliverables", "backend", "frontend", "Claude", "__pycache__"}
+MAX_DATASET_FILES = 60
+
+
+def dataset_files(root: Path) -> list[Path]:
+    """The source files under TEST_DATASET_DIR. Refuses a folder that clearly is not a source package
+    (an implementation checkout, a runtime data folder) so the tests never upload the wrong things."""
+    import pytest
+
+    markers = (".git", "package.json", "pyproject.toml", "requirements.txt", "node_modules", ".venv")
+    folders = [root] + [d for d in root.iterdir() if d.is_dir()]
+    if any((d / m).exists() for d in folders for m in markers):
+        pytest.fail(f"{root} contains a code checkout; point TEST_DATASET_DIR at the folder that holds only the source files")
+    files = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in (".xlsx", ".pdf")
+                   and not p.name.startswith("~$") and len(p.relative_to(root).parts) <= 2
+                   and not (SKIP_DIRS & set(p.relative_to(root).parts[:-1])))
+    if not files:
+        pytest.fail(f"no .xlsx/.pdf source files found under {root}")
+    if len(files) > MAX_DATASET_FILES:
+        pytest.fail(f"{len(files)} files under {root}: point TEST_DATASET_DIR at the folder that holds only the source files")
+    return files

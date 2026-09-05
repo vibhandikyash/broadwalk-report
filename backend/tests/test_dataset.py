@@ -14,8 +14,9 @@ def test_real_dataset_end_to_end():
     from app.main import app
     from app.workers.pool import pool
 
-    paths = sorted(p for p in Path(DATASET).rglob("*") if p.suffix.lower() in (".xlsx", ".pdf") and not p.name.startswith("~$"))
-    assert paths, "no source files found"
+    from tests.helpers import dataset_files
+
+    paths = dataset_files(Path(DATASET))
     with TestClient(app) as client:
         pid = client.post("/api/projects", json={"name": "dataset"}).json()["id"]
         for p in paths:
@@ -87,8 +88,10 @@ def _mutated_copy(src: Path, dst: Path) -> list[str]:
 
     dst.mkdir(parents=True, exist_ok=True)
     copies: dict[str, Path] = {}
-    for p in sorted(src.rglob("*")):
-        if not p.is_file() or p.suffix.lower() not in (".xlsx", ".pdf") or "_Misc" in p.parts:
+    from tests.helpers import dataset_files
+
+    for p in dataset_files(src):
+        if "_Misc" in p.parts:
             continue
         q = dst / f"{uuid.uuid4().hex[:10]}{p.suffix.lower()}"
         shutil.copy(p, q)

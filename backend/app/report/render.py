@@ -192,19 +192,23 @@ def render_pdf(html_path: Path, pdf_path: Path) -> None:
     from playwright.sync_api import sync_playwright
 
     tmp = pdf_path.with_name(pdf_path.name + ".partial")
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            page = browser.new_page()
-            page.goto(html_path.resolve().as_uri(), wait_until="load")
-            page.emulate_media(media="print")
-            page.evaluate("document.fonts.ready")
-            problems = page.evaluate(OVERFLOW_JS)
-            if problems:
-                for pr in problems:
-                    pr["has_table"] = page.evaluate("i => !!document.querySelectorAll('.page')[i].querySelector('table')", pr["page"] - 1)
-                raise LayoutOverflow(problems)
-            page.pdf(path=str(tmp), prefer_css_page_size=True, print_background=True)
-        finally:
-            browser.close()
-    tmp.replace(pdf_path)
+    tmp.unlink(missing_ok=True)  # residue of a run that crashed mid-write
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            try:
+                page = browser.new_page()
+                page.goto(html_path.resolve().as_uri(), wait_until="load")
+                page.emulate_media(media="print")
+                page.evaluate("document.fonts.ready")
+                problems = page.evaluate(OVERFLOW_JS)
+                if problems:
+                    for pr in problems:
+                        pr["has_table"] = page.evaluate("i => !!document.querySelectorAll('.page')[i].querySelector('table')", pr["page"] - 1)
+                    raise LayoutOverflow(problems)
+                page.pdf(path=str(tmp), prefer_css_page_size=True, print_background=True)
+            finally:
+                browser.close()
+        tmp.replace(pdf_path)
+    finally:
+        tmp.unlink(missing_ok=True)  # no-op after a successful move; removes the fragment after any failure

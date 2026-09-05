@@ -878,7 +878,7 @@
        "note": "CoStar recorded sale price"
       }
      ],
-     "override": null,
+     "override": 48000000.0,
      "note": "Land + Building + FF&E at cost from the balance sheet"
     },
     "price_per_unit": {
@@ -3243,7 +3243,7 @@
      "status": "missing",
      "source": null,
      "alternatives": [],
-     "override": "Fixed-rate 5.23% financing with a 36-month interest-only period insulates the hold from rate volatility and preserves cash flow through stabilization. P&I begins September 2028, stepping debt service up roughly 22% in the final two years before the August 2030 maturity. Prepayment is locked under standard yield maintenance through January 2030, with a six-month open window into maturity. Non-recourse with industry-standard carve-outs.",
+     "override": "Fixed-rate 5.23% financing with a 36-month interest-only period insulates the hold from rate volatility and preserves cash flow through stabilization. P&I begins September 2028, stepping debt service up about 26% from the current interest-only payment for the final two years before the August 2030 maturity. Prepayment is locked under standard yield maintenance through January 2030, with a six-month open window into maturity. Non-recourse with industry-standard carve-outs.",
      "note": "Not found in any source file; enter manually"
     }
    },
@@ -9674,7 +9674,7 @@
     "footnote": {
      "label": "Comp table footnote",
      "kind": "text",
-     "value": "Comp set average across 10 properties (simple average; unit counts incomplete).",
+     "value": "Comp set average across 10 properties (unit-weighted).",
      "status": "derived",
      "source": null,
      "alternatives": [],
@@ -9684,7 +9684,7 @@
     "occupancy_narrative": {
      "label": "Occupancy commentary",
      "kind": "longtext",
-     "value": "The Boardwalk ended 2Q26 at 90.5% occupied, about 2.3 points above the comp set average leased rate of 88.3%. Only Westchase Apartments, The Park at Murano, The Park at Veneto and The Ashlar leased higher.",
+     "value": "The Boardwalk ended 2Q26 at 90.5% occupied, 2.4 points above the comp set average leased rate of 88.1%. Occupancy slipped 118 basis points from 91.7% at March 31.",
      "status": "ai_draft",
      "source": {
       "file_id": null,
@@ -9699,7 +9699,7 @@
     "rent_narrative": {
      "label": "Effective rent commentary",
      "kind": "longtext",
-     "value": "The Boardwalk asks $1,303 versus the comp set average of $1,414, a $111 discount. Effective rent of $1,243 trails the $1,299 average by $56, as concessions of 4.6% run below the 8.1% comp average.",
+     "value": "The Boardwalk asks $1,303 against the comp set average of $1,412, a $110 discount. Effective rent of $1,243 trails the $1,301 average by $57, a narrower gap given concessions of 4.6% versus 7.9%.",
      "status": "ai_draft",
      "source": {
       "file_id": null,
@@ -9708,13 +9708,13 @@
       "text": "Drafted by AI from the section's structured data only; review before publishing"
      },
      "alternatives": [],
-     "override": null,
+     "override": "The Boardwalk asks $1,303 against the comp set average of $1,412, a $109 discount. Effective rent of $1,243 trails the $1,301 average by $58, a narrower gap given concessions of 4.6% versus 7.9%.",
      "note": "Not found in any source file; enter manually"
     },
     "concession_narrative": {
      "label": "Concessions commentary",
      "kind": "longtext",
-     "value": "The Boardwalk offers $59 in monthly concessions, or 4.6% of asking rent. The comp set average is $115, or 8.1%. The subject discounts less than the comp set average.",
+     "value": "The Boardwalk concedes $59 per unit, or 4.6% of asking rent, versus the comp set average of $112 and 7.9%. The subject is discounting less than most competitors in the set.",
      "status": "ai_draft",
      "source": {
       "file_id": null,
@@ -9916,7 +9916,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 428,
         "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
        },
        "vintage": {
@@ -9926,7 +9926,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 1998,
         "note": "Year built is not in the listings export; enter it"
        },
        "leased_pct": {
@@ -10466,7 +10466,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 340,
         "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
        },
        "vintage": {
@@ -10476,7 +10476,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 2000,
         "note": "Year built is not in the listings export; enter it"
        },
        "leased_pct": {
@@ -10680,7 +10680,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 397,
         "note": "Unit count is not in the listings export; supply a HelloData comp summary or enter it"
        },
        "vintage": {
@@ -10690,7 +10690,7 @@
         "status": "missing",
         "source": null,
         "alternatives": [],
-        "override": null,
+        "override": 1985,
         "note": "Year built is not in the listings export; enter it"
        },
        "leased_pct": {
@@ -11055,7 +11055,7 @@
       "units": {
        "label": "Units",
        "kind": "integer",
-       "value": 286.85714285714283,
+       "value": 317.3,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11065,7 +11065,7 @@
       "vintage": {
        "label": "Vintage",
        "kind": "integer",
-       "value": 1988,
+       "value": 1990,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11075,7 +11075,7 @@
       "leased_pct": {
        "label": "Leased %",
        "kind": "percent",
-       "value": 0.8826147130496198,
+       "value": 0.8809843805052894,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11085,7 +11085,7 @@
       "asking_rent": {
        "label": "Asking rent",
        "kind": "money",
-       "value": 1414.1792631402404,
+       "value": 1412.4537086732987,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11095,7 +11095,7 @@
       "effective_rent": {
        "label": "Effective rent (NER)",
        "kind": "money",
-       "value": 1299.4287985324006,
+       "value": 1300.7552853323216,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11105,7 +11105,7 @@
       "concession": {
        "label": "Concession $/mo",
        "kind": "money",
-       "value": 114.75046460783983,
+       "value": 111.69842334097712,
        "status": "derived",
        "source": null,
        "alternatives": [],
@@ -11115,7 +11115,7 @@
       "concession_pct": {
        "label": "Concession %",
        "kind": "percent",
-       "value": 0.08114279964269305,
+       "value": 0.07908112149451903,
        "status": "derived",
        "source": null,
        "alternatives": [],

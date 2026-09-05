@@ -2,9 +2,16 @@
 from __future__ import annotations
 
 import datetime as dt
+from decimal import ROUND_HALF_UP, Decimal
 
 MINUS = "−"
 NONE = "—"
+
+
+def _round(x: float, decimals: int) -> float:
+    """Round half away from zero (1,424.5 -> 1,425), the convention of financial statements; Python's
+    default is half-to-even. Twelve significant digits first, to shed binary noise such as 90.4999999."""
+    return float(Decimal(f"{x:.12g}").quantize(Decimal(1).scaleb(-decimals), rounding=ROUND_HALF_UP))
 
 
 def _num(v) -> float | None:
@@ -18,6 +25,7 @@ def num(v, decimals: int = 0) -> str:
     x = _num(v)
     if x is None:
         return NONE
+    x = _round(x, decimals)
     s = f"{abs(x):,.{decimals}f}"
     return f"({s})" if x < 0 else s
 
@@ -26,26 +34,28 @@ def money(v, decimals: int = 0) -> str:
     x = _num(v)
     if x is None:
         return NONE
+    x = _round(x, decimals)
     s = f"${abs(x):,.{decimals}f}"
     return f"{MINUS}{s}" if x < 0 else s
 
 
 def money_m(v, decimals: int = 1) -> str:
     x = _num(v)
-    return NONE if x is None else f"${x / 1e6:,.{decimals}f}M"
+    return NONE if x is None else f"${_round(x / 1e6, decimals):,.{decimals}f}M"
 
 
 def money_k(v) -> str:
     x = _num(v)
     if x is None:
         return NONE
-    return f"${x / 1e6:,.2f}M" if abs(x) >= 1e6 else f"${x / 1e3:,.1f}K"
+    return f"${_round(x / 1e6, 2):,.2f}M" if abs(x) >= 1e6 else f"${_round(x / 1e3, 1):,.1f}K"
 
 
 def signed_money(v, decimals: int = 0) -> str:
     x = _num(v)
     if x is None:
         return NONE
+    x = _round(x, decimals)
     sign = "+" if x > 0 else (MINUS if x < 0 else "")
     return f"{sign}${abs(x):,.{decimals}f}"
 
@@ -54,6 +64,7 @@ def signed_num(v, decimals: int = 0) -> str:
     x = _num(v)
     if x is None:
         return NONE
+    x = _round(x, decimals)
     if x == 0:
         return "0"
     s = f"{abs(x):,.{decimals}f}"
@@ -64,7 +75,7 @@ def pct(v, decimals: int = 1, signed: bool = False) -> str:
     x = _num(v)
     if x is None:
         return NONE
-    p = x * 100
+    p = _round(x * 100, decimals)
     if signed:
         sign = "+" if p > 0 else (MINUS if p < 0 else "")
         return f"{sign}{abs(p):.{decimals}f}%"
@@ -82,6 +93,7 @@ def bps(v) -> str:
     x = _num(v)
     if x is None:
         return NONE
+    x = _round(x, 0)
     sign = "+" if x > 0 else (MINUS if x < 0 else "")
     return f"{sign}{abs(x):,.0f} bps"
 
@@ -109,7 +121,7 @@ def date_short(v) -> str:
 
 def integer(v) -> str:
     x = _num(v)
-    return NONE if x is None else f"{x:,.0f}"
+    return NONE if x is None else f"{_round(x, 0):,.0f}"
 
 
 def text(v) -> str:
@@ -118,12 +130,12 @@ def text(v) -> str:
 
 def sf(v) -> str:
     x = _num(v)
-    return NONE if x is None else f"{x:,.0f} sf"
+    return NONE if x is None else f"{_round(x, 0):,.0f} sf"
 
 
 def psf(v) -> str:
     x = _num(v)
-    return NONE if x is None else f"${x:,.2f}"
+    return NONE if x is None else f"${_round(x, 2):,.2f}"
 
 
 FILTERS = {"num": num, "money": money, "money_m": money_m, "money_k": money_k, "signed_money": signed_money,

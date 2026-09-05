@@ -18,7 +18,9 @@ def test_full_workflow_in_the_browser(tmp_path):
     import pdfplumber
     from playwright.sync_api import expect, sync_playwright
 
-    files = sorted(p for p in Path(DATASET).rglob("*") if p.suffix.lower() in (".xlsx", ".pdf") and not p.name.startswith("~$"))
+    from tests.helpers import dataset_files
+
+    files = dataset_files(Path(DATASET))
     junk = tmp_path / "notes.docx"
     junk.write_bytes(b"not a report")
     corrupt = tmp_path / "broken.xlsx"

@@ -6,7 +6,7 @@ Upload files, review every extracted value with its source, correct what is wron
 ## Prerequisites
 
 - Python 3.12 or newer (3.13 tested)
-- Node.js 22 LTS and npm 10 or newer (with nvm: `nvm use 22`; Node 18 is too old for Angular 21)
+- Node.js 22.12 or newer and npm 10 or newer (22.16 with npm 10.9 tested; with nvm: `nvm use 22`; Node 18 is too old for Angular 21)
 - Chromium for PDF rendering, installed once by Playwright during setup
 - No cloud services. AI narrative drafting is optional (an Anthropic API key or a local Claude Code login).
 
@@ -86,7 +86,7 @@ Nothing else leaves the machine. Playwright's Chromium is downloaded once at set
 | Report versions | `APP_DATA_DIR/projects/<project id>/reports/report-v<N>.pdf`, `.html`, `.json` (the snapshot), plus the images frozen for that version |
 | Sample deliverable | `deliverables/` (the Boardwalk 2Q26 report, its reviewed-data snapshot and a note on how they were produced) |
 
-`scripts/run.sh reset-data` deletes `APP_DATA_DIR` only. Nothing else in the repository is touched.
+`scripts/run.sh reset-data` removes only `projects/` and `app.db` (plus its journal files) inside `APP_DATA_DIR`. It refuses the filesystem root, your home folder, the repository and any folder that holds neither `app.db` nor `projects/`.
 
 Setting a file's document type manually: if a file was not recognised, pick its type in the Files page dropdown and it is re-processed (refused with a message while the file is still processing). "Include" unticked excludes a file from the report data without deleting it, useful when two exports overlap (for example two HelloData comp sets) or when a file turns out to describe another property.
 
@@ -164,8 +164,9 @@ Interactive controls are real buttons and links with accessible names, the workf
 ## Verification
 
 ```bash
-scripts/check.sh                                   # everything below except the browser test
-scripts/check.sh --e2e                             # also the browser test (both servers must be running)
+TEST_DATASET_DIR="/path/to/SOURCE FILES" scripts/check.sh            # everything below except the browser test
+TEST_DATASET_DIR="/path/to/SOURCE FILES" UI_E2E_URL=http://localhost:4200 scripts/check.sh --e2e   # also the browser test
+# TEST_DATASET_DIR must be the folder that holds only the source files; a check that cannot run is named as skipped in the last line
 
 # or individually
 cd backend && pytest                                                        # unit, API, reliability, corrections, render tests
@@ -174,7 +175,7 @@ python -m pip_audit -r requirements.lock                                    # Py
 cd ../frontend && npx ng test --watch=false && npx ng build && npm audit --audit-level=high
 cd ../backend && UI_E2E_URL=http://localhost:4200 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_ui_e2e.py -v
 LLM_LIVE=1 pytest tests/test_narrative.py -v                               # optional: one real drafting call on the configured provider
-python ../scripts/check_pdf.py ../deliverables/boardwalk-2q26-investor-report.pdf --expect "Fannie Mae"
+python ../scripts/check_pdf.py ../deliverables/boardwalk-2q26-investor-report.pdf --expect "Fannie Mae"   # structure, fonts, and a PDFium raster check that every word draws
 ```
 
 Tests that need Chromium skip themselves when it is not installed. The reliability suite repeats a mixed
