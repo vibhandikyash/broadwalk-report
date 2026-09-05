@@ -416,10 +416,13 @@ def _computed_trend(ctx: Ctx) -> list[dict]:
                 m["cr"] += agg["asking_sum"]
                 m["ce"] += agg["effective_sum"]
                 m["cs"] += agg["sqft_sum"]
+    end = ctx.period.end
+    first = dt.date(end.year - 1, end.month, 1) + dt.timedelta(days=32)  # twelve months ending at the period end
+    lo, hi = first.strftime("%Y-%m"), end.strftime("%Y-%m")
     return [{"month": ym, "subject_n": m["sn"] or None, "subject_gross_psf": calc.ratio(m["sr"], m["ss"]),
              "subject_eff_psf": calc.ratio(m["se"], m["ss"]), "comp_n": m["cn"] or None,
              "comp_gross_psf": calc.ratio(m["cr"], m["cs"]), "comp_eff_psf": calc.ratio(m["ce"], m["cs"])}
-            for ym, m in sorted(months.items())]
+            for ym, m in sorted(months.items()) if lo <= ym <= hi]
 
 
 def _rent_trend(ctx: Ctx, data: ReportData) -> Section:

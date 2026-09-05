@@ -77,6 +77,7 @@ def walk_lines(sheet: Sheet, header_row: int, colmap: dict[str, int]) -> list[di
             break
     lines: list[dict] = []
     stack: list[tuple[int, str]] = []
+    prev_was_header = False
     for r in range(header_row + 1, sheet.nrows):
         raw = sheet.cell(r, label_col)
         label = sheet.text(r, label_col)
@@ -86,16 +87,22 @@ def walk_lines(sheet: Sheet, header_row: int, colmap: dict[str, int]) -> list[di
             if has_vals:
                 lines.append({"code": "", "label": "", "norm": "", "indent": 0, "section": [s for _, s in stack],
                               "is_total": False, "unlabeled": True, "values": values, "row": r})
+                prev_was_header = False
             continue
         indent = len(raw) - len(raw.lstrip(" ")) if isinstance(raw, str) else 0
         code = sheet.text(r, code_col) if code_col is not None else ""
         if not CODE_RE.match(code):
             code = ""
         if not has_vals:
-            while stack and stack[-1][0] >= indent:
-                stack.pop()
+            # A header directly under another header is a sub-section whatever its indent (Yardi prints
+            # 'RENO - RENOVATIONS' / 'RENO - EXTERIOR' / 'RENO - PLUMBING' on consecutive rows at one indent).
+            if not prev_was_header:
+                while stack and stack[-1][0] >= indent:
+                    stack.pop()
             stack.append((indent, label))
+            prev_was_header = True
             continue
+        prev_was_header = False
         nl = norm(label)
         lines.append({"code": code, "label": label, "norm": nl, "indent": indent, "section": [s for _, s in stack],
                       "is_total": bool(TOTAL_RE.search(nl)), "unlabeled": False, "values": values, "row": r})

@@ -1,6 +1,8 @@
 """Pre-built rent trend workbook: monthly subject vs comp-set lease counts and gross/effective $/SF."""
 from __future__ import annotations
 
+import re
+
 from ..classify.classifier import Part
 from ..readers.document import Sheet, norm, to_date, to_number
 from .base import Extraction, ExtractionError
@@ -26,7 +28,7 @@ def extract(part: Part) -> Extraction:
         raise ExtractionError("Month, Gross PSF or Effective PSF column missing")
 
     def series_name(c: int) -> str:
-        return sh.text(hrow, c).split("/")[0].strip()
+        return re.split(r"[/\n]", sh.text(hrow, c))[0].strip()
 
     months: list[dict] = []
     totals: dict | None = None

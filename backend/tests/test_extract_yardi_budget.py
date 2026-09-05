@@ -27,7 +27,7 @@ def test_budget_extractor_lines_sections_and_period():
     assert by["total payroll"]["is_total"] is True and by["net rental income"]["is_total"] is True
     assert by["less:concessions-mthly"]["values"]["ptd_budget"] == 0
     assert by["roof"]["values"]["ptd_budget"] == 0 and "INTERIOR & EXTERIOR RENOVATIONS" in by["roof"]["section"]
-    assert by["plumbing"]["section"][-2:] == ["NON-OPERATING ITEMS", "PLUMBING"]
+    assert "NON-OPERATING ITEMS" in by["plumbing"]["section"] and by["plumbing"]["section"][-1] == "PLUMBING"
     assert by["marketing & promotion"]["section"][-1] == "LEASE UP COSTS"
     unlabeled = [ln for ln in d["lines"] if ln["unlabeled"]]
     assert unlabeled and unlabeled[-1]["values"]["ptd_actual"] == 61 and unlabeled[-1]["values"]["ytd_budget"] == 69

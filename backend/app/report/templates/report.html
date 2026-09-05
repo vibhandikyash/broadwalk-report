@@ -73,7 +73,7 @@
       <tr class="total"><td>{{ ipr_totals.type|text }}</td><td class="r">{{ ipr_totals.units|integer }}</td><td class="r">{{ ipr_totals.avg_sf|integer }}</td><td class="r">{{ ipr_totals.prior_rent|money }}</td><td class="r">{{ ipr_totals.current_rent|money }}</td><td class="r {{ vcls(ipr_totals.variance) }}">{{ ipr_totals.variance|signed_money }} / {{ ipr_totals.variance_pct|pct(1, true) }}</td></tr>
       </tbody>
     </table>
-    <p class="note">{{ v('in_place_rent.fields.narrative')|text }}</p>
+    {% if v('in_place_rent.fields.narrative') %}<p class="note">{{ v('in_place_rent.fields.narrative') }}</p>{% endif %}
   </div>
 </div>
 {{ footer('Property Description', 2) }}
@@ -112,7 +112,7 @@
     <div class="col-h"><span>Submarket rent trends</span><span class="v">{{ v('rent_trend.fields.chart_subtitle')|text }}</span></div>
     <div class="mono small" style="text-align:center">{{ v('rent_trend.fields.chart_title')|text }}</div>
     {{ chart_svg|safe }}
-    <p class="note">{{ v('rent_trend.fields.caption')|text }}</p>
+    {% if v('rent_trend.fields.caption') %}<p class="note">{{ v('rent_trend.fields.caption') }}</p>{% endif %}
   </div>
 </div>
 {{ footer('Property Summary', 3) }}
@@ -146,7 +146,7 @@
     <div class="card"><h3>Prepayment</h3>{{ v('financing.fields.prepayment')|text }}{% if v('financing.fields.yield_maintenance_through') %}<div class="sub">Yield maintenance through {{ v('financing.fields.yield_maintenance_through')|date_long }}{% if v('financing.fields.open_prepay_months') %} · open prepay last {{ v('financing.fields.open_prepay_months')|integer }} mo{% endif %}</div>{% endif %}</div>
     <div class="card" style="margin-top:6pt"><h3>Replacement reserve</h3>{{ v('financing.fields.replacement_reserve_monthly')|money }} / mo{% if v('financing.fields.replacement_reserve_annual') %} · {{ v('financing.fields.replacement_reserve_annual')|money_k }} / yr{% endif %}</div>
     <div class="card" style="margin-top:6pt"><h3>Repairs escrow</h3>{{ v('financing.fields.repairs_escrow')|money }} one-time</div>
-    <p class="note">{{ v('financing.fields.narrative')|text }}</p>
+    {% if v('financing.fields.narrative') %}<p class="note">{{ v('financing.fields.narrative') }}</p>{% endif %}
   </div>
 </div>
 {{ footer('Financing', 4) }}
@@ -188,7 +188,7 @@
 {# ---------- 6 FINANCIAL PERFORMANCE ---------- #}
 <section class="page">
 {{ header('Financial Performance', (v('financials.fields.period_label')|text|upper) ~ ' VS. BUDGET & YTD') }}
-<table class="tbl dense">
+<table class="tbl dense{{ ' xdense' if fin_rows|length > 16 }}">
   <thead><tr><th>$ in actuals</th><th class="r">{{ q }} actual</th><th class="r">{{ q }} budget</th><th class="r">Var %</th><th class="r">YTD actual</th><th class="r">YTD budget</th><th class="r">Var %</th></tr></thead>
   <tbody>
   {% set ns = namespace(group=none) %}
@@ -211,7 +211,7 @@
 {# ---------- 7 CAPITAL PROJECTS ---------- #}
 <section class="page">
 {{ header('Capital Projects', (q ~ ' ACTIVITY')) }}
-<table class="tbl dense">
+<table class="tbl dense{{ ' xdense' if capex_rows|length > 16 }}">
   <thead><tr><th>Line item</th><th class="r">{{ q }} actual</th><th class="r">{{ q }} budget</th><th class="r">Var $</th><th class="r">YTD actual</th><th class="r">YTD budget</th><th class="r">Var $</th><th class="r">Annual budget</th></tr></thead>
   <tbody>
   {% for r in capex_rows %}
@@ -220,7 +220,7 @@
   <tr class="total"><td>Total capital spend</td><td class="r">{{ capex_totals.ptd_actual|num }}</td><td class="r">{{ capex_totals.ptd_budget|num }}</td><td class="r {{ vcls(capex_totals.ptd_var) }}">{{ capex_totals.ptd_var|signed_num }}</td><td class="r">{{ capex_totals.ytd_actual|num }}</td><td class="r">{{ capex_totals.ytd_budget|num }}</td><td class="r {{ vcls(capex_totals.ytd_var) }}">{{ capex_totals.ytd_var|signed_num }}</td><td class="r">{{ capex_totals.annual_budget|num }}</td></tr>
   </tbody>
 </table>
-<p class="note">{{ v('capex.fields.narrative')|text }}</p>
+{% if v('capex.fields.narrative') %}<p class="note">{{ v('capex.fields.narrative') }}</p>{% endif %}
 {{ footer('Capital Projects', 7) }}
 </section>
 

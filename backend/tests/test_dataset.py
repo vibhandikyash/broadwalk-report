@@ -39,6 +39,9 @@ def test_real_dataset_end_to_end():
         assert abs(cells["financials.tables.lines.rows.net_cash_flow.ptd_var"] + 134365.64) < 1
         assert abs(cells["capex.tables.lines.totals.ptd_actual"] - 241077.37) < 1 and abs(v["capex.fields.source_total_ptd"] - 241077.37) < 1
         assert abs(cells["capex.tables.lines.rows.plumbing_water_heaters.ptd_actual"] - 80252.75) < 1
+        assert abs(cells["capex.tables.lines.totals.ptd_budget"] - 278896) < 1 and abs(cells["capex.tables.lines.totals.ytd_budget"] - 616008) < 1
+        assert abs(cells["capex.tables.lines.totals.annual_budget"] - 1106416) < 1
+        assert abs(cells["capex.tables.lines.rows.renovation_plumbing.ptd_budget"] - 54078) < 1
         assert abs(cells["in_place_rent.tables.by_floor_plan.totals.current_rent"] - 1323.98) < 0.01
         assert abs(cells["in_place_rent.tables.by_floor_plan.rows.0br.current_rent"] - 1074.1) < 0.5
         assert abs(v["occupancy.fields.current_pct"] - 0.9053) < 1e-4 and v["occupancy.fields.change_bps"] == -118

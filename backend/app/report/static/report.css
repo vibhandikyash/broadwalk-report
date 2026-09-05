@@ -34,6 +34,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .tbl .group td { font-family: "JetBrains Mono", Menlo, monospace; font-size: 5.8pt; color: var(--navy); padding-top: 5pt; border-bottom: none; letter-spacing: 0.06em; }
 .tbl .subject td { background: var(--wash); font-weight: 600; }
 .tbl.dense td { padding: 1.6pt 3pt; } .tbl.dense { font-size: 6.8pt; }
+.tbl.xdense { font-size: 6pt; line-height: 1.15; } .tbl.xdense td { padding: 0.8pt 3pt; } .tbl.xdense th { padding: 2pt 3pt; font-size: 5.2pt; } .tbl.xdense .group td { padding-top: 2.5pt; font-size: 5.2pt; }
 .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5pt 10pt; font-size: 7.5pt; margin: 6pt 0; }
 .rent-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; margin: 6pt 0 8pt; }
 .photo-ph, .cover-photo { background: linear-gradient(135deg, var(--navy), #3b5f9a); color: #fff; display: flex; align-items: flex-end; padding: 10pt; font-size: 12pt; font-weight: 600; border-radius: 3pt; height: 100%; min-height: 2.2in; }
