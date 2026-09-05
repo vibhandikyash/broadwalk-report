@@ -52,15 +52,25 @@ def parse_distributions_text(text: str) -> dict:
     return {"entity": _entity(text), "distributions": dists, "total_gross": total, "none": none}
 
 
+def _dated(data: dict, part: Part, key: str, date_key: str) -> dict:
+    """report_date: when the export was printed (PDF metadata), else the latest transaction date it lists."""
+    latest = max((r.get(date_key) for r in data.get(key, []) if r.get(date_key)), default=None)
+    data["report_date"] = part.created or latest
+    data["latest_transaction"] = latest
+    return data
+
+
 def extract_capital_calls(part: Part) -> Extraction:
     data = parse_capital_calls_text("\n".join(p.text for p in part.pages))
     if data["total_called"] is None and not data["calls"]:
         raise ExtractionError("Neither a 'Total Called' amount nor capital call rows found")
-    return Extraction(doc_type=part.doc_type, locator=part.locator, data=data)
+    warnings = [] if part.created else ["The export carries no date; the reporting period cannot be checked against it"]
+    return Extraction(doc_type=part.doc_type, locator=part.locator, data=_dated(data, part, "calls", "due_date"), warnings=warnings)
 
 
 def extract_distributions(part: Part) -> Extraction:
     data = parse_distributions_text("\n".join(p.text for p in part.pages))
     if data["total_gross"] is None:
         raise ExtractionError("Neither 'No Distributions Yet' nor distribution rows found")
-    return Extraction(doc_type=part.doc_type, locator=part.locator, data=data)
+    warnings = [] if part.created else ["The export carries no date; the reporting period cannot be checked against it"]
+    return Extraction(doc_type=part.doc_type, locator=part.locator, data=_dated(data, part, "distributions", "date"), warnings=warnings)

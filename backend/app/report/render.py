@@ -1,4 +1,8 @@
-"""HTML rendering of ReportData with Jinja. PDF rendering is added in Task 25."""
+"""HTML rendering of ReportData with Jinja, and PDF printing with headless Chromium.
+
+Before printing, every .page is measured in the browser; content that would be clipped by the fixed
+page box rejects the render (LayoutOverflow) instead of silently disappearing from the PDF.
+"""
 from __future__ import annotations
 
 import base64
@@ -69,7 +73,7 @@ def _sum(rows: list[dict], col: str) -> float | None:
     return sum(vals) if vals else None
 
 
-def context(data: ReportData, project: dict | None = None) -> dict:
+def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None) -> dict:
     v = data.value
     uw_rows = _rows(data.table("underwriting.tables.budget"))
     uw_groups = {"value_add": [r for r in uw_rows if str(r["c"].get("section") or "").lower().startswith("value")],
@@ -91,7 +95,7 @@ def context(data: ReportData, project: dict | None = None) -> dict:
     capex_rows = _rows(data.table("capex.tables.lines"), sort_key=lambda r: (-(r["c"].get("ptd_actual") or 0), -(r["c"].get("ptd_budget") or 0)))
     fin_t = data.table("financials.tables.lines")
     return {
-        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS,
+        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "assets": assets or {},
         "css": (REPORT_DIR / "static" / "report.css").read_text(), "fonts_css": _fonts_css(),
         "ipr_rows": _rows(data.table("in_place_rent.tables.by_floor_plan")), "ipr_totals": _totals(data.table("in_place_rent.tables.by_floor_plan")),
         "uw_groups": uw_groups, "uw_sub": uw_sub, "uw_totals": _totals(data.table("underwriting.tables.budget")), "chart_svg": chart_svg,
@@ -103,8 +107,8 @@ def context(data: ReportData, project: dict | None = None) -> dict:
     }
 
 
-def render_html(data: ReportData, project: dict | None = None) -> str:
-    return env.get_template("report.html").render(**context(data, project))
+def render_html(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None) -> str:
+    return env.get_template("report.html").render(**context(data, project, assets))
 
 
 def chromium_available() -> bool:
@@ -130,8 +134,38 @@ def chromium_available() -> bool:
     return base.is_dir() and any(d.is_dir() and d.name.startswith("chromium") for d in base.iterdir())
 
 
-def render_pdf(html_path: Path, pdf_path: Path) -> None:
-    """Print the saved HTML file to PDF with headless Chromium (fonts and CSS are resolved from the file URL)."""
+class LayoutOverflow(Exception):
+    """Some page's content does not fit its fixed box; rendering it would clip or hide content."""
+
+    def __init__(self, problems: list[dict]) -> None:
+        self.problems = problems
+        super().__init__("Content does not fit the page: " + "; ".join(_describe(p) for p in problems))
+
+
+PX_PER_PT = 96 / 72
+OVERFLOW_JS = """() => [...document.querySelectorAll('.page')].map((el, i) => {
+  const h = el.querySelector('.hdr h1, .cover-title');
+  return {page: i + 1, section: h ? h.textContent.trim() : '', dy: el.scrollHeight - el.clientHeight, dx: el.scrollWidth - el.clientWidth};
+}).filter(p => p.dy > 1 || p.dx > 1)"""
+HINTS = {
+    "table": "remove rows from the table or shorten the narrative under it",
+    "text": "shorten the text on this page",
+}
+
+
+def _describe(p: dict) -> str:
+    where = f"page {p['page']}" + (f" ({p['section']})" if p.get("section") else "")
+    amounts = []
+    if p.get("dy", 0) > 1:
+        amounts.append(f"{p['dy'] / PX_PER_PT:.0f} pt too tall")
+    if p.get("dx", 0) > 1:
+        amounts.append(f"{p['dx'] / PX_PER_PT:.0f} pt too wide")
+    hint = HINTS["table"] if p.get("has_table") else HINTS["text"]
+    return f"{where} is {' and '.join(amounts)}; {hint}"
+
+
+def check_layout(html_path: Path) -> list[dict]:
+    """Open the HTML in Chromium and return one entry per .page whose content overflows its box."""
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as p:
@@ -140,6 +174,37 @@ def render_pdf(html_path: Path, pdf_path: Path) -> None:
             page = browser.new_page()
             page.goto(html_path.resolve().as_uri(), wait_until="load")
             page.emulate_media(media="print")
-            page.pdf(path=str(pdf_path), prefer_css_page_size=True, print_background=True)
+            page.evaluate("document.fonts.ready")
+            problems = page.evaluate(OVERFLOW_JS)
+            for pr in problems:
+                pr["has_table"] = page.evaluate("i => !!document.querySelectorAll('.page')[i].querySelector('table')", pr["page"] - 1)
+            return problems
         finally:
             browser.close()
+
+
+def render_pdf(html_path: Path, pdf_path: Path) -> None:
+    """Print the saved HTML file to PDF with headless Chromium after checking that every page fits.
+
+    Raises LayoutOverflow instead of producing a PDF with clipped content. The PDF is written to a
+    temporary name and moved into place, so a failure never leaves a partial file at pdf_path.
+    """
+    from playwright.sync_api import sync_playwright
+
+    tmp = pdf_path.with_name(pdf_path.name + ".partial")
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page()
+            page.goto(html_path.resolve().as_uri(), wait_until="load")
+            page.emulate_media(media="print")
+            page.evaluate("document.fonts.ready")
+            problems = page.evaluate(OVERFLOW_JS)
+            if problems:
+                for pr in problems:
+                    pr["has_table"] = page.evaluate("i => !!document.querySelectorAll('.page')[i].querySelector('table')", pr["page"] - 1)
+                raise LayoutOverflow(problems)
+            page.pdf(path=str(tmp), prefer_css_page_size=True, print_background=True)
+        finally:
+            browser.close()
+    tmp.replace(pdf_path)

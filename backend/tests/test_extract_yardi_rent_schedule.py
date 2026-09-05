@@ -24,7 +24,7 @@ def test_schedule_rows_and_total():
     assert (a1["bedrooms"], a1["bathrooms"], a1["units"], a1["sqft"], a1["occupied_units"]) == (1, 1.0, 40, 657, 38)
     assert a1["avg_resident_rent"] == 1172.47 and a1["market_rent"] == 999 and a1["row"] == 6
     assert ut[3]["bedrooms"] == 0 and ut[1]["bathrooms"] == 1.0 and ut[2]["bathrooms"] == 2.0
-    assert d["total"] == {"units": 139, "sqft": 760, "occupied_units": 126, "avg_resident_rent": 1250.5, "market_rent": 1100, "row": 10}
+    assert d["total"] == {"units": 338, "sqft": 760, "occupied_units": 306, "avg_resident_rent": 1250.5, "market_rent": 1100, "row": 10}
 
 
 def test_modified_schedule_variant_without_market_rent_column():

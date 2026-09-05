@@ -161,7 +161,7 @@ def schedule_rows(as_of: str, rents: dict[str, float]) -> list[list]:
         ["2 Bedroom 1 Bathroom (BWK.B0)", 52, 1215, 814, 63180, 70119, 1348.44, 47, rents["BWK.B0"]],
         ["2 Bedroom 2 Bathroom (BWK.B1)", 24, 1209, 875, 29016, 32771, 1365.45, 19, rents["BWK.B1"]],
         ["0 Bedroom 1 Bathroom (BWK.S1)", 23, 901, 550, 20723, 25353, 1102.3, 22, rents["BWK.S1"]],
-        ["Grand Total", 139, 1100, 760, 152879, 172933, 1244.11, 126, rents["TOTAL"]],
+        ["Grand Total", 338, 1100, 760, 152879, 172933, 1244.11, 306, rents["TOTAL"]],
     ]
 
 

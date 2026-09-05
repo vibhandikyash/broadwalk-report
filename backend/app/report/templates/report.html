@@ -14,7 +14,7 @@
 {% set head = name ~ ' · ' ~ q %}
 {% macro header(title, tag='') %}
 <div class="hdr">
-  <div class="hdr-l"><span class="brand">{{ v('property.fields.prepared_by')|text }}</span><h1>{{ title }}</h1></div>
+  <div class="hdr-l">{% if assets.logo %}<img class="logo" src="{{ assets.logo }}" alt="{{ v('property.fields.prepared_by')|text }}">{% else %}<span class="brand">{{ v('property.fields.prepared_by')|text }}</span>{% endif %}<h1>{{ title }}</h1></div>
   <div class="hdr-r mono">{{ head|upper }}{% if tag %}<span class="tag">{{ tag }}</span>{% endif %}</div>
 </div>
 {% endmacro %}
@@ -25,7 +25,7 @@
 
 {# ---------- 1 COVER ---------- #}
 <section class="page cover">
-  <div class="cover-photo"><span>{{ name }}</span></div>
+  {% if assets.cover %}<div class="cover-photo photo" style="background-image:url('{{ assets.cover }}')" role="img" aria-label="{{ name }}"></div>{% else %}<div class="cover-photo"><span>{{ name }}</span></div>{% endif %}
   <div>
     <div class="mono small">{{ q }} · LP QUARTERLY REPORT · CONFIDENTIAL</div>
     <div class="badge mono">{{ q }}<span>QUARTERLY INVESTOR REPORT</span></div>
@@ -46,7 +46,7 @@
 <section class="page">
 {{ header('Property Description', 'VINTAGE ' ~ (v('property.fields.year_built')|text) ~ ' · CLASS ' ~ (v('property.fields.building_class')|text) ~ ' · HOLD PERIOD ' ~ (v('property.fields.hold_period_years')|text) ~ ' YR') }}
 <div class="two-col">
-  <div class="photo-ph"><span>{{ name }}</span></div>
+  {% if assets.cover %}<div class="photo-ph photo" style="background-image:url('{{ assets.cover }}')" role="img" aria-label="{{ name }}"></div>{% else %}<div class="photo-ph"><span>{{ name }}</span></div>{% endif %}
   <div>
     <p class="body">{{ v('property.fields.description')|text }}</p>
     <div class="facts">
@@ -143,9 +143,16 @@
   </div>
   <div>
     <div class="col-h"><span>Structure, prepayment &amp; reserves</span></div>
-    <div class="card"><h3>Prepayment</h3>{{ v('financing.fields.prepayment')|text }}{% if v('financing.fields.yield_maintenance_through') %}<div class="sub">Yield maintenance through {{ v('financing.fields.yield_maintenance_through')|date_long }}{% if v('financing.fields.open_prepay_months') %} · open prepay last {{ v('financing.fields.open_prepay_months')|integer }} mo{% endif %}</div>{% endif %}</div>
-    <div class="card" style="margin-top:6pt"><h3>Replacement reserve</h3>{{ v('financing.fields.replacement_reserve_monthly')|money }} / mo{% if v('financing.fields.replacement_reserve_annual') %} · {{ v('financing.fields.replacement_reserve_annual')|money_k }} / yr{% endif %}</div>
-    <div class="card" style="margin-top:6pt"><h3>Repairs escrow</h3>{{ v('financing.fields.repairs_escrow')|money }} one-time</div>
+    {% set io_pay = v('financing.fields.interest_monthly') %}{% set pi_pay = v('financing.fields.pi_payment') %}
+    <div class="card"><h3>Loan phases</h3>
+      <div class="row"><span>IO period · {{ v('financing.fields.effective_date')|date_long }} to {{ v('financing.fields.io_end_date')|date_long }}{% if v('financing.fields.io_months') %} · {{ v('financing.fields.io_months')|integer }} months{% endif %}</span><span class="amt">{{ io_pay|money }} / mo</span></div>
+      <div class="row"><span>P&amp;I phase · {{ v('financing.fields.io_end_date')|date_long }} to {{ v('financing.fields.maturity_date')|date_long }}{% if v('financing.fields.amort_years') %} · {{ v('financing.fields.amort_years')|integer }}-yr amortization{% endif %}</span><span class="amt">{{ pi_pay|money }} / mo{% if pi_pay and io_pay %} <span class="sub">({{ ((pi_pay / io_pay) - 1)|pct(0, true) }} step-up)</span>{% endif %}</span></div>
+    </div>
+    <div class="card" style="margin-top:6pt"><h3>Prepayment</h3>{{ v('financing.fields.prepayment')|text }}{% if v('financing.fields.yield_maintenance_through') %}<div class="sub">Yield maintenance through {{ v('financing.fields.yield_maintenance_through')|date_long }}{% if v('financing.fields.open_prepay_months') %} · open prepay last {{ v('financing.fields.open_prepay_months')|integer }} mo{% endif %}</div>{% endif %}</div>
+    <div class="card" style="margin-top:6pt"><h3>Reserves &amp; escrows</h3>
+      <div class="row"><span>Replacement reserve</span><span class="amt">{{ v('financing.fields.replacement_reserve_monthly')|money }} / mo{% if v('financing.fields.replacement_reserve_annual') %} <span class="sub">({{ v('financing.fields.replacement_reserve_annual')|money_k }} / yr)</span>{% endif %}</span></div>
+      <div class="row"><span>Repairs escrow (one-time)</span><span class="amt">{{ v('financing.fields.repairs_escrow')|money }}</span></div>
+    </div>
     {% if v('financing.fields.narrative') %}<p class="note">{{ v('financing.fields.narrative') }}</p>{% endif %}
   </div>
 </div>
@@ -185,7 +192,7 @@
 {# ---------- 6 FINANCIAL PERFORMANCE ---------- #}
 <section class="page">
 {{ header('Financial Performance', (v('financials.fields.period_label')|text|upper) ~ ' VS. BUDGET & YTD') }}
-<table class="tbl dense{{ ' xdense' if fin_rows|length > 16 }}">
+<table class="tbl dense fin{{ ' xdense' if fin_rows|length > 24 }}">
   <thead><tr><th>$ in actuals</th><th class="r">{{ q }} actual</th><th class="r">{{ q }} budget</th><th class="r">Var %</th><th class="r">YTD actual</th><th class="r">YTD budget</th><th class="r">Var %</th></tr></thead>
   <tbody>
   {% set ns = namespace(group=none) %}
@@ -287,7 +294,8 @@
     <div class="status-block"><div class="t">{{ v('status.fields.status' ~ i ~ '_title')|text }}</div><div class="s">{{ v('status.fields.status' ~ i ~ '_subtitle')|text }}</div><div class="b">{{ v('status.fields.status' ~ i ~ '_body')|text }}</div></div>
     {% endif %}
     {% endfor %}
-    <div class="small">{{ q }} collections recovered: {{ v('status.fields.collections_recovered')|money }} · bad debt write-offs: {{ v('status.fields.bad_debt_writeoff')|money }}</div>
+    {% set wo = v('status.fields.bad_debt_writeoff') %}
+    <div class="small">{{ q }} collections recovered: {{ v('status.fields.collections_recovered')|money }} · bad debt write-offs: {{ (wo|abs if wo is not none else none)|money }}</div>
   </div>
   <div>
     <div class="col-h"><span>{{ v('status.fields.next_quarter_label')|text }} goals / initiatives</span></div>

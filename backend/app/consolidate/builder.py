@@ -14,7 +14,7 @@ from ..models import Alternative, Column, Field, ReportData, Section, Source, Ta
 from ..readers.document import norm
 from . import calc
 from .mapping import consume_capex, load_capex_mapping, load_pl_mapping, match_lines, section_matches
-from .select import Selection, Src, collect, select
+from .select import Selection, Src, collect, names_match, select
 
 ADDRESS_RE = re.compile(r"^(?P<street>.+?),\s*(?P<city>[^,]+?),\s*(?P<state>[A-Z]{2})\b\s*(?P<zip>\d{5})?")
 VALUE_COLS = ("ptd_actual", "ptd_budget", "ytd_actual", "ytd_budget", "annual_budget")
@@ -40,11 +40,6 @@ def C(key: str, label: str, kind: str = "money", derived: bool = False) -> Colum
 
 def slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", norm(s)).strip("-") or "row"
-
-
-def names_match(a: str | None, b: str | None) -> bool:
-    ka, kb = (re.sub(r"[^a-z0-9]", "", re.sub(r"^the\s+", "", norm(x))) for x in (a or "", b or ""))
-    return bool(ka) and bool(kb) and (ka == kb or ka in kb or kb in ka)
 
 
 def _date(s: str | None) -> dt.date | None:
@@ -144,6 +139,30 @@ def _split_address(addr: str | None) -> tuple[str | None, str | None, str | None
     return m.group("street"), m.group("city"), m.group("state"), m.group("zip")
 
 
+def _conflict(ctx: Ctx, fld: Field, path: str, label: str, candidates: list[tuple], tolerance: float = 0.01) -> None:
+    """Attach materially different values from other files as alternatives and flag the field for review.
+
+    `tolerance` is relative (0.01 = 1%); 0 means any difference counts. Candidates equal to the
+    value are dropped, so agreeing sources never raise noise.
+    """
+    if fld.value is None:
+        return
+    base = float(fld.value)
+    for val, src, note in candidates:
+        if val is None:
+            continue
+        diff = abs(float(val) - base)
+        limit = tolerance * abs(base) if tolerance else 0
+        if diff <= limit or any(a.value == val for a in fld.alternatives):
+            continue
+        fld.alternatives.append(Alternative(value=val, source=Source(**src) if src else None, note=note))
+    if fld.alternatives and fld.status != "conflict":
+        fld.status = "conflict"
+        alts = ", ".join(f"{a.value:,.0f} ({a.note})" if isinstance(a.value, (int, float)) else str(a.value) for a in fld.alternatives)
+        ctx.note("warning", f"{label}: {fld.source.filename if fld.source else 'primary source'} says {base:,.0f}; other files say {alts}. "
+                            "Choose the right value on the review screen.", path)
+
+
 def _period(sel: Selection) -> tuple[Period, list[dict]]:
     for src in (sel.budget, sel.lto):
         p = src.data.get("period") if src else None
@@ -189,6 +208,8 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     ctx.property_name = name
     f["name"] = F("Property name", "text", name,
                   name_src.source("title") if name_src else (sel.lto.source("first row") if sel.lto and name else None))
+    for ex in sel.excluded:
+        f["name"].alternatives.append(Alternative(value=ex.data.get("property_name"), source=Source(**ex.source()), note="set aside: different property"))
     units_src = rr or (sel.rent_rolls[-1] if sel.rent_rolls else None)
     if units_src and units_src.data.get("total_units"):
         units, units_source = units_src.data["total_units"], units_src.source("summary block", "Totals")
@@ -201,8 +222,18 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     sale = _subject_sale(sel, name)
     meta = _comp_meta(sel, name)
     sale_src = sel.costar_pdf.source(f"page {sale['page']}", "sale comps") if sale else None
+    unit_alts = []
+    if sch and (sch.data.get("total") or {}).get("units") and units_src is not sch:
+        unit_alts.append((sch.data["total"]["units"], sch.source("grand total"), "Market Rent Schedule grand total"))
+    if sale and sale.get("units"):
+        unit_alts.append((sale["units"], sale_src, "CoStar sale comps"))
+    if meta and meta.get("units"):
+        unit_alts.append((meta["units"], meta["_src"], "HelloData comp summary"))
+    _conflict(ctx, f["units"], "property.fields.units", "Unit count", unit_alts, tolerance=0)
     yb = sale["year_built"] if sale else (meta.get("year_built") if meta else None)
     f["year_built"] = F("Year built", "integer", yb, sale_src if sale else (meta["_src"] if meta and yb else None))
+    if sale and meta and meta.get("year_built"):
+        _conflict(ctx, f["year_built"], "property.fields.year_built", "Year built", [(meta["year_built"], meta["_src"], "HelloData comp summary")], tolerance=0)
     f["acquired_date"] = F("Acquisition date", "date", sale["sale_date"] if sale else None, sale_src)
     addr, addr_src = (meta["address"], meta["_src"]) if meta and meta.get("address") else (None, None)
     if addr is None:
@@ -352,6 +383,9 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
         f["quarter_contributions"] = F(f"{p.quarter_label} equity contributions", "money", q_amt, cc.source(),
                                        note=None if q_amt is not None else "Capital calls exist but none fall in the reporting period; confirm")
         f["total_called"] = F("Total called (ITD)", "money", cc.data.get("total_called"), cc.source())
+        _slate_period_check(ctx, cc, "Capital calls", "capital.fields.quarter_contributions")
+        _conflict(ctx, f["total_called"], "capital.fields.total_called", "Total called",
+                  [(o.data.get("total_called"), o.source(), f"{o.filename}, dated {o.data.get('report_date') or 'unknown'}") for o in _same_vintage(sel.capital_calls_all, cc)])
     else:
         f["quarter_contributions"] = M(f"{p.quarter_label} equity contributions", "money")
         f["total_called"] = M("Total called (ITD)", "money")
@@ -362,6 +396,9 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
         f["distributions_itd"] = F("Cash distributions (ITD)", "money", dd.data.get("total_gross"), dd.source())
         f["quarter_distributions"] = F(f"{p.quarter_label} distributions", "money",
                                        sum(x.get("gross") or 0 for x in in_q) if dl else (0.0 if dd.data.get("none") else None), dd.source())
+        _slate_period_check(ctx, dd, "Distributions", "capital.fields.quarter_distributions")
+        _conflict(ctx, f["distributions_itd"], "capital.fields.distributions_itd", "Distributions to date",
+                  [(o.data.get("total_gross"), o.source(), f"{o.filename}, dated {o.data.get('report_date') or 'unknown'}") for o in _same_vintage(sel.distributions_all, dd)])
     else:
         f["distributions_itd"] = M("Cash distributions (ITD)", "money")
         f["quarter_distributions"] = M(f"{p.quarter_label} distributions", "money")
@@ -371,6 +408,21 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
     if not bs:
         ctx.note("warning", "No balance sheet found; purchase price, equity and loan principal are missing", "capital")
     return s
+
+
+def _same_vintage(all_srcs: list[Src], chosen: Src) -> list[Src]:
+    """Other exports at least as recent as the chosen one: an older export naturally shows less activity, so it is not a conflict."""
+    ref = chosen.data.get("report_date") or ""
+    return [o for o in all_srcs if o is not chosen and (o.data.get("report_date") or "") >= ref]
+
+
+def _slate_period_check(ctx: Ctx, src: Src, label: str, path: str) -> None:
+    rd = src.data.get("report_date")
+    if not rd:
+        ctx.note("warning", f"{label}: {src.filename} carries no export date, so it cannot be confirmed to cover the reporting period", path)
+    elif rd < ctx.period.end.isoformat():
+        ctx.note("warning", f"{label}: {src.filename} was exported on {rd}, before the period end {ctx.period.end.isoformat()}; "
+                            "activity after that date would be missing", path)
 
 
 def _underwriting(ctx: Ctx, data: ReportData) -> Section:
@@ -653,6 +705,8 @@ def _submarket(ctx: Ctx, data: ReportData) -> Section:  # noqa: C901
                                          ("under_construction", "under_construction", "Units under construction", "integer"), ("inventory", "inventory", "Submarket inventory (units)", "integer")):
             if f[key].value is None and ks.get(ks_key) is not None:
                 f[key] = F(label, kind, ks[ks_key], cp.source("key indicators"), note="From the CoStar PDF key indicators (report date, not quarter end)")
+            elif key in ("vacancy", "avg_asking_rent") and ks.get(ks_key) is not None:
+                _conflict(ctx, f[key], f"submarket.fields.{key}", label, [(ks[ks_key], cp.source("key indicators"), "CoStar PDF key indicators, report date")], tolerance=0.05)
         f["submarket_name"] = F("Submarket", "text", cp.data.get("submarket"), cp.source("page 1"))
         f["market_name"] = F("Market", "text", cp.data.get("market"), cp.source("page 1"))
         dl = cp.data.get("deliveries", [])

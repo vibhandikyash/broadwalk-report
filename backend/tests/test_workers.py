@@ -53,7 +53,7 @@ def test_process_file_failure_modes(tmp_path):
     db.add_file(p["id"], fid2, "odd.xlsx", str(odd), ".xlsx", odd.stat().st_size)
     jobs.process_file(fid2)
     f2 = db.get_file(fid2)
-    assert f2["status"] == "processed" and f2["parts"][0]["doc_type"] == "unknown" and "No recognised report" in f2["error"]
+    assert f2["status"] == "unrecognized" and f2["parts"][0]["doc_type"] == "unknown" and "No recognised report" in f2["error"]
     assert db.get_report_data(p["id"])["built_at"]  # consolidation still ran, with errors flagged
 
 

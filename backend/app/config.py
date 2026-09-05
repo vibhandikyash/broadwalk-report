@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+REPO_DIR = BACKEND_DIR.parent
 
 
 def _load_dotenv() -> None:
@@ -27,7 +28,9 @@ _load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
-    data_dir: Path = Path(os.getenv("APP_DATA_DIR", str(BACKEND_DIR / "data"))).resolve()
+    # A relative APP_DATA_DIR is taken from the repository root (the folder holding backend/ and frontend/),
+    # so 'backend/data' means the same thing whether uvicorn starts from the root or from backend/.
+    data_dir: Path = (REPO_DIR / os.getenv("APP_DATA_DIR", "backend/data")).resolve()
     workers: int = int(os.getenv("APP_WORKERS", "3"))
     max_upload_mb: int = int(os.getenv("APP_MAX_UPLOAD_MB", "50"))
     cors_origins: tuple[str, ...] = tuple(

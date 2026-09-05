@@ -4,7 +4,8 @@
 html, body { margin: 0; padding: 0; color: var(--ink); font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 9.5pt; line-height: 1.35; background: #fff; }
 .mono { font-family: "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.04em; }
 .small { font-size: 7pt; color: var(--mute); }
-.page { width: 10in; height: 5.625in; padding: 0.32in 0.45in 0.4in; position: relative; overflow: hidden; page-break-after: always; break-after: page; background: #fff; }
+.page { width: 10in; height: 5.625in; padding: 0.32in 0.45in 0.2in; display: flex; flex-direction: column; overflow: hidden; overflow-wrap: anywhere; page-break-after: always; break-after: page; background: #fff; }
+.page > * { flex-shrink: 0; }
 .page:last-child { page-break-after: auto; break-after: auto; }
 h1, h2, h3 { margin: 0; font-weight: 600; }
 .hdr { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--line); padding-bottom: 5pt; margin-bottom: 9pt; }
@@ -12,7 +13,9 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .hdr .brand { display: block; font-size: 6.5pt; color: var(--navy); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2pt; }
 .hdr-r { text-align: right; font-size: 6.5pt; color: var(--mute); }
 .hdr-r .tag { display: block; margin-top: 2pt; color: var(--navy); }
-.ftr { position: absolute; left: 0.45in; right: 0.45in; bottom: 0.2in; display: flex; justify-content: space-between; font-size: 6pt; color: var(--mute); border-top: 1px solid var(--line); padding-top: 4pt; }
+/* The footer sits in normal flow at the end of each page: if content overflows, the footer is pushed off the page and the
+   render check (and any text search for "NN / 10") notices. */
+.ftr { margin-top: auto; display: flex; justify-content: space-between; font-size: 6pt; color: var(--mute); border-top: 1px solid var(--line); padding-top: 4pt; }
 .two-col { display: grid; grid-template-columns: 1fr 1.6fr; gap: 0.25in; }
 .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.22in; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.15in; }
@@ -34,11 +37,14 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .tbl .group td { font-family: "JetBrains Mono", Menlo, monospace; font-size: 5.8pt; color: var(--navy); padding-top: 5pt; border-bottom: none; letter-spacing: 0.06em; }
 .tbl .subject td { background: var(--wash); font-weight: 600; }
 .tbl.dense td { padding: 1.6pt 3pt; } .tbl.dense { font-size: 6.8pt; }
+.tbl.fin td { padding: 1.3pt 4pt; } .tbl.fin { font-size: 6.5pt; } .tbl.fin.xdense td { padding: 0.8pt 3pt; } .tbl.fin.xdense { font-size: 6pt; }
 .tbl.xdense { font-size: 6pt; line-height: 1.15; } .tbl.xdense td { padding: 0.8pt 3pt; } .tbl.xdense th { padding: 2pt 3pt; font-size: 5.2pt; } .tbl.xdense .group td { padding-top: 2.5pt; font-size: 5.2pt; }
 .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5pt 10pt; font-size: 7.5pt; margin: 6pt 0; }
 .rent-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; margin: 6pt 0 8pt; }
 .photo-ph, .cover-photo { background: linear-gradient(135deg, var(--navy), #3b5f9a); color: #fff; display: flex; align-items: flex-end; padding: 10pt; font-size: 12pt; font-weight: 600; border-radius: 3pt; height: 100%; min-height: 2.2in; }
-.cover { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3in; }
+.cover { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3in; padding-bottom: 0.4in; }
+.photo { background-size: cover; background-position: center; }
+.logo { display: block; height: 14pt; width: auto; margin-bottom: 2pt; }
 .cover-photo { height: 100%; }
 .badge { display: inline-block; background: var(--navy); color: #fff; font-size: 7pt; padding: 3pt 7pt; margin: 6pt 0 10pt; }
 .badge span { font-weight: 400; opacity: 0.85; margin-left: 6pt; }
@@ -48,6 +54,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt 20pt; border-top: 1px solid var(--line); padding-top: 10pt; }
 .prepared { margin-top: 18pt; }
 .card { border: 1px solid var(--line); border-radius: 3pt; padding: 8pt; }
+.card .row { display: flex; justify-content: space-between; gap: 8pt; align-items: baseline; padding: 2pt 0; } .card .row + .row { border-top: 1px solid var(--line); } .card .amt { font-weight: 600; white-space: nowrap; } .card .amt .sub { display: inline; font-weight: 400; }
 .card h3 { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6pt; color: var(--navy); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4pt; }
 .callout { border-left: 3px solid var(--navy); padding: 4pt 8pt; background: var(--wash); font-size: 8.5pt; margin-bottom: 8pt; }
 .col-h { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6.5pt; color: var(--navy); letter-spacing: 0.08em; text-transform: uppercase; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 3pt; margin-bottom: 4pt; }

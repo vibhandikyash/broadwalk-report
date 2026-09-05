@@ -51,11 +51,14 @@ CREATE TABLE IF NOT EXISTS reports (
   error TEXT,
   html_path TEXT,
   pdf_path TEXT,
-  created_at TEXT NOT NULL
+  created_at TEXT NOT NULL,
+  snapshot TEXT
 );
+CREATE UNIQUE INDEX IF NOT EXISTS reports_project_version ON reports(project_id, version);
 """
 
-JSON_COLS = {"parts", "extractions", "data", "overrides", "issues", "notes"}
+JSON_COLS = {"parts", "extractions", "data", "overrides", "issues", "notes", "snapshot"}
+REPORT_COLS = "id, project_id, version, status, error, html_path, pdf_path, created_at"
 BOOL_COLS = {"ignored"}
 
 
@@ -70,6 +73,9 @@ def new_id() -> str:
 def init_db() -> None:
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     with connect() as con:
+        cols = {r["name"] for r in con.execute("PRAGMA table_info(reports)").fetchall()}
+        if cols and "snapshot" not in cols:  # database from a build before versions carried snapshots
+            con.execute("ALTER TABLE reports ADD COLUMN snapshot TEXT")
         con.executescript(SCHEMA)
 
 
@@ -228,13 +234,15 @@ def set_narrative(project_id: str, status: str | None, error: str | None = None)
 
 
 # ---------- reports ----------
-def create_report(project_id: str) -> dict:
+def create_report(project_id: str, snapshot: dict | None = None) -> dict:
+    """New queued version. BEGIN IMMEDIATE serialises the read-then-insert so concurrent requests get distinct numbers."""
     rid = new_id()
     with connect() as con:
+        con.execute("BEGIN IMMEDIATE")
         ver = con.execute("SELECT COALESCE(MAX(version), 0) + 1 FROM reports WHERE project_id = ?", (project_id,)).fetchone()[0]
         con.execute(
-            "INSERT INTO reports (id, project_id, version, status, created_at) VALUES (?,?,?,?,?)",
-            (rid, project_id, ver, "queued", now()),
+            "INSERT INTO reports (id, project_id, version, status, created_at, snapshot) VALUES (?,?,?,?,?,?)",
+            (rid, project_id, ver, "queued", now(), json.dumps(snapshot, default=str) if snapshot is not None else None),
         )
     return get_report(rid)  # type: ignore[return-value]
 
@@ -250,5 +258,5 @@ def get_report(rid: str) -> dict | None:
 
 def list_reports(project_id: str) -> list[dict]:
     with connect() as con:
-        rows = con.execute("SELECT * FROM reports WHERE project_id = ? ORDER BY version DESC", (project_id,)).fetchall()
+        rows = con.execute(f"SELECT {REPORT_COLS} FROM reports WHERE project_id = ? ORDER BY version DESC", (project_id,)).fetchall()
     return [_decode(r) for r in rows]  # type: ignore[misc]

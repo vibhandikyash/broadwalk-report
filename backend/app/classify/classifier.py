@@ -78,6 +78,7 @@ class Part:
     filename: str
     sheet: Sheet | None = None
     pages: list[Page] = field(default_factory=list)
+    created: str | None = None
 
     def to_json(self) -> dict:
         return {"doc_type": self.doc_type, "confidence": round(self.confidence, 2), "locator": self.locator}
@@ -104,5 +105,5 @@ def classify(doc: Document) -> list[Part]:
             parts.append(Part(t.value, conf, f"sheet '{sh.name}'", doc.file_id, doc.filename, sheet=sh))
     else:
         t, conf = best_match(norm(doc.text[:30000]), PDF_SIGNATURES)
-        parts.append(Part(t.value, conf, f"pages 1-{len(doc.pages)}", doc.file_id, doc.filename, pages=doc.pages))
+        parts.append(Part(t.value, conf, f"pages 1-{len(doc.pages)}", doc.file_id, doc.filename, pages=doc.pages, created=doc.created))
     return parts

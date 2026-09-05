@@ -177,6 +177,7 @@ class Document:
     kind: str  # "xlsx" | "pdf"
     sheets: list[Sheet] = field(default_factory=list)
     pages: list[Page] = field(default_factory=list)
+    created: str | None = None  # document creation date (ISO) when the file carries one, e.g. PDF metadata
 
     @property
     def text(self) -> str:

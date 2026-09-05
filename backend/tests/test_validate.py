@@ -8,7 +8,7 @@ from tests.test_builder import sample_files
 def test_validate_reports_conflicts_missing_and_file_problems():
     data, notes = build({"id": "p", "name": "P"}, sample_files())
     files = [{"original_filename": "bad.docx", "status": "unsupported", "error": "Unsupported file type '.docx'", "parts": []},
-             {"original_filename": "odd.xlsx", "status": "processed", "parts": [{"doc_type": "unknown", "locator": "sheet 'S'", "warnings": []}]},
+             {"original_filename": "odd.xlsx", "status": "unrecognized", "error": "No recognised report found in this file, so it is not used.", "parts": [{"doc_type": "unknown", "locator": "sheet 'S'", "warnings": []}]},
              {"original_filename": "warn.xlsx", "status": "processed", "parts": [{"doc_type": "yardi_rent_roll", "locator": "sheet 'R'", "warnings": ["'As Of' date not found"]}]}]
     issues = run(data, notes, files)
     msgs = [i.message for i in issues]

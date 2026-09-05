@@ -1,6 +1,8 @@
 """Completeness and consistency checks over the effective (override-applied, recomputed) ReportData."""
 from __future__ import annotations
 
+import datetime as dt
+
 from ..models import Issue, ReportData
 
 REQUIRED: dict[str, str] = {
@@ -38,10 +40,12 @@ def _file_issues(files: list[dict]) -> list[Issue]:
     for f in files:
         name = f.get("original_filename", "?")
         status = f.get("status")
-        if status in ("failed", "unsupported"):
+        if status in ("failed", "unsupported", "needs_ocr"):
             out.append(Issue(severity="warning", message=f"{name}: {f.get('error') or status}"))
-        elif status == "processed" and f.get("parts") and all(p.get("doc_type") == "unknown" for p in f["parts"]):
-            out.append(Issue(severity="info", message=f"{name}: no recognised report found; the file is not used"))
+        elif status == "unrecognized":
+            out.append(Issue(severity="warning", message=f"{name}: {f.get('error') or 'not recognised; the file is not used'}"))
+        elif f.get("ignored"):
+            out.append(Issue(severity="info", message=f"{name}: excluded on the Files page; not used"))
         for p in f.get("parts") or []:
             for w in p.get("warnings") or []:
                 out.append(Issue(severity="warning", message=f"{name} ({p.get('locator')}): {w}"))
@@ -92,11 +96,39 @@ def _reconciliation_issues(data: ReportData) -> list[Issue]:
     return out
 
 
+def _date(v):
+    try:
+        return dt.date.fromisoformat(str(v)[:10]) if v else None
+    except ValueError:
+        return None
+
+
+def _date_issues(data: ReportData) -> list[Issue]:
+    out: list[Issue] = []
+    v = data.value
+    eff, mat, io_end = _date(v("financing.fields.effective_date")), _date(v("financing.fields.maturity_date")), _date(v("financing.fields.io_end_date"))
+    if eff and mat and mat <= eff:
+        out.append(Issue(path="financing.fields.maturity_date", severity="error", message=f"Maturity date {mat} is not after the effective date {eff}"))
+    if io_end and ((eff and io_end < eff) or (mat and io_end > mat)):
+        out.append(Issue(path="financing.fields.io_end_date", severity="warning", message=f"IO end date {io_end} falls outside the loan term"))
+    ym = _date(v("financing.fields.yield_maintenance_through"))
+    if ym and mat and ym > mat:
+        out.append(Issue(path="financing.fields.yield_maintenance_through", severity="warning", message=f"Yield maintenance through {ym} is after the maturity date {mat}"))
+    prior, cur = _date(v("occupancy.fields.prior_date")), _date(v("occupancy.fields.current_date"))
+    if prior and cur and prior >= cur:
+        out.append(Issue(path="occupancy.fields.prior_date", severity="warning", message=f"Prior rent roll date {prior} is not before the current one {cur}"))
+    acq, end = _date(v("property.fields.acquired_date")), _date(v("property.fields.period_end"))
+    if acq and end and acq > end:
+        out.append(Issue(path="property.fields.acquired_date", severity="warning", message=f"Acquisition date {acq} is after the reporting period end {end}"))
+    return out
+
+
 def run(data: ReportData, notes: list[dict], files: list[dict]) -> list[Issue]:
     issues = [Issue(path=n.get("path"), severity=n.get("severity", "info"), message=n["message"]) for n in notes]
     issues += _file_issues(files)
     issues += _field_issues(data)
     issues += _reconciliation_issues(data)
+    issues += _date_issues(data)
     order = {"error": 0, "warning": 1, "info": 2}
     return sorted(issues, key=lambda i: order[i.severity])
 

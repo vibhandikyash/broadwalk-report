@@ -2,3 +2,4 @@
 pytest>=8
 httpx>=0.27
 -r requirements-llm.txt
+pip-audit>=2.7

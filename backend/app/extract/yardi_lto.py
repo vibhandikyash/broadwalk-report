@@ -14,6 +14,13 @@ from .base import Extraction, ExtractionError
 
 SECTION_TITLES = {"renewals": r"lease renewals?", "move_ins": r"move[- ]?ins?", "transfers": r"unit transfers?"}
 RANGE_RE = re.compile(r"between\s+(\d{4}-\d{2}-\d{2})\s+and\s+(\d{4}-\d{2}-\d{2})", re.I)
+NOT_PROPERTY_HEADERS = {"source", "section", "type", "status", "report", "category"}
+
+
+def _looks_like_section(text: str) -> bool:
+    """'Move Ins' / 'Lease Renewals' in a text column are section labels, not a property name."""
+    t = norm(text)
+    return any(re.search(rx, t) for rx in SECTION_TITLES.values()) or t in ("total", "totals", "averages")
 HEADER_MAP = [
     ("resident_name", r"^resident name"), ("unit_type", r"^unit type"), ("sqft", r"^sq ?ft"), ("unit", r"^unit$"),
     ("start", r"renewal start|lease start|move.?in date|start date"), ("term", r"^lease term"),
@@ -94,8 +101,9 @@ def extract(part: Part) -> Extraction:
                 continue
             if property_name is None:  # property name sits in a text column left of the resident name
                 for c in range(cm.get("resident_name", 0)):
-                    if sh.text(r, c) and to_number(sh.cell(r, c)) is None:
-                        property_name = sh.text(r, c)
+                    val = sh.text(r, c)
+                    if val and to_number(sh.cell(r, c)) is None and not _looks_like_section(val) and headers[c] not in NOT_PROPERTY_HEADERS:
+                        property_name = val
                         break
             start = to_date(sh.cell(r, cm["start"])) if "start" in cm else None
             rows.append({

@@ -15,6 +15,7 @@ from .projects import file_public, project_or_404
 
 router = APIRouter(tags=["files"])
 CHUNK = 1024 * 1024
+NOT_REPROCESSABLE = ("unsupported",)
 
 
 class FilePatch(BaseModel):
@@ -34,6 +35,10 @@ def file_or_404(pid: str, fid: str) -> dict:
     return f
 
 
+def _job_key(fid: str) -> str:
+    return f"file:{fid}"
+
+
 @router.get("/doc-types")
 def doc_types() -> list[dict]:
     return [{"key": t.value, "label": label} for t, label in DOC_TYPE_LABELS.items()]
@@ -42,8 +47,8 @@ def doc_types() -> list[dict]:
 @router.post("/projects/{pid}/files", status_code=201)
 async def upload_files(pid: str, files: list[UploadFile] = File(...)) -> list[dict]:
     project_or_404(pid)
-    out = []
-    for uf in files:
+    saved: list[dict] = []
+    for uf in files:  # phase 1: every record is durable, with its final supported/unsupported state, before any job starts
         name = Path(uf.filename or "upload").name
         ext = Path(name).suffix.lower()
         fid = db.new_id()
@@ -59,14 +64,15 @@ async def upload_files(pid: str, files: list[UploadFile] = File(...)) -> list[di
                     raise HTTPException(413, f"{name} exceeds the {settings.max_upload_mb} MB upload limit")
                 fh.write(chunk)
         if ext in SUPPORTED_EXTENSIONS:
-            db.add_file(pid, fid, name, str(dest), ext, size)
-            pool.submit(f"file:{fid}", jobs.process_file, fid)
-        else:  # never let an unsupported file sit in 'queued': a running job could see it and skip consolidation
-            db.add_file(pid, fid, name, str(dest), ext, size, status="unsupported",
-                        error=f"Unsupported file type '{ext}'. Supported: {', '.join(SUPPORTED_EXTENSIONS)}")
-        out.append(file_public(db.get_file(fid)))
-    jobs.rebuild_if_idle(pid)  # jobs that finished while this upload was still inserting rows skipped their rebuild
-    return out
+            saved.append(db.add_file(pid, fid, name, str(dest), ext, size))
+        else:
+            saved.append(db.add_file(pid, fid, name, str(dest), ext, size, status="unsupported",
+                                     error=f"Unsupported file type '{ext}'. Supported: {', '.join(SUPPORTED_EXTENSIONS)}"))
+    for rec in saved:  # phase 2: enqueue
+        if rec["status"] == "queued":
+            pool.submit(_job_key(rec["id"]), jobs.process_file, rec["id"])
+    jobs.rebuild_if_idle(pid)  # covers a batch with nothing to process, and jobs that finished before this line
+    return [file_public(r) for r in saved]
 
 
 @router.get("/projects/{pid}/files")
@@ -81,6 +87,13 @@ def file_extraction(pid: str, fid: str) -> dict:
     return {"parts": f["parts"], "extractions": f["extractions"]}
 
 
+def _queue(f: dict) -> None:
+    if f["status"] in jobs.ACTIVE or pool.is_running(_job_key(f["id"])):
+        raise HTTPException(409, f"{f['original_filename']} is still processing; try again when it has finished")
+    db.update_file(f["id"], status="queued", error=None)
+    pool.submit(_job_key(f["id"]), jobs.process_file, f["id"])
+
+
 @router.patch("/projects/{pid}/files/{fid}")
 def patch_file(pid: str, fid: str, body: FilePatch) -> dict:
     f = file_or_404(pid, fid)
@@ -93,10 +106,12 @@ def patch_file(pid: str, fid: str, body: FilePatch) -> dict:
         if body.doc_type_override not in {t.value for t in DocType}:
             raise HTTPException(422, f"Unknown document type '{body.doc_type_override}'")
         cols["doc_type_override"] = body.doc_type_override
+    retype = "doc_type_override" in cols and f["status"] not in NOT_REPROCESSABLE and cols["doc_type_override"] != f.get("doc_type_override")
+    if retype and (f["status"] in jobs.ACTIVE or pool.is_running(_job_key(fid))):
+        raise HTTPException(409, f"{f['original_filename']} is still processing; change its type when it has finished")
     db.update_file(fid, **cols)
-    if "doc_type_override" in cols and f["status"] != "unsupported":
-        db.update_file(fid, status="queued", error=None)
-        pool.submit(f"file:{fid}", jobs.process_file, fid)
+    if retype:
+        _queue(db.get_file(fid))
     else:
         jobs.rebuild_if_idle(pid)
     return file_public(db.get_file(fid))
@@ -105,16 +120,17 @@ def patch_file(pid: str, fid: str, body: FilePatch) -> dict:
 @router.post("/projects/{pid}/files/{fid}/reprocess")
 def reprocess_file(pid: str, fid: str) -> dict:
     f = file_or_404(pid, fid)
-    if f["status"] == "unsupported":
+    if f["status"] in NOT_REPROCESSABLE:
         raise HTTPException(409, "Unsupported file types cannot be processed")
-    db.update_file(fid, status="queued", error=None)
-    pool.submit(f"file:{fid}", jobs.process_file, fid)
+    _queue(f)
     return file_public(db.get_file(fid))
 
 
 @router.delete("/projects/{pid}/files/{fid}", status_code=204)
 def delete_file(pid: str, fid: str) -> None:
     f = file_or_404(pid, fid)
+    if f["status"] in jobs.ACTIVE or pool.is_running(_job_key(fid)):
+        raise HTTPException(409, f"{f['original_filename']} is still processing; remove it when it has finished")
     db.delete_file(fid)
     Path(f["stored_path"]).unlink(missing_ok=True)
     jobs.rebuild_if_idle(pid)

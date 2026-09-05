@@ -21,6 +21,8 @@ def test_full_workflow_in_the_browser(tmp_path):
     files = sorted(p for p in Path(DATASET).rglob("*") if p.suffix.lower() in (".xlsx", ".pdf") and not p.name.startswith("~$"))
     junk = tmp_path / "notes.docx"
     junk.write_bytes(b"not a report")
+    corrupt = tmp_path / "broken.xlsx"
+    corrupt.write_bytes(b"not a workbook at all")
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
         page = browser.new_page(viewport={"width": 1400, "height": 900})
@@ -38,10 +40,13 @@ def test_full_workflow_in_the_browser(tmp_path):
         api = f"{URL}/api/projects/{pid}"
 
         # 2. upload through the file picker (hidden input inside the drop zone), plus an unsupported file
-        page.locator("input[type=file]").set_input_files([str(f) for f in files] + [str(junk)])
+        page.get_by_label("Choose source files").set_input_files([str(f) for f in files] + [str(junk), str(corrupt)])
         expect(page.locator("tr .chip-processed")).to_have_count(len(files), timeout=120000)
         expect(page.locator("tr .chip-unsupported")).to_have_count(1)
         expect(page.locator("tr", has_text="notes.docx")).to_contain_text("Unsupported file type")
+        expect(page.locator("tr", has_text="broken.xlsx").locator(".chip")).to_have_text("failed", timeout=30000)
+        expect(page.locator("tr", has_text="broken.xlsx")).to_contain_text("Could not read file")
+        expect(page.locator("p.status")).to_contain_text("need attention")
 
         # 3. drag-and-drop one small workbook onto the drop zone
         small = next(f for f in files if "Occupancy_03" in f.name)
@@ -66,12 +71,22 @@ def test_full_workflow_in_the_browser(tmp_path):
         dist_row.get_by_role("combobox").select_option("")
         expect(dist_row.locator(".chip")).to_have_text("processed", timeout=30000)
         lto_row = page.locator("tr", has_text="Yardi LTO")
-        lto_row.get_by_role("button", name="Data").click()
+        lto_row.get_by_role("button", name=re.compile("^Show extracted data")).click()
         expect(page.locator("details.panel pre")).to_contain_text("yardi_lease_trade_out")
-        lto_row.get_by_role("button", name="Reprocess").click()
+        lto_row.get_by_role("button", name=re.compile("^Reprocess")).click()
         expect(lto_row.locator(".chip")).to_have_text("processed", timeout=30000)
-        page.locator("tr", has_text="notes.docx").get_by_role("button", name="Remove").click()
+        page.locator("tr", has_text="notes.docx").get_by_role("button", name=re.compile("^Remove")).click()
         expect(page.locator("tr", has_text="notes.docx")).to_have_count(0)
+        page.locator("tr", has_text="broken.xlsx").get_by_role("button", name=re.compile("^Remove")).click()
+        expect(page.locator("tr", has_text="broken.xlsx")).to_have_count(0)
+
+        # 4b. a cover photo through the reusable image slot
+        from PIL import Image
+
+        photo = tmp_path / "cover.png"
+        Image.new("RGB", (640, 360), (27, 58, 107)).save(photo)
+        page.get_by_label("Choose cover photo").set_input_files(str(photo))
+        expect(page.locator("img.thumb")).to_have_count(1, timeout=15000)
 
         # 5. Review: conflict picker, manual rows, row deletion, rebuild, attention filter, narratives
         page.get_by_role("link", name=re.compile("Review data")).click()
@@ -86,7 +101,7 @@ def test_full_workflow_in_the_browser(tmp_path):
         save()
         expect(page.locator(".field", has_text="Purchase price").locator(".chip").first).to_have_text("edited")
         page.get_by_role("button", name=re.compile("Original Underwriting")).click()
-        page.get_by_role("button", name="+ add row").click()
+        page.get_by_role("button", name=re.compile("^Add row")).click()
         row = page.locator("table.cells tbody tr:not(.totals)").first
         inputs = row.locator("input:not([disabled])")
         expect(inputs).to_have_count(4)
@@ -101,7 +116,7 @@ def test_full_workflow_in_the_browser(tmp_path):
         comps_rows = page.locator("table.cells tbody tr:not(.totals)")
         before = comps_rows.count()
         assert before > 2
-        page.locator("table.cells tbody tr", has_text="Westchase").get_by_role("button", name="delete").click()
+        page.locator("table.cells tbody tr", has_text="Westchase").get_by_role("button", name=re.compile("^Delete row")).click()
         expect(comps_rows).to_have_count(before - 1)
         page.get_by_role("button", name="Rebuild from files").click()
         expect(comps_rows).to_have_count(before - 1)
@@ -113,6 +128,24 @@ def test_full_workflow_in_the_browser(tmp_path):
         page.get_by_role("button", name=re.compile("Status Update")).click()
         page.locator(".field", has_text="Status item 1: title").locator("input").fill("Lender-required repairs")
         page.locator(".field", has_text="Status item 1: body").locator("textarea").fill("Seven of eight items are complete; the last has an approved extension.")
+        save()
+        # an invalid correction is refused with a readable message and the edit stays pending
+        page.get_by_role("button", name=re.compile(r"^Property\b")).click()
+        units = page.locator(".field", has_text="Units").first.locator("input")
+        units.fill("12.5")
+        save_btn.click()
+        expect(page.get_by_role("alert")).to_contain_text("whole number", timeout=15000)
+        units.fill("338")
+        save()
+        # stored corrections are listed and can be reset individually
+        page.locator("details.corrections summary").click()
+        expect(page.locator(".corrections li code", has_text="financing.fields.lender").or_(page.locator(".corrections li code").first)).to_be_visible()
+        n_before = page.locator(".corrections li code").count()
+        assert n_before >= 3
+        page.locator("button[aria-label='Reset correction status.fields.status1_title']").click()
+        expect(page.locator(".corrections li code")).to_have_count(n_before - 1)
+        page.get_by_role("button", name=re.compile("Status Update")).click()
+        page.locator(".field", has_text="Status item 1: title").locator("input").fill("Lender-required repairs")
         save()
         if os.getenv("LLM_LIVE"):  # one real drafting run through the UI button (uses the configured provider)
             page.get_by_role("button", name=re.compile("Draft narratives")).click()
@@ -127,6 +160,7 @@ def test_full_workflow_in_the_browser(tmp_path):
         expect(page.frame_locator("iframe").locator("body")).to_contain_text("The Boardwalk", timeout=30000)
         page.get_by_role("button", name="Generate PDF").click()
         expect(page.locator(".version .chip-done")).to_have_count(1, timeout=120000)
+        expect(page.locator("p.status")).to_contain_text("ready to download")
         href = page.locator("a", has_text="Download PDF").first.get_attribute("href")
         pdf = page.request.get(URL + href)
         assert pdf.ok and pdf.headers["content-type"] == "application/pdf" and pdf.body()[:4] == b"%PDF"
@@ -139,6 +173,37 @@ def test_full_workflow_in_the_browser(tmp_path):
         assert "amenity upkeep" in low and "lender-required repairs" in low and "seven of eight items" in low and "insurance savings" in low
         assert "38,100,000" in text or "$38.1m" in low
         assert "westchase" not in low
+        for n in range(2, 11):
+            assert text.count(f"{n:02d} / 10") == 1, n
+        snap = page.request.get(URL + href.replace("/download", "/snapshot")).json()
+        assert snap["sections"]["status"]["fields"]["status1_title"]["override"] == "Lender-required repairs"
+
+        # 7. edit again without re-uploading, generate v2; v1 is unchanged
+        page.get_by_role("link", name=re.compile("Review")).click()
+        page.wait_for_url(re.compile("/review"))
+        page.get_by_role("button", name=re.compile(r"^Financing\b")).click()
+        page.locator(".field", has_text="Lender").first.locator("input").fill("Fannie Mae")
+        save()
+        page.get_by_role("link", name=re.compile(r"^Report")).click()
+        page.wait_for_url(re.compile("/report"))
+        page.get_by_role("button", name="Generate PDF").click()
+        expect(page.locator(".version .chip-done")).to_have_count(2, timeout=120000)
+        reports = page.request.get(f"{api}/reports").json()
+        v1, v2 = next(r for r in reports if r["version"] == 1), next(r for r in reports if r["version"] == 2)
+        s1 = page.request.get(f"{api}/reports/{v1['id']}/snapshot").json()
+        s2 = page.request.get(f"{api}/reports/{v2['id']}/snapshot").json()
+        assert s1["sections"]["financing"]["fields"]["lender"]["override"] is None and s2["sections"]["financing"]["fields"]["lender"]["override"] == "Fannie Mae"
+        pdf2 = page.request.get(f"{api}/reports/{v2['id']}/download").body()
+        assert pdf2 != pdf.body() and b"%PDF" == pdf2[:4]
+
+        # 8. narrow viewport: no horizontal scrolling, controls still reachable
+        page.set_viewport_size({"width": 375, "height": 800})
+        page.goto(f"{URL}/projects/{pid}/review")
+        expect(page.get_by_role("button", name=re.compile(r"^Sav"))).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth") <= 375
+        page.goto(f"{URL}/projects/{pid}/files")
+        expect(page.get_by_role("link", name=re.compile("Review data"))).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth") <= 375
 
         # cleanup
         assert page.request.delete(api).status == 204

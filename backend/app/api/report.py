@@ -3,15 +3,17 @@ from __future__ import annotations
 import re
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 
-from .. import db
+from .. import assets, db
 from ..report.render import render_html
 from ..workers import jobs
 from ..workers.pool import pool
 from .projects import project_or_404
 
 router = APIRouter(tags=["report"])
+# The preview is same-origin with the app; the policy keeps it inert even if some markup slipped past escaping.
+PREVIEW_CSP = "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src data:; form-action 'none'; base-uri 'none'"
 
 
 def report_public(r: dict) -> dict:
@@ -33,16 +35,19 @@ def preview(pid: str) -> HTMLResponse:
         data, _issues, _row = jobs.load_effective(pid)
     except LookupError as e:
         raise HTTPException(409, str(e)) from e
-    return HTMLResponse(render_html(data, project))
+    return HTMLResponse(render_html(data, project, assets=assets.current_assets(pid)), headers={"Content-Security-Policy": PREVIEW_CSP})
 
 
 @router.post("/projects/{pid}/reports", status_code=202)
 def create_report(pid: str) -> dict:
+    """Queue a new version. The reviewed data is snapshotted here, at request time, so later edits never leak into it."""
     project_or_404(pid)
-    rd = db.get_report_data(pid)
-    if rd is None or not rd.get("data"):
-        raise HTTPException(409, "Report data has not been built yet; upload and process files first")
-    r = db.create_report(pid)
+    try:
+        data, _issues, _row = jobs.load_effective(pid)
+    except LookupError as e:
+        raise HTTPException(409, str(e)) from e
+    r = db.create_report(pid, snapshot=data.model_dump())
+    assets.copy_for_version(pid, jobs.report_dir(pid), r["version"])
     pool.submit(f"report:{r['id']}", jobs.generate_report, r["id"])
     return report_public(db.get_report(r["id"]))
 
@@ -56,6 +61,15 @@ def list_reports(pid: str) -> list[dict]:
 @router.get("/projects/{pid}/reports/{rid}")
 def get_report(pid: str, rid: str) -> dict:
     return report_public(report_or_404(pid, rid))
+
+
+@router.get("/projects/{pid}/reports/{rid}/snapshot")
+def report_snapshot(pid: str, rid: str) -> JSONResponse:
+    """The exact reviewed data this version was rendered from."""
+    r = report_or_404(pid, rid)
+    if not r.get("snapshot"):
+        raise HTTPException(404, "This version has no stored snapshot")
+    return JSONResponse(r["snapshot"])
 
 
 @router.get("/projects/{pid}/reports/{rid}/download")
