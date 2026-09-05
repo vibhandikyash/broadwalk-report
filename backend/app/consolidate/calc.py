@@ -219,23 +219,30 @@ def recompute(d: ReportData) -> None:  # noqa: C901 - one long, explicit pass ov
             if "concession_pct" in row:
                 row["concession_pct"].value = ratio(conc, ask)
         comps = [r for k, r in t.rows.items() if not t.row_meta.get(k, {}).get("subject")]
-        units = [_row_val(r, "units") for r in comps]
-        weighted = all(u is not None for u in units) and bool(comps)
-        def agg(col: str):
-            if weighted:
-                return wavg((_row_val(r, col), _row_val(r, "units")) for r in comps)
-            return mean(_row_val(r, col) for r in comps)
-        _set_total(t, "units", mean(units))
+        n = len(comps)
+
+        def agg(col: str) -> tuple[float | None, str | None, int]:
+            """Average of the comparables that have a value: unit-weighted only when every one of them has a unit count."""
+            have = [r for r in comps if _row_val(r, col) is not None]
+            if not have:
+                return None, None, 0
+            if all(_row_val(r, "units") is not None for r in have):
+                return wavg((_row_val(r, col), _row_val(r, "units")) for r in have), "unit-weighted", len(have)
+            return mean(_row_val(r, col) for r in have), "simple average", len(have)
+
+        _set_total(t, "units", mean(_row_val(r, "units") for r in comps))
         vint = mean(_row_val(r, "vintage") for r in comps)
-        _set_total(t, "vintage", None if vint is None else round(vint))
-        for col in ("leased_pct", "asking_rent", "effective_rent"):
-            _set_total(t, col, agg(col))
+        _set_total(t, "vintage", None if vint is None else int(vint + 0.5))
+        methods = []
+        for col, label in (("leased_pct", "leased %"), ("asking_rent", "asking rent"), ("effective_rent", "effective rent")):
+            val, method, k = agg(col)
+            _set_total(t, col, val)
+            if method:
+                methods.append(f"{label} {method}" + (f" ({k} of {n} with values)" if k < n else ""))
         ta, te = _row_val(t.totals, "asking_rent"), _row_val(t.totals, "effective_rent")
         _set_total(t, "concession", None if ta is None or te is None else ta - te)
         _set_total(t, "concession_pct", ratio(None if ta is None or te is None else ta - te, ta))
-        n = len(comps)
-        setv("submarket.fields.footnote", f"Comp set average across {n} propert{'y' if n == 1 else 'ies'}"
-             + (" (unit-weighted)" if weighted else " (simple average; unit counts incomplete)") + ".")
+        setv("submarket.fields.footnote", f"Comp set average across {n} comparable{'s' if n != 1 else ''}" + (": " + "; ".join(methods) if methods else "") + ".")
     setv("submarket.fields.source_note", "Source: HelloData.ai listings and CoStar submarket data")
 
     # occupancy and trade-out

@@ -15,3 +15,12 @@ def test_render_html_contains_every_page_and_key_values():
     assert "Jinja" not in html and "{{" not in html
     assert "—" in html  # missing values render as an em dash, never as 'None'
     assert ">None<" not in html
+
+
+
+def test_incomplete_reports_carry_a_draft_marker_and_complete_ones_do_not():
+    data, _ = build({"id": "p", "name": "P"}, sample_files())
+    html = render_html(data, {"name": "P"}, draft_gaps=17)
+    assert html.count("DRAFT") >= 10 and "17 items outstanding" in html
+    clean = render_html(data, {"name": "P"}, draft_gaps=0)
+    assert "DRAFT" not in clean

@@ -48,6 +48,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .cover-photo { height: 100%; }
 .badge { display: inline-block; background: var(--navy); color: #fff; font-size: 7pt; padding: 3pt 7pt; margin: 6pt 0 10pt; }
 .badge span { font-weight: 400; opacity: 0.85; margin-left: 6pt; }
+.draft { color: var(--red); font-weight: 500; } .cover .draft { margin: -6pt 0 8pt; }
 .cover-title { font-size: 26pt; line-height: 1.05; }
 .cover-sub { font-size: 16pt; font-style: italic; font-weight: 400; color: var(--navy); margin-bottom: 6pt; }
 .lede { font-size: 8.5pt; margin: 0 0 12pt; }

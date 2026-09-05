@@ -723,51 +723,52 @@ def _submarket(ctx: Ctx, data: ReportData) -> Section:  # noqa: C901
         C("asking_rent", "Asking rent"), C("effective_rent", "Effective rent (NER)"), C("concession", "Concession $/mo", derived=True),
         C("concession_pct", "Concession %", "percent", derived=True)], editable_rows=True)
     cur_rr = _at_or_before(sel.rent_rolls, p.end)
-    li = sel.listings
-    if li:
-        props = li.data.get("properties", {})
-        subject = next((n for n in props if names_match(n, ctx.property_name)), None) if ctx.property_name else None
-        order = ([subject] if subject else []) + sorted((n for n in props if n != subject),
-                                                        key=lambda n: -(props[n]["asking_sum"] / props[n]["asking_n"] if props[n]["asking_n"] else 0))
-        for name in order:
-            pr = props[name]
-            key = slug(name)
-            row = t.new_row(key, label=name)
-            is_subject = name == subject
-            t.row_meta[key]["subject"] = is_subject
-            src = li.source(f"rows from {pr['first_row'] + 1}", f"{pr['rows']} listings")
-            row["name"] = F("Property", "text", name, src)
-            meta = _comp_meta(sel, name)
-            row["units"] = F("Units", "integer", meta.get("units") if meta else None, meta["_src"] if meta and meta.get("units") else None,
-                             note=None if meta and meta.get("units") else "Unit count is not in the listings export; supply a HelloData comp summary or enter it")
-            row["vintage"] = F("Vintage", "integer", meta.get("year_built") if meta else None, meta["_src"] if meta and meta.get("year_built") else None,
-                               note=None if meta and meta.get("year_built") else "Year built is not in the listings export; enter it")
-            row["asking_rent"] = F("Asking rent", "money", calc.ratio(pr["asking_sum"], pr["asking_n"]), src, note="Mean asking rent across all listing rows")
-            row["effective_rent"] = F("Effective rent (NER)", "money", calc.ratio(pr["effective_sum"], pr["effective_n"]), src, note="Mean effective rent across all listing rows")
-            if is_subject and cur_rr and cur_rr.data.get("occupancy_pct") is not None:
-                row["leased_pct"] = F("Leased %", "percent", cur_rr.data["occupancy_pct"], cur_rr.source("summary block"), note="Physical occupancy per the Yardi rent roll")
-            else:
-                row["leased_pct"] = F("Leased %", "percent", calc.ratio(pr["leased"], pr["rows"]), src, note="Leased listings / all listings")
-    else:
-        for src in sel.comps:
-            for c in src.data.get("comps", []):
-                if c.get("avg_rent") is None:
-                    continue
-                key = slug(c["name"])
-                if key in t.rows:
-                    continue
-                row = t.new_row(key, label=c["name"])
-                t.row_meta[key]["subject"] = names_match(c["name"], ctx.property_name)
-                loc = src.source(f"page {c.get('page', '')}".strip(), c["name"])
-                row["name"] = F("Property", "text", c["name"], loc)
-                row["units"] = F("Units", "integer", c.get("units"), loc if c.get("units") else None)
-                row["vintage"] = F("Vintage", "integer", c.get("year_built"), loc if c.get("year_built") else None)
-                row["asking_rent"] = F("Asking rent", "money", c.get("avg_rent"), loc)
-                row["effective_rent"] = F("Effective rent (NER)", "money", c.get("ner"), loc)
-                lc, ac = c.get("leased_count"), c.get("active_count")
-                row["leased_pct"] = F("Leased %", "percent", calc.ratio(lc, (lc or 0) + (ac or 0)) if lc is not None else c.get("leased_pct"), loc)
-        if not t.rows:
-            ctx.note("warning", "No HelloData listings export or comp summary found; the comp table is empty (add rows manually)", "submarket")
+    subject_occ = cur_rr.data.get("occupancy_pct") if cur_rr else None
+    entries, extras = _comp_entries(sel)
+    if extras:
+        shown = ", ".join(extras[:6]) + (" and more" if len(extras) > 6 else "")
+        ctx.note("info", f"The HelloData comp summary also names {len(extras)} propert{'y' if len(extras) == 1 else 'ies'} not in the listings export ({shown}); "
+                         "add them as rows on the review screen if they belong to this comp set", "submarket.tables.comps")
+    for key, entry in entries.items():
+        name = entry["name"]
+        is_subject = names_match(name, ctx.property_name)
+        row = t.new_row(key, label=name)
+        t.row_meta[key]["subject"] = is_subject
+        listing = entry.get("listing")
+        summaries = entry.get("summaries", [])
+        sheet = next(((c, src) for c, src in summaries if src.data.get("source") == "sheet"), None)
+        pdf = next(((c, src) for c, src in summaries if src.data.get("source") == "pdf"), None)
+        li_src = sel.listings.source(f"rows from {listing['first_row'] + 1}", f"{listing['rows']} listings") if listing else None
+        row["name"] = F("Property", "text", name, li_src or _summary_src(*summaries[0]))
+        units = next(((c["units"], _summary_src(c, src)) for c, src in summaries if c.get("units") is not None), (None, None))
+        row["units"] = F("Units", "integer", units[0], units[1], note=None if units[0] is not None else "Unit count is not in the supplied files; enter it")
+        built = next(((c["year_built"], _summary_src(c, src)) for c, src in summaries if c.get("year_built") is not None), (None, None))
+        row["vintage"] = F("Vintage", "integer", built[0], built[1], note=None if built[0] is not None else "Year built is not in the supplied files; enter it")
+        if listing and listing.get("asking_n"):
+            row["asking_rent"] = F("Asking rent", "money", calc.ratio(listing["asking_sum"], listing["asking_n"]), li_src, note="Mean asking rent across all listing rows")
+        elif pdf and pdf[0].get("avg_rent") is not None:
+            row["asking_rent"] = F("Asking rent", "money", pdf[0]["avg_rent"], _summary_src(*pdf), note="Average rent from the comp summary")
+        else:
+            row["asking_rent"] = F("Asking rent", "money", None, note="No rent data for this property in the supplied files; enter it")
+        if listing and listing.get("effective_n"):
+            row["effective_rent"] = F("Effective rent (NER)", "money", calc.ratio(listing["effective_sum"], listing["effective_n"]), li_src, note="Mean effective rent across all listing rows")
+        elif pdf and pdf[0].get("ner") is not None:
+            row["effective_rent"] = F("Effective rent (NER)", "money", pdf[0]["ner"], _summary_src(*pdf), note="Net effective rent from the comp summary")
+        else:
+            row["effective_rent"] = F("Effective rent (NER)", "money", None, note="No effective rent for this property in the supplied files; enter it")
+        if is_subject and subject_occ is not None:
+            row["leased_pct"] = F("Leased %", "percent", subject_occ, cur_rr.source("summary block"), note="Physical occupancy per the Yardi rent roll")
+        elif listing and listing.get("rows"):
+            row["leased_pct"] = F("Leased %", "percent", calc.ratio(listing["leased"], listing["rows"]), li_src, note="Leased listings / all listings")
+        elif sheet and sheet[0].get("leased_pct") is not None:
+            row["leased_pct"] = F("Leased %", "percent", sheet[0]["leased_pct"], _summary_src(*sheet))
+        elif pdf and pdf[0].get("leased_count") is not None:
+            lc, ac = pdf[0]["leased_count"], pdf[0].get("active_count") or 0
+            row["leased_pct"] = F("Leased %", "percent", calc.ratio(lc, lc + ac), _summary_src(*pdf), note="Leased / (leased + active) listings")
+        else:
+            row["leased_pct"] = F("Leased %", "percent", None, note="Leased % is not in the supplied files; enter it")
+    if not t.rows:
+        ctx.note("warning", "No HelloData listings export or comp summary found; the comp table is empty (add rows manually)", "submarket")
     t.totals["name"] = F("Property", "text", "Comp set average", status="derived")
     for ck, label, kind in (("units", "Units", "integer"), ("vintage", "Vintage", "integer"), ("leased_pct", "Leased %", "percent"),
                             ("asking_rent", "Asking rent", "money"), ("effective_rent", "Effective rent (NER)", "money"),
@@ -779,6 +780,55 @@ def _submarket(ctx: Ctx, data: ReportData) -> Section:  # noqa: C901
     if not cx and not cp:
         ctx.note("warning", "No CoStar submarket data found; vacancy, rent growth and pipeline are missing", "submarket")
     return s
+
+
+def _summary_src(c: dict, src: Src) -> dict:
+    loc = f"row {c['row'] + 1}" if c.get("row") is not None else f"page {c.get('page', '')}".strip()
+    return src.source(loc, c.get("name"))
+
+
+def _comp_entries(sel: Selection) -> tuple[dict[str, dict], list[str]]:
+    """The comp set, keyed by slug (subject first, then by asking rent), plus the names of properties a comp
+    summary mentions that are not in the set.
+
+    The listings export defines the set when it exists (it is the source the client's own report is built
+    from); otherwise the HelloData comp sheet defines it; otherwise the one-page PDF summary does. Summaries
+    always enrich a row whose name matches tolerantly ('Westchase' and 'Westchase Apartments' are one row) and
+    a property with only metadata is kept with its rents missing. Extra properties named by a summary of a
+    different, broader report are returned separately so the builder can surface them instead of merging two
+    comp sets.
+    """
+    entries: dict[str, dict] = {}
+    extras: list[str] = []
+
+    def find(name: str) -> dict | None:
+        return next((e for e in entries.values() if names_match(e["name"], name)), None)
+
+    if sel.listings:
+        for name, pr in sel.listings.data.get("properties", {}).items():
+            entries.setdefault(slug(name), {"name": name})["listing"] = pr
+    for src in sorted(sel.comps, key=lambda s: s.data.get("source") != "sheet"):  # sheets before PDFs
+        defines = not entries or (src.data.get("source") == "sheet" and not sel.listings)
+        for c in src.data.get("comps", []):
+            if not c.get("name") or norm(c["name"]).startswith("comp average"):
+                continue
+            entry = find(c["name"])
+            if entry is None:
+                if not defines:
+                    if c["name"] not in extras:
+                        extras.append(c["name"])
+                    continue
+                entry = entries.setdefault(slug(c["name"]), {"name": c["name"]})
+            entry.setdefault("summaries", []).append((c, src))
+
+    def asking(e: dict) -> float:
+        pr = e.get("listing")
+        if pr and pr.get("asking_n"):
+            return pr["asking_sum"] / pr["asking_n"]
+        return next((c["avg_rent"] for c, _ in e.get("summaries", []) if c.get("avg_rent") is not None), -1.0)
+
+    ordered = dict(sorted(entries.items(), key=lambda kv: (0 if names_match(kv[1]["name"], sel.property_name) else 1, -asking(kv[1]), kv[1]["name"])))
+    return ordered, extras
 
 
 def _occupancy(ctx: Ctx, data: ReportData) -> Section:
@@ -846,6 +896,8 @@ def _occupancy(ctx: Ctx, data: ReportData) -> Section:
         ctx.note("warning", f"The Lease Trade-Out report covers {lp.get('start')} to {lp.get('end')}, which is not the reporting period", "occupancy")
     for key, label in (("occupancy_narrative", "Occupancy commentary"), ("new_lease_narrative", "New lease commentary"), ("renewal_narrative", "Renewal commentary")):
         f[key] = M(label, "longtext")
+    f["no_activity_note"] = M("No leasing activity statement", "longtext",
+                              note="Only needed when a leasing table is empty: state that no new leases or renewals commenced, so an empty table reads as reviewed rather than missing")
     return s
 
 
@@ -897,7 +949,8 @@ def build(project: dict, files: list[dict]) -> tuple[ReportData, list[dict]]:
 def apply_overrides(data: ReportData, overrides: dict) -> list[str]:
     """Apply AI drafts, manual rows, row deletions and field overrides. Returns paths that no longer exist."""
     stale: list[str] = []
-    for path, text in (overrides.get("ai_drafts") or {}).items():
+    for path, entry in (overrides.get("ai_drafts") or {}).items():
+        text = entry.get("text") if isinstance(entry, dict) else entry
         f = data.field(path)
         if f is None:
             stale.append(path)

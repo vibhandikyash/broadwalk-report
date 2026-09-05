@@ -19,7 +19,7 @@
 </div>
 {% endmacro %}
 {% macro footer(section, n) %}
-<div class="ftr mono"><span>{{ name|upper }} · {{ q }} · {{ section|upper }}</span><span>{{ '%02d' % n }} / 10</span></div>
+<div class="ftr mono"><span>{{ name|upper }} · {{ q }} · {{ section|upper }}{% if draft_gaps %} · <span class="draft">DRAFT ({{ draft_gaps }} outstanding)</span>{% endif %}</span><span>{{ '%02d' % n }} / 10</span></div>
 {% endmacro %}
 {% macro vcls(x) %}{{ 'neg' if (x or 0) < 0 else 'pos' }}{% endmacro %}
 
@@ -29,6 +29,7 @@
   <div>
     <div class="mono small">{{ q }} · LP QUARTERLY REPORT · CONFIDENTIAL</div>
     <div class="badge mono">{{ q }}<span>QUARTERLY INVESTOR REPORT</span></div>
+    {% if draft_gaps %}<div class="mono small draft">DRAFT · {{ draft_gaps }} item{{ 's' if draft_gaps != 1 }} outstanding on the review screen</div>{% endif %}
     <h1 class="cover-title">{{ name }}</h1>
     <h2 class="cover-sub">{{ v('property.fields.city_state')|text }}</h2>
     <p class="lede">{{ v('property.fields.units')|integer }}-unit multifamily community. Quarterly performance review for the period ending {{ v('property.fields.period_end')|date_long }}.</p>
@@ -266,7 +267,7 @@
   {% for title, rows, totals, narrative, pctf in (('New Leases', nl_rows, nl_totals, 'occupancy.fields.new_lease_narrative', 'occupancy.fields.new_lease_lto_pct'), ('Renewals', rn_rows, rn_totals, 'occupancy.fields.renewal_narrative', 'occupancy.fields.renewal_lto_pct')) %}
   <div>
     <div class="col-h"><span>{{ title }} · {{ q }} · by floor plan</span><span class="v {{ vcls(v(pctf)) }}">Overall {{ v(pctf)|pct(1, true) }}</span></div>
-    <div class="col-body" style="margin-bottom:4pt">{{ v(narrative)|text }}</div>
+    <div class="col-body" style="margin-bottom:4pt">{% if rows %}{{ v(narrative)|text }}{% elif v('occupancy.fields.no_activity_note') %}{{ v('occupancy.fields.no_activity_note') }}{% else %}{{ v(narrative)|text }}{% endif %}</div>
     <table class="tbl dense">
       <thead><tr><th>Floor plan</th><th class="r">Count</th><th class="r">Avg prior</th><th class="r">Avg current</th><th class="r">$ LTO</th><th class="r">% LTO</th></tr></thead>
       <tbody>

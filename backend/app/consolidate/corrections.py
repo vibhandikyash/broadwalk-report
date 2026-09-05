@@ -210,7 +210,8 @@ def sanitize(data: ReportData, overrides: dict) -> tuple[dict, list[str]]:
             ov["fields"].pop(path)
             dropped.append(f"{path}: {e}")
     for path, val in list((ov.get("ai_drafts") or {}).items()):
-        if not isinstance(val, str):
+        text = val.get("text") if isinstance(val, dict) else val
+        if not isinstance(text, str) or not text:
             ov["ai_drafts"].pop(path)
             dropped.append(f"{path}: AI draft was not text")
     return ov, dropped

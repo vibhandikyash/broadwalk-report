@@ -1,6 +1,7 @@
 """ReportData -> the JSON shape the review screen renders (flat lists, paths on every leaf)."""
 from __future__ import annotations
 
+from ..consolidate.completeness import evaluate
 from ..consolidate.validate import summary
 from ..models import Field, Issue, ReportData
 
@@ -30,6 +31,7 @@ def to_ui(data: ReportData, issues: list[Issue], row: dict) -> dict:
             tables.append({"path": tp, "key": tk, "title": t.title, "columns": [c.model_dump() for c in t.columns],
                            "rows": rows, "totals": totals, "editable_rows": t.editable_rows})
         sections.append({"key": sk, "title": sec.title, "page": sec.page, "fields": fields, "tables": tables})
-    return {"built_at": row.get("built_at"), "summary": summary(data, issues), "issues": [i.model_dump() for i in issues],
+    return {"built_at": row.get("built_at"), "summary": {**summary(data, issues), "completeness": evaluate(data, issues).to_json()},
+            "issues": [i.model_dump() for i in issues],
             "sections": sections, "meta": data.meta, "narrative_status": row.get("narrative_status"),
             "narrative_error": row.get("narrative_error")}

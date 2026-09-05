@@ -52,14 +52,16 @@ CREATE TABLE IF NOT EXISTS reports (
   html_path TEXT,
   pdf_path TEXT,
   created_at TEXT NOT NULL,
-  snapshot TEXT
+  snapshot TEXT,
+  complete INTEGER,
+  gap_count INTEGER
 );
 CREATE UNIQUE INDEX IF NOT EXISTS reports_project_version ON reports(project_id, version);
 """
 
 JSON_COLS = {"parts", "extractions", "data", "overrides", "issues", "notes", "snapshot"}
-REPORT_COLS = "id, project_id, version, status, error, html_path, pdf_path, created_at"
-BOOL_COLS = {"ignored"}
+REPORT_COLS = "id, project_id, version, status, error, html_path, pdf_path, created_at, complete, gap_count"
+BOOL_COLS = {"ignored", "complete"}
 
 
 def now() -> str:
@@ -74,8 +76,9 @@ def init_db() -> None:
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     with connect() as con:
         cols = {r["name"] for r in con.execute("PRAGMA table_info(reports)").fetchall()}
-        if cols and "snapshot" not in cols:  # database from a build before versions carried snapshots
-            con.execute("ALTER TABLE reports ADD COLUMN snapshot TEXT")
+        for col, decl in (("snapshot", "TEXT"), ("complete", "INTEGER"), ("gap_count", "INTEGER")):
+            if cols and col not in cols:  # database from a build before versions carried snapshots or completeness
+                con.execute(f"ALTER TABLE reports ADD COLUMN {col} {decl}")
         con.executescript(SCHEMA)
 
 
@@ -103,7 +106,7 @@ def _decode(row: sqlite3.Row | None) -> dict | None:
         if k in d and isinstance(d[k], str):
             d[k] = json.loads(d[k])
     for k in BOOL_COLS:
-        if k in d:
+        if k in d and d[k] is not None:
             d[k] = bool(d[k])
     return d
 
@@ -234,15 +237,16 @@ def set_narrative(project_id: str, status: str | None, error: str | None = None)
 
 
 # ---------- reports ----------
-def create_report(project_id: str, snapshot: dict | None = None) -> dict:
+def create_report(project_id: str, snapshot: dict | None = None, complete: bool | None = None, gap_count: int | None = None) -> dict:
     """New queued version. BEGIN IMMEDIATE serialises the read-then-insert so concurrent requests get distinct numbers."""
     rid = new_id()
     with connect() as con:
         con.execute("BEGIN IMMEDIATE")
         ver = con.execute("SELECT COALESCE(MAX(version), 0) + 1 FROM reports WHERE project_id = ?", (project_id,)).fetchone()[0]
         con.execute(
-            "INSERT INTO reports (id, project_id, version, status, created_at, snapshot) VALUES (?,?,?,?,?,?)",
-            (rid, project_id, ver, "queued", now(), json.dumps(snapshot, default=str) if snapshot is not None else None),
+            "INSERT INTO reports (id, project_id, version, status, created_at, snapshot, complete, gap_count) VALUES (?,?,?,?,?,?,?,?)",
+            (rid, project_id, ver, "queued", now(), json.dumps(snapshot, default=str) if snapshot is not None else None,
+             None if complete is None else int(complete), gap_count),
         )
     return get_report(rid)  # type: ignore[return-value]
 

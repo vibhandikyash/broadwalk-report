@@ -4,6 +4,7 @@ from __future__ import annotations
 import datetime as dt
 
 from ..models import Issue, ReportData
+from .completeness import is_required, page_of
 
 REQUIRED: dict[str, str] = {
     "property.fields.name": "error",
@@ -61,10 +62,14 @@ def _field_issues(data: ReportData) -> list[Issue]:
         elif fld.effective in (None, "") and fld.status in ("missing", "extracted"):
             if path in REQUIRED:
                 out.append(Issue(path=path, severity=REQUIRED[path], message=f"Missing: {fld.label}"))
+            elif is_required(path, data):
+                out.append(Issue(path=path, severity="warning", message=f"Missing: {fld.label} (needed for a complete report, page {page_of(path)})"))
             elif fld.kind == "longtext":
-                out.append(Issue(path=path, severity="info", message=f"Narrative not written: {fld.label}"))
+                out.append(Issue(path=path, severity="info", message=f"Narrative not written: {fld.label} (optional)"))
+            elif ".fields." in path:
+                out.append(Issue(path=path, severity="info", message=f"Missing: {fld.label} (optional)"))
             else:
-                out.append(Issue(path=path, severity="warning" if ".fields." in path else "info", message=f"Missing: {fld.label}"))
+                out.append(Issue(path=path, severity="info", message=f"Missing: {fld.label}"))
     return out
 
 

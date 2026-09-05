@@ -130,6 +130,12 @@ def effective(row: dict, overrides: dict | None, files: list[dict]) -> tuple[Rep
     issues += [Issue(path=p, severity="info", message=f"An earlier edit to '{p}' no longer applies (the row or field disappeared after re-processing)") for p in stale]
     issues += [Issue(path=d.split(":", 1)[0], severity="warning",
                      message=f"A stored correction was ignored because it no longer fits its field ({d}). Reset it under Corrections if it keeps appearing.") for d in dropped]
+    from ..services.narrative import stale_drafts
+
+    for p in stale_drafts(data, clean):
+        f = data.field(p)
+        f.note = "This AI draft predates a change to the numbers it was written from; draft again or edit it"
+        issues.append(Issue(path=p, severity="warning", message=f"{f.label}: the AI draft predates a change to the numbers it was written from; draft again or edit it"))
     return data, issues
 
 
@@ -192,7 +198,7 @@ def generate_report(report_id: str) -> None:
         stem = f"report-v{r['version']}"
         (out_dir / f"{stem}.json").write_text(json.dumps(data.model_dump(), indent=1, default=str))
         html_path, pdf_path = out_dir / f"{stem}.html", out_dir / f"{stem}.pdf"
-        html_path.write_text(render_html(data, project, assets=assets.version_assets(out_dir, r["version"])))
+        html_path.write_text(render_html(data, project, assets=assets.version_assets(out_dir, r["version"]), draft_gaps=r.get("gap_count") or 0))
         db.update_report(report_id, html_path=str(html_path))
         render_pdf(html_path, pdf_path)
         db.update_report(report_id, status="done", pdf_path=str(pdf_path))
@@ -209,12 +215,14 @@ def draft_narratives(project_id: str) -> None:
     """Draft empty narrative fields with the LLM and store them as ai_drafts in the overrides."""
     from ..services.narrative import draft_all
 
+    from ..services.narrative import basis, stale_drafts
+
     db.set_narrative(project_id, "running", None)
     try:
         data, _issues, row = load_effective(project_id)
-        drafts = draft_all(data)
+        drafts = draft_all(data, stale=set(stale_drafts(data, row.get("overrides") or {})))
         ov = (db.get_report_data(project_id) or {}).get("overrides") or {}  # re-read: the reviewer may have saved meanwhile
-        ov.setdefault("ai_drafts", {}).update(drafts)
+        ov.setdefault("ai_drafts", {}).update({p: {"text": t, "basis": basis(data, p)} for p, t in drafts.items()})
         db.save_overrides(project_id, ov)
         db.set_narrative(project_id, "done", None if drafts else "Nothing to draft: every narrative field already has text, or the data was insufficient")
     except Exception as e:  # noqa: BLE001 - shown to the user on the review screen

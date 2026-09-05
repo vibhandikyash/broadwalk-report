@@ -58,3 +58,47 @@ def test_report_data_read_patch_rows_and_rebuild(tmp_path):
         ui = client.post(f"/api/projects/{pid}/report-data/rebuild").json()
         financing = next(s for s in ui["sections"] if s["key"] == "financing")
         assert next(f for f in financing["fields"] if f["key"] == "lender")["effective"] == "Fannie Mae"
+
+
+
+def test_completeness_endpoint_and_summary_track_the_review(tmp_path):
+    from app.consolidate.completeness import fill_gaps_for_test
+    from app.workers import jobs
+
+    with TestClient(app) as client:
+        pid = client.post("/api/projects", json={"name": "Cmp"}).json()["id"]
+        upload_all(client, pid, tmp_path)
+        c = client.get(f"/api/projects/{pid}/completeness").json()
+        assert c["complete"] is False and c["gap_count"] == len(c["gaps"]) > 10
+        assert {"path", "label", "page", "group", "reason"} <= set(c["gaps"][0]) and any(g["page"] == 4 for g in c["gaps"])
+        assert any(not g["complete"] for g in c["groups"]) and c["ai_drafts_pending"] == 0
+        ui = client.get(f"/api/projects/{pid}/report-data").json()
+        assert ui["summary"]["completeness"]["gap_count"] == c["gap_count"] and ui["summary"]["completeness"]["complete"] is False
+        v1 = client.post(f"/api/projects/{pid}/reports").json()
+        assert v1["complete"] is False and v1["gap_count"] == c["gap_count"]
+        # fill every gap through the public correction API, as a reviewer would
+        data, _issues, _row = jobs.load_effective(pid)
+        ov = fill_gaps_for_test(data)
+        body = {"changes": [{"path": k, "value": v} for k, v in ov["fields"].items()],
+                "add_rows": [{"table": tp, "key": rk, "values": vals} for tp, rows in ov["rows"].items() for rk, vals in rows.items()]}
+        assert client.patch(f"/api/projects/{pid}/report-data", json=body).status_code == 200
+        c = client.get(f"/api/projects/{pid}/completeness").json()
+        assert c["complete"] is True and c["gap_count"] == 0, [g["path"] for g in c["gaps"]]
+        v2 = client.post(f"/api/projects/{pid}/reports").json()
+        assert v2["complete"] is True and v2["gap_count"] == 0
+        assert client.get(f"/api/projects/{pid}/reports").json()[0]["complete"] is True
+        assert pool.wait_idle(180)
+        from app.report.render import chromium_available
+
+        if chromium_available():
+            d1 = client.get(f"/api/projects/{pid}/reports/{v1['id']}/download")
+            d2 = client.get(f"/api/projects/{pid}/reports/{v2['id']}/download")
+            assert d1.status_code == 200 and "-v1-draft.pdf" in d1.headers["content-disposition"]
+            assert d2.status_code == 200 and "-v2.pdf" in d2.headers["content-disposition"] and "draft" not in d2.headers["content-disposition"]
+            import pdfplumber
+
+            with pdfplumber.open(__import__("io").BytesIO(d1.content)) as doc:
+                text = "\n".join(p.extract_text() or "" for p in doc.pages)
+            assert text.count("DRAFT") >= 10, "every page of an incomplete report is marked"
+            with pdfplumber.open(__import__("io").BytesIO(d2.content)) as doc:
+                assert "DRAFT" not in "\n".join(p.extract_text() or "" for p in doc.pages)

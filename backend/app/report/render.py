@@ -73,7 +73,7 @@ def _sum(rows: list[dict], col: str) -> float | None:
     return sum(vals) if vals else None
 
 
-def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None) -> dict:
+def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0) -> dict:
     v = data.value
     uw_rows = _rows(data.table("underwriting.tables.budget"))
     uw_groups = {"value_add": [r for r in uw_rows if str(r["c"].get("section") or "").lower().startswith("value")],
@@ -95,7 +95,7 @@ def context(data: ReportData, project: dict | None = None, assets: dict[str, str
     capex_rows = _rows(data.table("capex.tables.lines"), sort_key=lambda r: (-(r["c"].get("ptd_actual") or 0), -(r["c"].get("ptd_budget") or 0)))
     fin_t = data.table("financials.tables.lines")
     return {
-        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "assets": assets or {},
+        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "assets": assets or {}, "draft_gaps": int(draft_gaps or 0),
         "css": (REPORT_DIR / "static" / "report.css").read_text(), "fonts_css": _fonts_css(),
         "ipr_rows": _rows(data.table("in_place_rent.tables.by_floor_plan")), "ipr_totals": _totals(data.table("in_place_rent.tables.by_floor_plan")),
         "uw_groups": uw_groups, "uw_sub": uw_sub, "uw_totals": _totals(data.table("underwriting.tables.budget")), "chart_svg": chart_svg,
@@ -107,8 +107,9 @@ def context(data: ReportData, project: dict | None = None, assets: dict[str, str
     }
 
 
-def render_html(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None) -> str:
-    return env.get_template("report.html").render(**context(data, project, assets))
+def render_html(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0) -> str:
+    """draft_gaps > 0 marks every page as a draft: the reviewed data does not yet satisfy the completeness specification."""
+    return env.get_template("report.html").render(**context(data, project, assets, draft_gaps))
 
 
 def chromium_available() -> bool:

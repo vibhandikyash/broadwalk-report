@@ -126,3 +126,106 @@ def test_live_provider_drafts_from_section_values():
     assert list(drafts) == ["commentary.fields.takeaway"], drafts
     text = drafts["commentary.fields.takeaway"]
     assert 20 < len(text) < 1200 and "\u2014" not in text
+
+
+# ---------- mock provider and draft staleness ----------
+def _numbers(text: str) -> set[str]:
+    import re
+
+    return {n.replace(",", "") for n in re.findall(r"\d[\d,]*(?:\.\d+)?", text)}
+
+
+def _is_rounded_payload_number(token: str, payload_numbers: set[str]) -> bool:
+    """A draft figure is supported when some payload value rounds to it at the draft's precision."""
+    decimals = len(token.split(".")[1]) if "." in token else 0
+    try:
+        value = float(token)
+    except ValueError:
+        return False
+    return any(round(float(p), decimals) == value for p in payload_numbers)
+
+
+def test_mock_provider_resolves_and_drafts_only_from_supplied_values():
+    import dataclasses
+    import json
+
+    from app.config import settings
+
+    assert dataclasses.replace(settings, narrative_provider="mock").llm_provider == "mock"
+    data, _ = build({"id": "p", "name": "P"}, sample_files())
+    data.field("commentary.fields.takeaway").override = "Reviewer wrote this."
+    drafts = draft_all(data, provider="mock")
+    assert "commentary.fields.takeaway" not in drafts and len(drafts) == len(NARRATIVES) - 1
+    body = drafts["commentary.fields.revenue_body"]
+    assert "1,000" in body or "1000" in body  # total revenue from the structured values
+    payload_numbers = set()
+    for _path, _instr, sections, _n in NARRATIVES:
+        payload_numbers |= _numbers(json.dumps({s: section_values(data, s) for s in sections}, default=str))
+    for path, text in drafts.items():
+        assert text and "—" not in text and all(_is_rounded_payload_number(n, payload_numbers) or len(n) <= 2 for n in _numbers(text)), (path, text)
+        assert "0000000" not in text  # figures are rounded to a readable precision
+    assert draft_all(data, provider="mock") == drafts  # deterministic
+
+
+def test_drafts_carry_a_basis_and_go_stale_when_their_numbers_change():
+    from app.consolidate.builder import apply_overrides
+    from app.consolidate.calc import recompute
+    from app.services.narrative import basis, stale_drafts
+
+    data, _ = build({"id": "p", "name": "P"}, sample_files())
+    b = basis(data, "occupancy.fields.occupancy_narrative")
+    assert isinstance(b, str) and len(b) == 64 and b == basis(data, "occupancy.fields.occupancy_narrative")
+    overrides = {"ai_drafts": {"occupancy.fields.occupancy_narrative": {"text": "Occupancy held.", "basis": b},
+                               "capex.fields.narrative": "legacy plain-string draft"}}
+    fresh, _ = build({"id": "p", "name": "P"}, sample_files())
+    apply_overrides(fresh, overrides)
+    recompute(fresh)
+    assert fresh.value("occupancy.fields.occupancy_narrative") == "Occupancy held." and fresh.field("occupancy.fields.occupancy_narrative").status == "ai_draft"
+    assert fresh.value("capex.fields.narrative") == "legacy plain-string draft"
+    assert stale_drafts(fresh, overrides) == []
+    changed, _ = build({"id": "p", "name": "P"}, sample_files())
+    overrides2 = {**overrides, "fields": {"occupancy.fields.current_pct": 0.5}}
+    apply_overrides(changed, overrides2)
+    recompute(changed)
+    assert stale_drafts(changed, overrides2) == ["occupancy.fields.occupancy_narrative"]
+    redrafted = draft_all(changed, provider="mock", stale={"occupancy.fields.occupancy_narrative"})
+    assert "occupancy.fields.occupancy_narrative" in redrafted and "capex.fields.narrative" not in redrafted  # only the stale one is replaced
+
+
+def test_drafting_job_stores_basis_flags_staleness_and_never_overwrites_reviewer_text(monkeypatch, tmp_path):
+    import dataclasses
+
+    import app.config as cfg
+    from app import db
+    from app.workers import jobs
+    from tests.test_api_report_data import upload_all
+
+    monkeypatch.setattr(cfg, "settings", dataclasses.replace(cfg.settings, narrative_provider="mock"))
+    with TestClient(app) as client:
+        pid = client.post("/api/projects", json={"name": "Mock"}).json()["id"]
+        upload_all(client, pid, tmp_path)
+        client.patch(f"/api/projects/{pid}/report-data", json={"changes": [{"path": "commentary.fields.takeaway", "value": "Reviewer text stays."}]})
+        assert client.post(f"/api/projects/{pid}/narratives").status_code == 202
+        assert jobs.pool.wait_idle(60)
+        ui = client.get(f"/api/projects/{pid}/report-data").json()
+        fields = {f["path"]: f for s in ui["sections"] for f in s["fields"]}
+        assert fields["commentary.fields.takeaway"]["effective"] == "Reviewer text stays." and fields["commentary.fields.takeaway"]["status"] == "manual"
+        draft = fields["occupancy.fields.occupancy_narrative"]
+        assert draft["status"] == "ai_draft" and "Drafted by AI" in draft["source"]["text"] and draft["effective"]
+        stored = db.get_report_data(pid)["overrides"]["ai_drafts"]["occupancy.fields.occupancy_narrative"]
+        assert set(stored) == {"text", "basis"}
+        # a change to a value the draft was written from flags it
+        client.patch(f"/api/projects/{pid}/report-data", json={"changes": [{"path": "occupancy.fields.current_pct", "value": 0.5}]})
+        ui = client.get(f"/api/projects/{pid}/report-data").json()
+        assert any("predates a change" in i["message"] and i["path"] == "occupancy.fields.occupancy_narrative" for i in ui["issues"])
+        fields = {f["path"]: f for s in ui["sections"] for f in s["fields"]}
+        assert "predates" in (fields["occupancy.fields.occupancy_narrative"]["note"] or "")
+        # a second run replaces only the stale draft
+        old_capex = fields["capex.fields.narrative"]["effective"]
+        assert client.post(f"/api/projects/{pid}/narratives").status_code == 202 and jobs.pool.wait_idle(60)
+        ui = client.get(f"/api/projects/{pid}/report-data").json()
+        assert not any("predates a change" in i["message"] for i in ui["issues"])
+        fields = {f["path"]: f for s in ui["sections"] for f in s["fields"]}
+        assert fields["capex.fields.narrative"]["effective"] == old_capex and "0.5" in fields["occupancy.fields.occupancy_narrative"]["effective"]
+        html = client.get(f"/api/projects/{pid}/report/preview").text
+        assert fields["occupancy.fields.occupancy_narrative"]["effective"][:40] in html

@@ -52,6 +52,8 @@ class Settings:
         want = self.narrative_provider
         if want in ("off", "none", "false", "0"):
             return None
+        if want == "mock":  # deterministic drafts from the structured values only; for tests and offline demos
+            return "mock"
         if want in ("auto", "api") and self.anthropic_api_key:
             return "api"
         if want in ("auto", "agent-sdk", "agent_sdk", "agent"):

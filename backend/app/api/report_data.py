@@ -63,6 +63,19 @@ def get_report_data(pid: str) -> dict:
     return ui_payload(pid)
 
 
+@router.get("/projects/{pid}/completeness")
+def get_completeness(pid: str) -> dict:
+    """Structural (a PDF can be generated) is always allowed; this says whether the report is also complete."""
+    from ..consolidate.completeness import evaluate
+
+    project_or_404(pid)
+    try:
+        data, issues, _row = jobs.load_effective(pid)
+    except LookupError as e:
+        raise HTTPException(409, str(e)) from e
+    return evaluate(data, issues).to_json()
+
+
 @router.post("/projects/{pid}/report-data/rebuild")
 def rebuild_report_data(pid: str) -> dict:
     project_or_404(pid)

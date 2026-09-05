@@ -5,10 +5,11 @@ model can only phrase numbers the reviewer already sees. Drafts are stored with 
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from typing import Any
 
-from ..config import settings
+from .. import config
 from ..models import ReportData
 
 SYSTEM = (
@@ -117,11 +118,65 @@ def _complete_agent_sdk(model: str | None, user: str) -> str | None:
     return asyncio.run(run())
 
 
-def draft_all(data: ReportData, model: str | None = None, client: Any = None, provider: str | None = None) -> dict[str, str]:
-    """Return {field path: draft text} for every narrative field that is still empty.
+def _payload(data: ReportData, sections: list[str]) -> dict:
+    return {"property": data.meta.get("property_name"), "period": data.meta.get("period"), "conventions": CONVENTIONS,
+            **{s: section_values(data, s) for s in sections}}
 
-    provider: 'api' (Anthropic SDK; `client` may be injected) or 'agent-sdk'; defaults to settings.llm_provider.
+
+def basis(data: ReportData, path: str) -> str | None:
+    """Fingerprint of the structured values a draft for `path` is written from (narrative text is excluded)."""
+    spec = next((n for n in NARRATIVES if n[0] == path), None)
+    if spec is None:
+        return None
+    return hashlib.sha256(json.dumps(_payload(data, spec[2]), sort_keys=True, default=str).encode()).hexdigest()
+
+
+def stale_drafts(data: ReportData, overrides: dict) -> list[str]:
+    """Paths whose stored draft carries a basis that no longer matches the current values."""
+    out = []
+    for path, entry in (overrides.get("ai_drafts") or {}).items():
+        if isinstance(entry, dict) and entry.get("basis") and data.field(path) is not None and basis(data, path) != entry["basis"]:
+            out.append(path)
+    return out
+
+
+def _fmt(v: Any) -> str:
+    """Readable rounding of a payload figure: whole dollars for large amounts, four decimals for fractions."""
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return str(v)
+    if abs(v) >= 100:
+        return f"{v:,.0f}"
+    return f"{v:,.4f}".rstrip("0").rstrip(".") if abs(v) < 1 else f"{v:,.2f}".rstrip("0").rstrip(".")
+
+
+def _complete_mock(instruction: str, payload: dict, max_words: int) -> str:
+    """Deterministic draft that only restates figures present in the payload; never calls anything."""
+    pairs: list[tuple[str, Any]] = []
+    for key, sec in payload.items():
+        if key in ("property", "period", "conventions") or not isinstance(sec, dict):
+            continue
+        for k, v in sec.get("fields", {}).items():
+            if isinstance(v, (int, float)) and not isinstance(v, bool):
+                pairs.append((k.replace("_", " "), v))
+        for tk, t in sec.get("tables", {}).items():
+            for ck, v in t.get("totals", {}).items():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    pairs.append((f"{tk} {ck}".replace("_", " "), v))
+    subject = instruction.rstrip(".").split(":")[0].strip()
+    period = payload.get("period") or {}
+    label = period.get("quarter_label") if isinstance(period, dict) else period
+    figures = "; ".join(f"{k} {_fmt(v)}" for k, v in pairs[:6]) or "no figures supplied"
+    return f"Mock draft for {payload.get('property') or 'the property'} ({label}): {subject[0].lower() + subject[1:]}. Figures used: {figures}."
+
+
+def draft_all(data: ReportData, model: str | None = None, client: Any = None, provider: str | None = None,
+              stale: set[str] | None = None) -> dict[str, str]:
+    """Return {field path: draft text} for every narrative field that is still empty, plus any path in `stale`
+    (an existing draft whose numbers changed). Reviewer text is never replaced.
+
+    provider: 'api' (Anthropic SDK; `client` may be injected), 'agent-sdk', or 'mock'; defaults to settings.
     """
+    settings = config.settings
     provider = provider or ("api" if client is not None else settings.llm_provider)
     if provider is None:
         raise RuntimeError("No narrative provider configured: set ANTHROPIC_API_KEY or install claude-agent-sdk with a Claude Code login")
@@ -133,15 +188,22 @@ def draft_all(data: ReportData, model: str | None = None, client: Any = None, pr
         model = model or settings.anthropic_model or API_DEFAULT_MODEL
     else:
         model = model or settings.anthropic_model  # None lets the Claude Code CLI use its configured default
+    stale = stale or set()
     drafts: dict[str, str] = {}
     for path, instruction, sections, max_words in NARRATIVES:
         fld = data.field(path)
-        if fld is None or fld.effective not in (None, ""):
+        if fld is None or fld.override not in (None, ""):
+            continue  # reviewer text always wins
+        if fld.effective not in (None, "") and not (fld.status == "ai_draft" and path in stale):
             continue
-        payload = {"property": data.meta.get("property_name"), "period": data.meta.get("period"), "conventions": CONVENTIONS,
-                   **{s: section_values(data, s) for s in sections}}
+        payload = _payload(data, sections)
         user = f"{instruction} Use at most {max_words} words; the space on the page is fixed.\n\nDATA (JSON):\n{json.dumps(payload, default=str)}"
-        text = _complete_api(client, model, user) if provider == "api" else _complete_agent_sdk(model, user)
+        if provider == "mock":
+            text = _complete_mock(instruction, payload, max_words)
+        elif provider == "api":
+            text = _complete_api(client, model, user)
+        else:
+            text = _complete_agent_sdk(model, user)
         if text and "INSUFFICIENT DATA" not in text.upper():
             drafts[path] = text
     return drafts
