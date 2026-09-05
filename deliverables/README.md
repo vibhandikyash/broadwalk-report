@@ -15,4 +15,4 @@
 
 Every page was compared visually with the client's example at 110 dpi, in Poppler and PDFium renders: same section order, tables, calculations and labels; no clipped headers, footers, tables or narratives. Two deliberate differences: the cover and page 2 show a placeholder panel because no property photo is part of the source package (the app has a cover photo and logo upload slot for it), and page 7 orders capital lines by quarter spend rather than by the example's hand ordering.
 
-Commit used: ceb6840 (the sample was rendered by the code at this commit, from the snapshot in this folder).
+Commit used: 77bfd7b (the sample was rendered by the code at this commit, from the snapshot in this folder).
