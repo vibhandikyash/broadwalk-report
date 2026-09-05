@@ -8,16 +8,17 @@ import { Health } from './core/models';
   standalone: true,
   imports: [RouterOutlet, RouterLink],
   template: `
+    <a class="skip" href="#main">Skip to content</a>
     <header class="topbar">
       <a routerLink="/projects" class="brand">Investor Report Generator</a>
       <span class="spacer"></span>
       @if (health(); as h) {
-        <span class="muted small">PDF {{ h.pdf_renderer ? 'ready' : 'unavailable' }} · AI {{ h.llm_enabled ? 'on (' + h.llm_provider + ')' : 'off' }}</span>
+        <span class="muted small" role="status">PDF {{ h.pdf_renderer ? 'ready' : 'unavailable' }} · AI {{ h.llm_enabled ? 'on (' + h.llm_provider + ')' : 'off' }}</span>
       } @else if (offline()) {
-        <span class="err small">Backend not reachable on /api. Start it with: uvicorn app.main:app --port 8000</span>
+        <span class="err small" role="alert">Backend not reachable on /api. Start it (see README) and reload.</span>
       }
     </header>
-    <main class="container"><router-outlet /></main>`,
+    <main id="main" class="container" tabindex="-1"><router-outlet /></main>`,
 })
 export class AppComponent {
   private api = inject(ApiService);

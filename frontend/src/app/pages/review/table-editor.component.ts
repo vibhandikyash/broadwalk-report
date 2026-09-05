@@ -9,23 +9,24 @@ import { FieldChange, FieldEditorComponent } from './field-editor.component';
   template: `
     <div class="table-block">
       <div class="row between"><h3>{{ t().title }}</h3>
-        @if (t().editable_rows) { <button type="button" class="link" (click)="addRow.emit(t().path)">+ add row</button> }
+        @if (t().editable_rows) { <button type="button" class="link" (click)="addRow.emit(t().path)" [attr.aria-label]="'Add row to ' + t().title">+ add row</button> }
       </div>
       <div class="scroll">
       <table class="grid cells">
-        <thead><tr><th>Row</th>@for (c of t().columns; track c.key) { <th>{{ c.label }}</th> }<th></th></tr></thead>
+        <caption class="sr-only">{{ t().title }}</caption>
+        <thead><tr><th scope="col">Row</th>@for (c of t().columns; track c.key) { <th scope="col">{{ c.label }}</th> }<th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
         <tbody>
           @for (r of rows(); track r.key) {
             <tr [class.subject]="r.subject">
-              <td class="rowlabel">{{ r.label }} @if (r.manual) { <span class="chip chip-manual">added</span> }</td>
+              <th scope="row" class="rowlabel">{{ r.label }} @if (r.manual) { <span class="chip chip-manual">added</span> }</th>
               @for (cell of r.cells; track cell.path) {
                 <td><app-field-editor [f]="cell" [compact]="true" (changed)="changed.emit($event)" /></td>
               }
-              <td class="r">@if (t().editable_rows || r.manual) { <button type="button" class="link danger small" (click)="deleteRow.emit({ table: t().path, key: r.key })">delete</button> }</td>
+              <td class="r">@if (t().editable_rows || r.manual) { <button type="button" class="link danger small" (click)="deleteRow.emit({ table: t().path, key: r.key })" [attr.aria-label]="'Delete row ' + r.label">delete</button> }</td>
             </tr>
           } @empty { <tr><td [attr.colspan]="t().columns.length + 2" class="muted">No rows extracted.@if (t().editable_rows) { Add rows manually.}</td></tr> }
           @if (t().totals.length) {
-            <tr class="totals"><td class="rowlabel">Total</td>
+            <tr class="totals"><th scope="row" class="rowlabel">Total</th>
               @for (c of t().columns; track c.key) {
                 <td>@if (totalFor(c.key); as cell) { <app-field-editor [f]="cell" [compact]="true" (changed)="changed.emit($event)" /> }</td>
               }<td></td></tr>

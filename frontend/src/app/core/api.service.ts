@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DocTypeOption, FileExtraction, Health, PatchBody, Project, ProjectDetail, ProjectFile, Report, ReportDataUi } from './models';
+import { AssetKind, DocTypeOption, FileExtraction, Health, Overrides, PatchBody, Project, ProjectDetail, ProjectFile, Report, ReportDataUi } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -28,9 +28,19 @@ export class ApiService {
   deleteFile(pid: string, fid: string): Observable<void> { return this.http.delete<void>(`${this.base}/projects/${pid}/files/${fid}`); }
   fileExtraction(pid: string, fid: string): Observable<FileExtraction> { return this.http.get<FileExtraction>(`${this.base}/projects/${pid}/files/${fid}/extraction`); }
 
+  putAsset(pid: string, kind: AssetKind, file: File): Observable<Record<AssetKind, boolean>> {
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    return this.http.put<Record<AssetKind, boolean>>(`${this.base}/projects/${pid}/assets/${kind}`, fd);
+  }
+  deleteAsset(pid: string, kind: AssetKind): Observable<Record<AssetKind, boolean>> { return this.http.delete<Record<AssetKind, boolean>>(`${this.base}/projects/${pid}/assets/${kind}`); }
+  assetUrl(pid: string, kind: AssetKind): string { return `${this.base}/projects/${pid}/assets/${kind}?t=${Date.now()}`; }
+
   reportData(pid: string): Observable<ReportDataUi> { return this.http.get<ReportDataUi>(`${this.base}/projects/${pid}/report-data`); }
   rebuildReportData(pid: string): Observable<ReportDataUi> { return this.http.post<ReportDataUi>(`${this.base}/projects/${pid}/report-data/rebuild`, {}); }
   patchReportData(pid: string, body: PatchBody): Observable<ReportDataUi> { return this.http.patch<ReportDataUi>(`${this.base}/projects/${pid}/report-data`, body); }
+  overrides(pid: string): Observable<Overrides> { return this.http.get<Overrides>(`${this.base}/projects/${pid}/report-data/overrides`); }
+  resetOverrides(pid: string, body: { paths?: string[]; ai_drafts?: boolean }): Observable<Overrides> { return this.http.post<Overrides>(`${this.base}/projects/${pid}/report-data/overrides/reset`, body); }
   draftNarratives(pid: string): Observable<{ status: string }> { return this.http.post<{ status: string }>(`${this.base}/projects/${pid}/narratives`, {}); }
 
   previewUrl(pid: string): string { return `${this.base}/projects/${pid}/report/preview?t=${Date.now()}`; }
@@ -38,4 +48,5 @@ export class ApiService {
   listReports(pid: string): Observable<Report[]> { return this.http.get<Report[]>(`${this.base}/projects/${pid}/reports`); }
   getReport(pid: string, rid: string): Observable<Report> { return this.http.get<Report>(`${this.base}/projects/${pid}/reports/${rid}`); }
   downloadUrl(pid: string, rid: string): string { return `${this.base}/projects/${pid}/reports/${rid}/download`; }
+  snapshotUrl(pid: string, rid: string): string { return `${this.base}/projects/${pid}/reports/${rid}/snapshot`; }
 }

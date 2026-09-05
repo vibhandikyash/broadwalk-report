@@ -1,10 +1,9 @@
-// frontend/src/app/shared/status-chip.component.ts
 import { Component, input } from '@angular/core';
 
 const LABELS: Record<string, string> = {
   extracted: 'extracted', derived: 'derived', manual: 'edited', ai_draft: 'AI draft', missing: 'missing', conflict: 'conflict',
   queued: 'queued', processing: 'processing', processed: 'processed', failed: 'failed', unsupported: 'unsupported',
-  rendering: 'rendering', done: 'done',
+  unrecognized: 'not recognised', needs_ocr: 'needs OCR', rendering: 'rendering', done: 'done',
 };
 
 @Component({

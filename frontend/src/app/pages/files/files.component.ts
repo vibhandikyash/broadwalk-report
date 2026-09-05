@@ -1,13 +1,15 @@
 import { DecimalPipe, JsonPipe } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription, interval, switchMap } from 'rxjs';
 import { ApiService } from '../../core/api.service';
-import { DocTypeOption, FileExtraction, ProjectDetail, ProjectFile } from '../../core/models';
+import { AssetKind, DocTypeOption, FileExtraction, ProjectDetail, ProjectFile, errorText } from '../../core/models';
 import { StatusChipComponent } from '../../shared/status-chip.component';
 import { StepperComponent } from '../../shared/stepper.component';
+
+const ACTIVE = new Set(['queued', 'processing']);
 
 @Component({
   selector: 'app-files',
@@ -18,24 +20,34 @@ import { StepperComponent } from '../../shared/stepper.component';
       <app-stepper [stage]="p.stage" />
       <div class="row between">
         <h1>{{ p.name }} <span class="muted">· source files</span></h1>
-        <nav class="row">
-          <a [routerLink]="['/projects', p.id, 'review']" class="btn" [class.disabled]="!p.report_built">Review data →</a>
-          <a [routerLink]="['/projects', p.id, 'report']" class="btn secondary" [class.disabled]="!p.report_built">Report</a>
+        <nav class="row" aria-label="Project pages">
+          @if (p.report_built) {
+            <a [routerLink]="['/projects', p.id, 'review']" class="btn">Review data →</a>
+            <a [routerLink]="['/projects', p.id, 'report']" class="btn secondary">Report</a>
+          } @else {
+            <button type="button" class="btn" disabled title="Available once the files have been processed">Review data →</button>
+            <button type="button" class="btn secondary" disabled title="Available once the files have been processed">Report</button>
+          }
         </nav>
       </div>
-      <label class="dropzone" [class.drag]="dragging()" (dragover)="$event.preventDefault(); dragging.set(true)" (dragleave)="dragging.set(false)" (drop)="onDrop($event)">
-        <input type="file" multiple accept=".xlsx,.xlsm,.pdf" (change)="onPick($event)" hidden />
+      <label class="dropzone" [class.drag]="dragging()" tabindex="0" (keydown.enter)="picker.click()"
+             (keydown.space)="$event.preventDefault(); picker.click()"
+             (dragover)="$event.preventDefault(); dragging.set(true)" (dragleave)="dragging.set(false)" (drop)="onDrop($event)">
+        <input #picker type="file" multiple accept=".xlsx,.xlsm,.pdf" (change)="onPick($event)" class="sr-only" aria-label="Choose source files" />
         <strong>Drop files here or click to choose</strong>
         <span class="muted small">Yardi, HelloData, CoStar and Slate exports (.xlsx, .pdf). Any names, any order.</span>
       </label>
-      @if (error()) { <p class="err">{{ error() }}</p> }
+      <p class="status small" role="status" aria-live="polite">{{ status() }}</p>
+      @if (error()) { <p class="err" role="alert" tabindex="-1" #alert>{{ error() }}</p> }
+      <div class="scroll">
       <table class="grid">
-        <thead><tr><th>File</th><th>Status</th><th>Detected as</th><th>Type override</th><th>Use</th><th></th></tr></thead>
+        <caption class="sr-only">Uploaded files and their processing status</caption>
+        <thead><tr><th scope="col">File</th><th scope="col">Status</th><th scope="col">Detected as</th><th scope="col">Type override</th><th scope="col">Use</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
         <tbody>
           @for (f of p.files; track f.id) {
             <tr [class.muted]="f.ignored">
               <td>{{ f.original_filename }}<div class="small muted">{{ (f.size / 1024) | number: '1.0-0' }} KB</div>
-                @if (f.error) { <div class="small err">{{ f.error }}</div> }</td>
+                @if (f.error) { <div class="small" [class.err]="f.status !== 'unrecognized'" [class.warn]="f.status === 'unrecognized'">{{ f.error }}</div> }</td>
               <td><app-status-chip [status]="f.status" /></td>
               <td>
                 @for (part of f.parts; track part.locator) {
@@ -47,57 +59,90 @@ import { StepperComponent } from '../../shared/stepper.component';
               </td>
               <td>
                 @if (f.parts.length <= 1 && f.status !== 'unsupported') {
-                  <select [ngModel]="f.doc_type_override ?? ''" (ngModelChange)="override(f, $event)">
+                  <select [ngModel]="f.doc_type_override ?? ''" (ngModelChange)="override(f, $event)" [attr.aria-label]="'Document type for ' + f.original_filename" [disabled]="active(f)">
                     <option value="">auto-detect</option>
                     @for (t of docTypes(); track t.key) { <option [value]="t.key">{{ t.label }}</option> }
                   </select>
                 } @else { <span class="muted small">per-sheet (auto)</span> }
               </td>
-              <td><label class="small"><input type="checkbox" [checked]="!f.ignored" (change)="toggleIgnore(f)" /> include</label></td>
+              <td><label class="small"><input type="checkbox" [checked]="!f.ignored" (change)="toggleIgnore(f)" [attr.aria-label]="'Use ' + f.original_filename" /> include</label></td>
               <td class="r nowrap">
-                <button class="link" (click)="reprocess(f)" [disabled]="f.status === 'unsupported' || f.status === 'processing'">Reprocess</button>
-                <button class="link" (click)="showExtraction(f)">Data</button>
-                <button class="link danger" (click)="remove(f)">Remove</button>
+                <button type="button" class="link" (click)="reprocess(f)" [disabled]="f.status === 'unsupported' || active(f)" [attr.aria-label]="'Reprocess ' + f.original_filename">Reprocess</button>
+                <button type="button" class="link" (click)="showExtraction(f)" [attr.aria-label]="'Show extracted data for ' + f.original_filename">Data</button>
+                <button type="button" class="link danger" (click)="remove(f)" [disabled]="active(f)" [attr.aria-label]="'Remove ' + f.original_filename">Remove</button>
               </td>
             </tr>
           } @empty { <tr><td colspan="6" class="muted">No files yet.</td></tr> }
         </tbody>
       </table>
+      </div>
       @if (extraction(); as ex) {
-        <details open class="panel"><summary>Extracted payload <button class="link" (click)="extraction.set(null)">close</button></summary>
+        <details open class="panel"><summary>Extracted payload <button type="button" class="link" (click)="extraction.set(null)">close</button></summary>
           <pre class="small">{{ ex | json }}</pre></details>
       }
-    }`,
+      <section class="panel assets" aria-labelledby="assets-h">
+        <h2 id="assets-h" class="small">Report images <span class="muted">(optional: cover photo and logo, png / jpg / webp)</span></h2>
+        @for (kind of kinds; track kind) {
+          <div class="row">
+            <label class="small">{{ kind === 'cover' ? 'Cover / property photo' : 'Logo' }}
+              <input type="file" accept=".png,.jpg,.jpeg,.webp" (change)="onAsset(kind, $event)" [attr.aria-label]="'Choose ' + (kind === 'cover' ? 'cover photo' : 'logo')" /></label>
+            @if (p.assets[kind]) {
+              <img [src]="api.assetUrl(p.id, kind) + '&v=' + assetVersion()" [alt]="'Current ' + kind" class="thumb" />
+              <button type="button" class="link danger" (click)="removeAsset(kind)">Remove {{ kind }}</button>
+            }
+          </div>
+        }
+      </section>
+    } @else if (error()) { <p class="err" role="alert" tabindex="-1" #alert>{{ error() }}</p> } @else { <p class="muted">Loading…</p> }`,
 })
 export class FilesComponent {
-  private api = inject(ApiService);
+  api = inject(ApiService);
   private route = inject(ActivatedRoute);
   private destroy = inject(DestroyRef);
   private pid = this.route.snapshot.paramMap.get('id')!;
   private poll: Subscription | null = null;
+  picker = viewChild.required<ElementRef<HTMLInputElement>>('picker');
+  alert = viewChild<ElementRef<HTMLElement>>('alert');
   project = signal<ProjectDetail | null>(null);
   docTypes = signal<DocTypeOption[]>([]);
   extraction = signal<FileExtraction | null>(null);
   dragging = signal(false);
   error = signal<string | null>(null);
+  status = signal('');
+  assetVersion = signal(0);
+  kinds: AssetKind[] = ['cover', 'logo'];
 
   constructor() {
-    this.api.docTypes().subscribe((t) => this.docTypes.set(t));
+    this.api.docTypes().subscribe({ next: (t) => this.docTypes.set(t), error: () => undefined });
     this.load();
   }
 
   label(key: string): string { return this.docTypes().find((t) => t.key === key)?.label ?? key; }
+  active(f: ProjectFile): boolean { return ACTIVE.has(f.status); }
 
   load(): void {
-    this.api.getProject(this.pid).subscribe({ next: (p) => { this.project.set(p); this.syncPolling(p); }, error: (e) => this.error.set(e.message) });
+    this.api.getProject(this.pid).subscribe({ next: (p) => { this.project.set(p); this.announce(p); this.syncPolling(p); }, error: (e) => this.fail(errorText(e)) });
+  }
+
+  private announce(p: ProjectDetail): void {
+    const n = p.files.filter((f) => ACTIVE.has(f.status)).length;
+    const bad = p.files.filter((f) => ['failed', 'unsupported', 'unrecognized', 'needs_ocr'].includes(f.status)).length;
+    if (n) this.status.set(`${n} of ${p.files.length} files processing…`);
+    else if (p.files.length) this.status.set(`All ${p.files.length} files finished${bad ? `, ${bad} need attention` : ''}. ${p.report_built ? 'Report data is ready to review.' : ''}`);
+    else this.status.set('');
   }
 
   private syncPolling(p: ProjectDetail): void {
-    const active = p.files.some((f) => f.status === 'queued' || f.status === 'processing');
+    const active = p.files.some((f) => ACTIVE.has(f.status));
     if (active && !this.poll) {
       this.poll = interval(2000).pipe(switchMap(() => this.api.getProject(this.pid)), takeUntilDestroyed(this.destroy))
-        .subscribe((np) => { this.project.set(np); if (!np.files.some((f) => f.status === 'queued' || f.status === 'processing')) { this.poll?.unsubscribe(); this.poll = null; } });
+        .subscribe((np) => { this.project.set(np); this.announce(np); if (!np.files.some((f) => ACTIVE.has(f.status))) { this.poll?.unsubscribe(); this.poll = null; } });
     }
+  }
+
+  fail(msg: string): void {
+    this.error.set(msg);
+    setTimeout(() => this.alert()?.nativeElement.focus(), 0);
   }
 
   onPick(ev: Event): void { const input = ev.target as HTMLInputElement; this.upload(Array.from(input.files ?? [])); input.value = ''; }
@@ -105,15 +150,26 @@ export class FilesComponent {
 
   upload(files: File[]): void {
     if (!files.length) return;
-    this.api.uploadFiles(this.pid, files).subscribe({ next: () => this.load(), error: (e) => this.error.set(e.error?.detail ?? e.message) });
+    this.error.set(null);
+    this.status.set(`Uploading ${files.length} file${files.length === 1 ? '' : 's'}…`);
+    this.api.uploadFiles(this.pid, files).subscribe({ next: () => this.load(), error: (e) => this.fail(errorText(e)) });
   }
 
   override(f: ProjectFile, key: string): void {
     const body = key ? { doc_type_override: key } : { clear_override: true };
-    this.api.patchFile(this.pid, f.id, body).subscribe({ next: () => this.load(), error: (e) => this.error.set(e.error?.detail ?? e.message) });
+    this.api.patchFile(this.pid, f.id, body).subscribe({ next: () => this.load(), error: (e) => { this.fail(errorText(e)); this.load(); } });
   }
-  toggleIgnore(f: ProjectFile): void { this.api.patchFile(this.pid, f.id, { ignored: !f.ignored }).subscribe({ next: () => this.load(), error: (e) => this.error.set(e.message) }); }
-  reprocess(f: ProjectFile): void { this.api.reprocessFile(this.pid, f.id).subscribe({ next: () => this.load(), error: (e) => this.error.set(e.error?.detail ?? e.message) }); }
-  remove(f: ProjectFile): void { if (confirm(`Remove ${f.original_filename}?`)) this.api.deleteFile(this.pid, f.id).subscribe({ next: () => this.load(), error: (e) => this.error.set(e.message) }); }
-  showExtraction(f: ProjectFile): void { this.api.fileExtraction(this.pid, f.id).subscribe({ next: (ex) => this.extraction.set(ex), error: (e) => this.error.set(e.message) }); }
+  toggleIgnore(f: ProjectFile): void { this.api.patchFile(this.pid, f.id, { ignored: !f.ignored }).subscribe({ next: () => this.load(), error: (e) => this.fail(errorText(e)) }); }
+  reprocess(f: ProjectFile): void { this.api.reprocessFile(this.pid, f.id).subscribe({ next: () => this.load(), error: (e) => this.fail(errorText(e)) }); }
+  remove(f: ProjectFile): void { if (confirm(`Remove ${f.original_filename}?`)) this.api.deleteFile(this.pid, f.id).subscribe({ next: () => this.load(), error: (e) => this.fail(errorText(e)) }); }
+  showExtraction(f: ProjectFile): void { this.api.fileExtraction(this.pid, f.id).subscribe({ next: (ex) => this.extraction.set(ex), error: (e) => this.fail(errorText(e)) }); }
+
+  onAsset(kind: AssetKind, ev: Event): void {
+    const input = ev.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    this.api.putAsset(this.pid, kind, file).subscribe({ next: () => { this.assetVersion.update((v) => v + 1); this.status.set(`${kind} image saved.`); this.load(); }, error: (e) => this.fail(errorText(e)) });
+  }
+  removeAsset(kind: AssetKind): void { this.api.deleteAsset(this.pid, kind).subscribe({ next: () => { this.status.set(`${kind} image removed.`); this.load(); }, error: (e) => this.fail(errorText(e)) }); }
 }

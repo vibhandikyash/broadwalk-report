@@ -91,6 +91,15 @@
           "options": {
             "proxyConfig": "proxy.conf.js"
           }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "buildTarget": "frontend:build:development",
+            "runner": "vitest",
+            "runnerConfig": "vitest.config.mts"
+          }
         }
       }
     }
