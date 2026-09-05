@@ -15,4 +15,4 @@
 
 Every page was compared visually with the client's example at 110 dpi, in Poppler and PDFium renders: same section order, tables, calculations and labels; no clipped headers, footers, tables or narratives. Two deliberate differences: the cover and page 2 show a placeholder panel because no property photo is part of the source package (the app has a cover photo and logo upload slot for it), and page 7 orders capital lines by quarter spend rather than by the example's hand ordering. The comp set is the ten properties of the HelloData listings export, as in the example; the three further properties named by the HelloData full-report sheet are reported as a suggestion on the review screen and were not added.
 
-Commit used: 77bfd7b (the sample was rendered by the code at this commit, from the snapshot in this folder).
+Commit used: beaaf32 (the sample was rendered by the code at this commit, from the snapshot in this folder).
