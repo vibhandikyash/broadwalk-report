@@ -15,4 +15,4 @@
 
 Every page was compared visually with the client's example at 110 dpi: same section order, tables, calculations and labels; no clipped headers, footers, tables or narratives. Two deliberate differences: the cover and page 2 show a placeholder panel because no property photo is part of the source package (the app has a cover photo and logo upload slot for it), and page 7 orders capital lines by quarter spend rather than by the example's hand ordering.
 
-Commit used: see `git log -1` at the time this folder was last updated (recorded in the top-level handoff notes).
+Commit used: ceb6840 (the sample was rendered by the code at this commit, from the snapshot in this folder).
