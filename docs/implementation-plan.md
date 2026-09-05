@@ -230,7 +230,7 @@ If behind schedule after milestone F, skip Task 26 (narratives) and document it 
 - [ ] **Step 1: Create the repo and Python environment**
 
 ```bash
-cd "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files"
+cd "<folder containing SOURCE FILES>"
 mkdir investor-report-app && cd investor-report-app && git init -b main
 mkdir -p backend/app backend/tests backend/config
 python3 -m venv backend/.venv && source backend/.venv/bin/activate
@@ -7695,7 +7695,7 @@ def test_real_dataset_end_to_end():
 
 - [ ] **Step 2: Run it against the real files**
 
-Run: `TEST_DATASET_DIR="/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/SOURCE FILES" pytest tests/test_dataset.py -v -s`
+Run: `TEST_DATASET_DIR="<path to>/SOURCE FILES" pytest tests/test_dataset.py -v -s`
 Expected: PASS. For any failing assertion, open the review screen (or `GET /report-data`) and read the `source.locator` of the field: that tells you which line was matched, which is where the fix belongs (a mapping pattern in `config/*.toml` or a header pattern in the extractor). Do not special-case a value.
 
 - [ ] **Step 3: Commit**
