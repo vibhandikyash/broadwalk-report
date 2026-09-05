@@ -16,7 +16,7 @@ def test_project_and_file_roundtrip():
     f2 = db.get_file(fid)
     assert f2["status"] == "processed" and f2["parts"][0]["doc_type"] == "x"
     assert f2["extractions"][0]["data"]["a"] == 1
-    assert db.list_projects()[0]["file_count"] == 1
+    assert next(x for x in db.list_projects() if x["id"] == p["id"])["file_count"] == 1
     db.delete_file(fid)
     assert db.list_files(p["id"]) == []
 

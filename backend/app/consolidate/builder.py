@@ -850,7 +850,7 @@ def apply_overrides(data: ReportData, overrides: dict) -> list[str]:
             continue
         if f.value in (None, "") or f.status in ("missing", "ai_draft"):
             f.value, f.status = text, "ai_draft"
-            f.source = Source(text="Drafted by AI from the section's structured data; review before publishing")
+            f.source = Source(text="Drafted by AI from the section's structured data only; review before publishing")
     for tpath, rows in (overrides.get("rows") or {}).items():
         t = data.table(tpath)
         if t is None:

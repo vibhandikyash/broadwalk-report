@@ -99,7 +99,8 @@ def draft_narratives(pid: str) -> dict:
 
     project_or_404(pid)
     if not settings.llm_enabled:
-        raise HTTPException(503, "AI drafting is not configured: set ANTHROPIC_API_KEY in .env and restart the backend")
+        raise HTTPException(503, "AI drafting is not configured: set ANTHROPIC_API_KEY in .env, or install claude-agent-sdk "
+                                 "and log in to Claude Code, then restart the backend")
     row = db.get_report_data(pid)
     if row is None or not row.get("data"):
         raise HTTPException(409, "Report data has not been built yet")

@@ -35,5 +35,5 @@ for r in (projects.router, files.router, report_data.router, report.router):
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"ok": True, "llm_enabled": settings.llm_enabled,
+    return {"ok": True, "llm_enabled": settings.llm_enabled, "llm_provider": settings.llm_provider,
             "pdf_renderer": bool(getattr(app.state, "pdf_renderer", False)), "workers": settings.workers}

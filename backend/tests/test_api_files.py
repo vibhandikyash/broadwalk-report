@@ -1,4 +1,6 @@
 # backend/tests/test_api_files.py
+import time
+
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -21,8 +23,12 @@ def test_project_and_file_lifecycle(tmp_path):
         assert recs[0]["status"] in ("queued", "processing", "processed") and recs[1]["status"] == "unsupported"
         assert "extractions" not in recs[0]
         assert pool.wait_idle(90)
-        detail = client.get(f"/api/projects/{p['id']}").json()
-        assert detail["stage"] == "review" and detail["report_built"] is True
+        for _ in range(60):  # the consolidation runs inside the last file's job; give it a moment under load
+            detail = client.get(f"/api/projects/{p['id']}").json()
+            if detail["stage"] == "review":
+                break
+            time.sleep(0.5)
+        assert detail["stage"] == "review" and detail["report_built"] is True, {k: detail[k] for k in ("stage", "report_built", "processing")} | {"files": [(f["original_filename"], f["status"], f["error"]) for f in detail["files"]]}
         good = next(f for f in detail["files"] if f["original_filename"] == "fin.xlsx")
         assert good["status"] == "processed" and [x["doc_type"] for x in good["parts"]][0] == "yardi_budget_comparison"
         ex = client.get(f"/api/projects/{p['id']}/files/{good['id']}/extraction").json()

@@ -6,7 +6,7 @@ Upload files, review every extracted value with its source, correct what is wron
 ## Prerequisites
 
 - Python 3.12 or newer
-- Node.js 22 LTS and npm 10
+- Node.js 22 LTS and npm 10 (with nvm: `nvm use 22` before `npm start`; Node 18 is too old for Angular 21)
 - Chromium for PDF rendering (installed once by Playwright, see below)
 - No cloud services are required. AI narrative drafting is optional and needs an Anthropic API key.
 
@@ -15,7 +15,8 @@ Upload files, review every extracted value with its source, correct what is wron
 ```bash
 cd backend
 python3 -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
-pip install -r requirements-dev.txt                     # or requirements.txt without test/LLM extras
+pip install -r requirements-dev.txt                     # or requirements.txt without test/LLM extras;
+                                                        # requirements-llm.txt adds the optional drafting providers
 python -m playwright install chromium                   # one-time, ~150 MB, needed for PDF output
 cp ../.env.example ../.env                              # edit if you want a different data folder or workers
 uvicorn app.main:app --reload --port 8000
@@ -40,14 +41,16 @@ npm start                                               # Angular dev server on 
 | `APP_MAX_UPLOAD_MB` | `50` | Per-file upload limit |
 | `APP_CORS_ORIGINS` | `http://localhost:4200` | Allowed browser origins |
 | `BACKEND_PORT` | `8000` | Port the Angular dev proxy forwards `/api` to. If 8000 is busy, set this and start uvicorn with the same `--port` |
-| `ANTHROPIC_API_KEY` | unset | Optional. Enables the "Draft narratives with AI" button |
-| `ANTHROPIC_MODEL` | `claude-opus-5` | Model used for drafting |
+| `NARRATIVE_PROVIDER` | `auto` | `api` (Anthropic SDK with an API key), `agent-sdk` (Claude Agent SDK on the local Claude Code login), `off`. `auto` picks `api` when a key is set, else `agent-sdk` when the package is installed |
+| `ANTHROPIC_API_KEY` | unset | Enables the `api` provider |
+| `ANTHROPIC_MODEL` | unset | Model override. `api` defaults to `claude-opus-5`; `agent-sdk` defaults to the Claude Code CLI's configured model |
 
 ## External services
 
 | Service | Purpose | Variable | Credentials |
 |---|---|---|---|
-| Anthropic Claude API | Drafts narrative paragraphs from the structured, reviewed numbers. Optional; the app is fully functional without it. | `ANTHROPIC_API_KEY` | The user supplies their own key in `.env`. Requests are made with server-side refusal fallbacks enabled (`fallbacks: "default"`). |
+| Anthropic Claude API (`api` provider) | Drafts narrative paragraphs from the structured, reviewed numbers. Optional; the app is fully functional without it. | `ANTHROPIC_API_KEY` | The user supplies their own key in `.env`. Requests are made with server-side refusal fallbacks enabled (`fallbacks: "default"`). |
+| Claude Agent SDK (`agent-sdk` provider) | Same drafting, through the bundled Claude Code CLI, so it uses whatever that CLI is logged in with. Intended for a developer's own machine that already has a Claude Code login; per Anthropic's terms, a distributed product must use the API-key provider. | none (`pip install -r backend/requirements-llm.txt`, then `claude` login) | Nothing is stored by the app; the CLI's own credentials are used. One call per narrative field, no tools, no settings or CLAUDE.md loaded. |
 
 Nothing else leaves the machine. Playwright's Chromium is downloaded once at setup time.
 
@@ -102,7 +105,7 @@ Files are processed by an in-process thread pool; each file is an isolated job. 
 - Comp unit counts and vintages come from a HelloData comp summary when one is supplied; the unit-level listings export does not contain them.
 - Image-only (scanned) PDFs are reported as unsupported; no OCR is implemented.
 - The frontend has no unit tests; it is covered by the browser end-to-end test below.
-- The optional AI drafting sends section values (not files) to the Anthropic API and requires the user's key.
+- The optional AI drafting sends section values (not files) to Claude, through an API key or the local Claude Code login. Drafts are marked `AI draft` and must be reviewed.
 - No authentication or multi-user support; single local user by design.
 
 ### Next steps (another 40 hours)
@@ -122,6 +125,7 @@ cd backend && pytest -q                                                    # uni
 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_dataset.py -v   # optional: the real files, plus a mutated copy
                                                                            # (random names, renamed sheets, shifted rows/columns)
 UI_E2E_URL=http://localhost:4200 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_ui_e2e.py -v
+LLM_LIVE=1 pytest tests/test_narrative.py -v                              # optional: one real drafting call on the configured provider
                                                                            # optional: drives the Angular app in headless Chromium
                                                                            # (upload, every Files-page control, edits, PDF); both servers must be running
 ```

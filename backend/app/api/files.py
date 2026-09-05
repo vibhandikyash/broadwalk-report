@@ -58,13 +58,14 @@ async def upload_files(pid: str, files: list[UploadFile] = File(...)) -> list[di
                     dest.unlink(missing_ok=True)
                     raise HTTPException(413, f"{name} exceeds the {settings.max_upload_mb} MB upload limit")
                 fh.write(chunk)
-        db.add_file(pid, fid, name, str(dest), ext, size)
-        if ext not in SUPPORTED_EXTENSIONS:
-            db.update_file(fid, status="unsupported", processed_at=db.now(),
-                           error=f"Unsupported file type '{ext}'. Supported: {', '.join(SUPPORTED_EXTENSIONS)}")
-        else:
+        if ext in SUPPORTED_EXTENSIONS:
+            db.add_file(pid, fid, name, str(dest), ext, size)
             pool.submit(f"file:{fid}", jobs.process_file, fid)
+        else:  # never let an unsupported file sit in 'queued': a running job could see it and skip consolidation
+            db.add_file(pid, fid, name, str(dest), ext, size, status="unsupported",
+                        error=f"Unsupported file type '{ext}'. Supported: {', '.join(SUPPORTED_EXTENSIONS)}")
         out.append(file_public(db.get_file(fid)))
+    jobs.rebuild_if_idle(pid)  # jobs that finished while this upload was still inserting rows skipped their rebuild
     return out
 
 

@@ -34,7 +34,8 @@ class Settings:
         o.strip() for o in os.getenv("APP_CORS_ORIGINS", "http://localhost:4200").split(",") if o.strip()
     )
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY") or None
-    anthropic_model: str = os.getenv("ANTHROPIC_MODEL", "claude-opus-5")
+    anthropic_model: str | None = os.getenv("ANTHROPIC_MODEL") or None
+    narrative_provider: str = os.getenv("NARRATIVE_PROVIDER", "auto").strip().lower()
     config_dir: Path = BACKEND_DIR / "config"
 
     @property
@@ -42,8 +43,24 @@ class Settings:
         return self.data_dir / "app.db"
 
     @property
+    def llm_provider(self) -> str | None:
+        """'api' (Anthropic SDK with ANTHROPIC_API_KEY), 'agent-sdk' (Claude Agent SDK using the local
+        Claude Code login), or None. NARRATIVE_PROVIDER=auto prefers the API key when one is set."""
+        want = self.narrative_provider
+        if want in ("off", "none", "false", "0"):
+            return None
+        if want in ("auto", "api") and self.anthropic_api_key:
+            return "api"
+        if want in ("auto", "agent-sdk", "agent_sdk", "agent"):
+            import importlib.util
+
+            if importlib.util.find_spec("claude_agent_sdk") is not None:
+                return "agent-sdk"
+        return None
+
+    @property
     def llm_enabled(self) -> bool:
-        return bool(self.anthropic_api_key)
+        return self.llm_provider is not None
 
 
 settings = Settings()

@@ -139,7 +139,7 @@ def list_projects() -> list[dict]:
     with connect() as con:
         rows = con.execute(
             "SELECT p.*, (SELECT COUNT(*) FROM files f WHERE f.project_id = p.id) AS file_count "
-            "FROM projects p ORDER BY created_at DESC"
+            "FROM projects p ORDER BY created_at DESC, rowid DESC"
         ).fetchall()
     return [_decode(r) for r in rows]  # type: ignore[misc]
 
@@ -154,12 +154,14 @@ def delete_project(pid: str) -> None:
 
 
 # ---------- files ----------
-def add_file(project_id: str, file_id: str, original_filename: str, stored_path: str, ext: str, size: int) -> dict:
+def add_file(project_id: str, file_id: str, original_filename: str, stored_path: str, ext: str, size: int,
+             status: str = "queued", error: str | None = None) -> dict:
     with connect() as con:
         con.execute(
-            "INSERT INTO files (id, project_id, original_filename, stored_path, ext, size, uploaded_at) "
-            "VALUES (?,?,?,?,?,?,?)",
-            (file_id, project_id, original_filename, stored_path, ext, size, now()),
+            "INSERT INTO files (id, project_id, original_filename, stored_path, ext, size, uploaded_at, status, error, processed_at) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?)",
+            (file_id, project_id, original_filename, stored_path, ext, size, now(), status, error,
+             now() if status != "queued" else None),
         )
     touch_project(project_id)
     return get_file(file_id)  # type: ignore[return-value]

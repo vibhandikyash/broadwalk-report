@@ -114,6 +114,12 @@ def test_full_workflow_in_the_browser(tmp_path):
         page.locator(".field", has_text="Status item 1: title").locator("input").fill("Lender-required repairs")
         page.locator(".field", has_text="Status item 1: body").locator("textarea").fill("Seven of eight items are complete; the last has an approved extension.")
         save()
+        if os.getenv("LLM_LIVE"):  # one real drafting run through the UI button (uses the configured provider)
+            page.get_by_role("button", name=re.compile("Draft narratives")).click()
+            expect(page.get_by_role("button", name=re.compile("Drafting"))).to_be_visible(timeout=10000)
+            expect(page.get_by_role("button", name=re.compile("Draft narratives with AI"))).to_be_visible(timeout=300000)
+            page.get_by_role("button", name=re.compile("Submarket Comparison")).click()
+            expect(page.locator(".field", has_text="Effective rent commentary").locator(".chip").first).to_have_text("AI draft")
 
         # 6. Report: preview, generate, download
         page.get_by_role("link", name=re.compile(r"^Report")).click()

@@ -10,7 +10,7 @@ export interface ProjectFile {
 export interface Report { id: string; project_id: string; version: number; status: string; error: string | null; created_at: string; has_pdf: boolean; }
 export interface ProjectDetail extends Project { files: ProjectFile[]; reports: Report[]; stage: Stage; report_built: boolean; processing: string[]; }
 export interface DocTypeOption { key: string; label: string; }
-export interface Health { ok: boolean; llm_enabled: boolean; pdf_renderer: boolean; workers: number; }
+export interface Health { ok: boolean; llm_enabled: boolean; llm_provider: string | null; pdf_renderer: boolean; workers: number; }
 export interface Source { file_id?: string | null; filename?: string | null; locator?: string | null; text?: string | null; }
 export interface Alternative { value: unknown; source: Source | null; note: string | null; }
 export type Kind = 'money' | 'number' | 'integer' | 'percent' | 'date' | 'text' | 'longtext';

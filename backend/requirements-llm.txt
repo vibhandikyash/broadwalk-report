@@ -1,0 +1,3 @@
+# Optional: narrative drafting providers (either one is enough)
+anthropic>=0.86
+claude-agent-sdk>=0.2

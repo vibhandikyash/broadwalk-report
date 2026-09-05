@@ -12,7 +12,7 @@ import { Health } from './core/models';
       <a routerLink="/projects" class="brand">Investor Report Generator</a>
       <span class="spacer"></span>
       @if (health(); as h) {
-        <span class="muted small">PDF {{ h.pdf_renderer ? 'ready' : 'unavailable' }} · AI {{ h.llm_enabled ? 'on' : 'off' }}</span>
+        <span class="muted small">PDF {{ h.pdf_renderer ? 'ready' : 'unavailable' }} · AI {{ h.llm_enabled ? 'on (' + h.llm_provider + ')' : 'off' }}</span>
       } @else if (offline()) {
         <span class="err small">Backend not reachable on /api. Start it with: uvicorn app.main:app --port 8000</span>
       }

@@ -160,25 +160,22 @@
   <div>
     <div class="col-h"><span>01 · Revenue</span><span class="v {{ vcls(v('commentary.fields.revenue_var')) }}">{{ v('commentary.fields.revenue_var')|signed_money }} vs. budget</span></div>
     <div class="col-body">
-      <p>Total revenue of {{ v('commentary.fields.revenue_actual')|money }} finished {{ v('commentary.fields.revenue_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.revenue_budget')|money }} budget. Gain/loss to lease was {{ v('commentary.fields.gain_to_lease_actual')|money }} versus a {{ v('commentary.fields.gain_to_lease_budget')|money }} budget ({{ v('commentary.fields.gain_to_lease_var_pct')|pct(1, true) }}).</p>
-      <p>{{ v('commentary.fields.revenue_body')|text }}</p>
-      <h4>Outlook</h4><p>{{ v('commentary.fields.revenue_outlook')|text }}</p>
+      {% if v('commentary.fields.revenue_body') %}<p>{{ v('commentary.fields.revenue_body') }}</p>{% else %}<p>Total revenue of {{ v('commentary.fields.revenue_actual')|money }} finished {{ v('commentary.fields.revenue_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.revenue_budget')|money }} budget. Gain/loss to lease was {{ v('commentary.fields.gain_to_lease_actual')|money }} versus a {{ v('commentary.fields.gain_to_lease_budget')|money }} budget ({{ v('commentary.fields.gain_to_lease_var_pct')|pct(1, true) }}).</p>{% endif %}
+      {% if v('commentary.fields.revenue_outlook') %}<h4>Outlook</h4><p>{{ v('commentary.fields.revenue_outlook') }}</p>{% endif %}
     </div>
   </div>
   <div>
     <div class="col-h"><span>02 · Operating expenses</span><span class="v {{ vcls(v('commentary.fields.opex_var')) }}">{{ v('commentary.fields.opex_var')|signed_money }} vs. budget</span></div>
     <div class="col-body">
-      <p>Total operating expenses of {{ v('commentary.fields.opex_actual')|money }} finished {{ v('commentary.fields.opex_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.opex_budget')|money }} budget. Insurance {{ v('commentary.fields.insurance_var')|signed_money }} and utilities {{ v('commentary.fields.utilities_var')|signed_money }} versus budget.</p>
-      <p>{{ v('commentary.fields.opex_body')|text }}</p>
-      <h4>Outlook</h4><p>{{ v('commentary.fields.opex_outlook')|text }}</p>
+      {% if v('commentary.fields.opex_body') %}<p>{{ v('commentary.fields.opex_body') }}</p>{% else %}<p>Total operating expenses of {{ v('commentary.fields.opex_actual')|money }} finished {{ v('commentary.fields.opex_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.opex_budget')|money }} budget. Insurance {{ v('commentary.fields.insurance_var')|signed_money }} and utilities {{ v('commentary.fields.utilities_var')|signed_money }} versus budget.</p>{% endif %}
+      {% if v('commentary.fields.opex_outlook') %}<h4>Outlook</h4><p>{{ v('commentary.fields.opex_outlook') }}</p>{% endif %}
     </div>
   </div>
   <div>
     <div class="col-h"><span>03 · NOI &amp; cash flow</span><span class="v {{ vcls(v('commentary.fields.noi_var')) }}">{{ v('commentary.fields.noi_var')|signed_money }} vs. budget</span></div>
     <div class="col-body">
-      <p>NOI of {{ v('commentary.fields.noi_actual')|money }} finished {{ v('commentary.fields.noi_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.noi_budget')|money }} budget. Net cash flow after debt service was {{ v('commentary.fields.ncf_actual')|money }} versus {{ v('commentary.fields.ncf_budget')|money }} budgeted ({{ v('commentary.fields.ncf_var')|signed_money }}). Capital spend was {{ v('commentary.fields.capex_actual')|money }} against a {{ v('commentary.fields.capex_budget')|money }} quarterly budget; year to date {{ v('commentary.fields.capex_ytd_actual')|money }} of the {{ v('commentary.fields.capex_annual_budget')|money }} annual budget.</p>
-      <p>{{ v('commentary.fields.noi_body')|text }}</p>
-      <h4>Outlook</h4><p>{{ v('commentary.fields.noi_outlook')|text }}</p>
+      {% if v('commentary.fields.noi_body') %}<p>{{ v('commentary.fields.noi_body') }}</p>{% else %}<p>NOI of {{ v('commentary.fields.noi_actual')|money }} finished {{ v('commentary.fields.noi_var_pct')|pct(1, true) }} against the {{ v('commentary.fields.noi_budget')|money }} budget. Net cash flow after debt service was {{ v('commentary.fields.ncf_actual')|money }} versus {{ v('commentary.fields.ncf_budget')|money }} budgeted ({{ v('commentary.fields.ncf_var')|signed_money }}). Capital spend was {{ v('commentary.fields.capex_actual')|money }} against a {{ v('commentary.fields.capex_budget')|money }} quarterly budget; year to date {{ v('commentary.fields.capex_ytd_actual')|money }} of the {{ v('commentary.fields.capex_annual_budget')|money }} annual budget.</p>{% endif %}
+      {% if v('commentary.fields.noi_outlook') %}<h4>Outlook</h4><p>{{ v('commentary.fields.noi_outlook') }}</p>{% endif %}
     </div>
   </div>
 </div>
@@ -220,7 +217,7 @@
   <tr class="total"><td>Total capital spend</td><td class="r">{{ capex_totals.ptd_actual|num }}</td><td class="r">{{ capex_totals.ptd_budget|num }}</td><td class="r {{ vcls(capex_totals.ptd_var) }}">{{ capex_totals.ptd_var|signed_num }}</td><td class="r">{{ capex_totals.ytd_actual|num }}</td><td class="r">{{ capex_totals.ytd_budget|num }}</td><td class="r {{ vcls(capex_totals.ytd_var) }}">{{ capex_totals.ytd_var|signed_num }}</td><td class="r">{{ capex_totals.annual_budget|num }}</td></tr>
   </tbody>
 </table>
-{% if v('capex.fields.narrative') %}<p class="note">{{ v('capex.fields.narrative') }}</p>{% endif %}
+{% if v('capex.fields.narrative') and capex_rows|length <= 16 %}<p class="note">{{ v('capex.fields.narrative') }}</p>{% endif %}
 {{ footer('Capital Projects', 7) }}
 </section>
 
@@ -232,7 +229,7 @@
   <div><div class="lab mono">YoY asking rent</div><div class="kpi">{{ v('submarket.fields.rent_growth_yoy')|pct(1, true) }}</div><div class="sub">{{ v('submarket.fields.avg_asking_rent')|money }}/unit avg market asking · prior quarter {{ v('submarket.fields.prior_rent_growth')|pct(1, true) }}</div></div>
   <div><div class="lab mono">Under construction</div><div class="kpi">{{ v('submarket.fields.under_construction')|integer }} units</div><div class="sub">{{ v('submarket.fields.pipeline_note')|text }}{% if v('submarket.fields.recent_deliveries') %} · recent deliveries: {{ v('submarket.fields.recent_deliveries') }}{% endif %}</div></div>
 </div>
-<table class="tbl dense">
+<table class="tbl dense{{ ' xdense' if comp_rows|length > 8 }}">
   <thead><tr><th>Property name</th><th class="r">Units</th><th class="r">Vintage</th><th class="r">Leased %</th><th class="r">Asking rent</th><th class="r">Eff. rent (NER)</th><th class="r">Concession</th></tr></thead>
   <tbody>
   {% for r in comp_rows %}
