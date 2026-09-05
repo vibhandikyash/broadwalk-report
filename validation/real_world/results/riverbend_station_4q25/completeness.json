@@ -1,0 +1,237 @@
+{
+  "classification": "complete",
+  "completeness": {
+    "ai_drafts_pending": 12,
+    "complete": true,
+    "gap_count": 0,
+    "gaps": [],
+    "groups": [
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "property",
+        "label": "Property identity and facts",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "in_place_rent",
+        "label": "Current and prior in-place rent",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capital",
+        "label": "Capital summary",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "business_plan",
+        "label": "Business plan summary",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "rent_trend",
+        "label": "Submarket rent trend",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financing",
+        "label": "Financing terms",
+        "page": 4
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financials",
+        "label": "Financial performance",
+        "page": 6
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capex",
+        "label": "Capital projects",
+        "page": 7
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "submarket",
+        "label": "Submarket KPIs",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "comps",
+        "label": "Comparable set",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "occupancy",
+        "label": "Occupancy",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "leasing",
+        "label": "Leasing activity",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "status",
+        "label": "Status update",
+        "page": 10
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "goals",
+        "label": "Next-quarter goals",
+        "page": 10
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "narratives",
+        "label": "Commentary and narratives",
+        "page": 5
+      }
+    ]
+  },
+  "drafted": [
+    "commentary.fields.takeaway",
+    "commentary.fields.revenue_body",
+    "commentary.fields.opex_body",
+    "commentary.fields.noi_body",
+    "in_place_rent.fields.narrative",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.concession_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.renewal_narrative",
+    "capex.fields.narrative"
+  ],
+  "expected_gaps": [],
+  "file_summary": {
+    "failed": 0,
+    "needs_ocr": 0,
+    "processed": 5,
+    "unrecognized": 0,
+    "unsupported": 0
+  },
+  "provenance_by_page": {
+    "1": {
+      "conflict": 0,
+      "corrected": 8,
+      "derived": 5,
+      "drafted": 0,
+      "extracted": 7,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "10": {
+      "conflict": 0,
+      "corrected": 15,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 2,
+      "missing_intentional": 3,
+      "missing_unexpected": 0
+    },
+    "2": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 9,
+      "drafted": 1,
+      "extracted": 20,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "3": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 7,
+      "drafted": 0,
+      "extracted": 111,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "4": {
+      "conflict": 0,
+      "corrected": 17,
+      "derived": 2,
+      "drafted": 0,
+      "extracted": 4,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "5": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 32,
+      "drafted": 4,
+      "extracted": 0,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "6": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 86,
+      "drafted": 0,
+      "extracted": 105,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "7": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 12,
+      "drafted": 1,
+      "extracted": 31,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "8": {
+      "conflict": 0,
+      "corrected": 2,
+      "derived": 10,
+      "drafted": 3,
+      "extracted": 30,
+      "missing_intentional": 5,
+      "missing_unexpected": 0
+    },
+    "9": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 17,
+      "drafted": 3,
+      "extracted": 39,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    }
+  }
+}

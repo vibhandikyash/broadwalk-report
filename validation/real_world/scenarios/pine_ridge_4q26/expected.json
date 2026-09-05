@@ -1,44 +1,216 @@
 {
   "id": "pine_ridge_4q26",
+  "classification": "structural",
   "project_name": "Pine Ridge 4Q26 Investor Report",
   "description": "Sparse but valid package with manual completion through the correction API.",
   "sources": [
-    {"name": "Property_Ops_December.xlsx", "upload_as": "ops_packet_final.xlsx", "status": "processed"}
+    {
+      "name": "Property_Ops_December.xlsx",
+      "upload_as": "ops_packet_final.xlsx",
+      "status": "processed"
+    }
   ],
   "expected_values": {
-    "property.fields.name": {"value": "Pine Ridge"},
-    "property.fields.units": {"value": 412},
-    "property.fields.year_built": {"value": 2004},
-    "property.fields.quarter_label": {"value": "4Q26"},
-    "property.fields.period_end": {"value": "2026-12-31"},
-    "occupancy.fields.current_pct": {"value": 0.8495145631, "tolerance": 0.000001},
-    "occupancy.fields.current_occupied": {"value": 350},
-    "occupancy.tables.new_leases.totals.count": {"value": 2},
-    "occupancy.tables.renewals.totals.count": {"value": 1},
-    "financials.tables.lines.rows.total_revenue.ptd_actual": {"value": 1880000},
-    "financials.tables.lines.rows.total_opex.ptd_actual": {"value": 1090000},
-    "financials.tables.lines.rows.noi.ptd_actual": {"value": 790000},
-    "submarket.fields.vacancy": {"value": 0.112, "tolerance": 0.000001}
+    "property.fields.name": {
+      "value": "Pine Ridge"
+    },
+    "property.fields.units": {
+      "value": 412
+    },
+    "property.fields.year_built": {
+      "value": 2004
+    },
+    "property.fields.quarter_label": {
+      "value": "4Q26"
+    },
+    "property.fields.period_end": {
+      "value": "2026-12-31"
+    },
+    "occupancy.fields.current_pct": {
+      "value": 0.8495145631,
+      "tolerance": 1e-06
+    },
+    "occupancy.fields.current_occupied": {
+      "value": 350
+    },
+    "occupancy.tables.new_leases.totals.count": {
+      "value": 2
+    },
+    "occupancy.tables.renewals.totals.count": {
+      "value": 1
+    },
+    "financials.tables.lines.rows.total_revenue.ptd_actual": {
+      "value": 1880000
+    },
+    "financials.tables.lines.rows.total_opex.ptd_actual": {
+      "value": 1090000
+    },
+    "financials.tables.lines.rows.noi.ptd_actual": {
+      "value": 790000
+    },
+    "submarket.fields.vacancy": {
+      "value": 0.112,
+      "tolerance": 1e-06
+    }
   },
   "corrections": [
-    {"path": "property.fields.acquired_date", "value": "2022-06-17"},
-    {"path": "property.fields.prepared_by", "value": "Redwood Residential Partners"},
-    {"path": "capital.fields.purchase_price", "value": 67500000},
-    {"path": "capital.fields.equity_invested", "value": 22500000},
-    {"path": "financing.fields.loan_amount", "value": 45000000},
-    {"path": "financing.fields.rate", "value": 0.0575},
-    {"path": "financing.fields.lender", "value": "Summit Commercial Bank"},
-    {"path": "property.fields.description", "value": "A suburban workforce-housing community with 412 units across multiple low-rise buildings."}
+    {
+      "path": "property.fields.acquired_date",
+      "value": "2022-06-17"
+    },
+    {
+      "path": "property.fields.prepared_by",
+      "value": "Redwood Residential Partners"
+    },
+    {
+      "path": "capital.fields.purchase_price",
+      "value": 67500000
+    },
+    {
+      "path": "capital.fields.equity_invested",
+      "value": 22500000
+    },
+    {
+      "path": "financing.fields.loan_amount",
+      "value": 45000000
+    },
+    {
+      "path": "financing.fields.rate",
+      "value": 0.0575
+    },
+    {
+      "path": "financing.fields.lender",
+      "value": "Summit Commercial Bank"
+    },
+    {
+      "path": "property.fields.description",
+      "value": "A suburban workforce-housing community with 412 units across multiple low-rise buildings."
+    }
   ],
   "expected_after_corrections": {
-    "capital.fields.purchase_price": {"value": 67500000},
-    "capital.fields.equity_invested": {"value": 22500000},
-    "financing.fields.loan_amount": {"value": 45000000},
-    "financing.fields.rate": {"value": 0.0575, "tolerance": 0.000001},
-    "financing.fields.lender": {"value": "Summit Commercial Bank"}
+    "capital.fields.purchase_price": {
+      "value": 67500000
+    },
+    "capital.fields.equity_invested": {
+      "value": 22500000
+    },
+    "financing.fields.loan_amount": {
+      "value": 45000000
+    },
+    "financing.fields.rate": {
+      "value": 0.0575,
+      "tolerance": 1e-06
+    },
+    "financing.fields.lender": {
+      "value": "Summit Commercial Bank"
+    }
   },
-  "issues_contains": ["No balance sheet found"],
-  "forbidden_text": ["The Boardwalk", "Harbor Point", "Regional Oaks"],
-  "report": {"page_count": 10, "text_contains": ["PINE RIDGE", "4Q26"]},
-  "immutability_patch": {"path": "property.fields.description", "value": "This later edit must not change the saved report snapshot."}
+  "issues_contains": [
+    "No balance sheet found"
+  ],
+  "forbidden_text": [
+    "The Boardwalk",
+    "Harbor Point",
+    "Regional Oaks"
+  ],
+  "report": {
+    "page_count": 10,
+    "text_contains": [
+      "PINE RIDGE",
+      "4Q26"
+    ]
+  },
+  "immutability_patch": {
+    "path": "property.fields.description",
+    "value": "This later edit must not change the saved report snapshot."
+  },
+  "expected_gaps": [
+    "capex.fields.narrative",
+    "capital.fields.business_plan_summary",
+    "capital.fields.distributions_itd",
+    "capital.fields.quarter_contributions",
+    "capital.fields.quarter_distributions",
+    "capital.fields.total_called",
+    "commentary.fields.noi_body",
+    "commentary.fields.noi_outlook",
+    "commentary.fields.opex_body",
+    "commentary.fields.opex_outlook",
+    "commentary.fields.revenue_body",
+    "commentary.fields.revenue_outlook",
+    "commentary.fields.takeaway",
+    "financing.fields.amort_years",
+    "financing.fields.effective_date",
+    "financing.fields.io_months",
+    "financing.fields.maturity_date",
+    "financing.fields.narrative",
+    "financing.fields.prepayment",
+    "financing.fields.rate_type",
+    "financing.fields.recourse",
+    "financing.fields.term_months",
+    "in_place_rent.fields.narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.renewal_narrative",
+    "property.fields.building_class",
+    "property.fields.hold_period_years",
+    "property.fields.msa",
+    "property.fields.site_acres",
+    "property.fields.submarket",
+    "rent_trend.fields.caption",
+    "status.fields.goal1_title",
+    "status.fields.status1_title",
+    "submarket.fields.concession_narrative",
+    "submarket.fields.market_name",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.submarket_name",
+    "submarket.tables.comps.totals.asking_rent",
+    "underwriting.fields.spent_period_note",
+    "underwriting.tables.budget"
+  ],
+  "expected_warning_paths": [
+    "capex.fields.narrative",
+    "capital",
+    "capital.fields.business_plan_summary",
+    "capital.fields.distributions_itd",
+    "capital.fields.quarter_contributions",
+    "capital.fields.quarter_distributions",
+    "capital.fields.total_called",
+    "commentary.fields.noi_body",
+    "commentary.fields.noi_outlook",
+    "commentary.fields.opex_body",
+    "commentary.fields.opex_outlook",
+    "commentary.fields.revenue_body",
+    "commentary.fields.revenue_outlook",
+    "commentary.fields.takeaway",
+    "financing.fields.amort_years",
+    "financing.fields.effective_date",
+    "financing.fields.io_months",
+    "financing.fields.maturity_date",
+    "financing.fields.narrative",
+    "financing.fields.prepayment",
+    "financing.fields.rate_type",
+    "financing.fields.recourse",
+    "financing.fields.term_months",
+    "in_place_rent.fields.narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.renewal_narrative",
+    "property.fields.building_class",
+    "property.fields.hold_period_years",
+    "property.fields.msa",
+    "property.fields.site_acres",
+    "property.fields.submarket",
+    "rent_trend.fields.caption",
+    "submarket.fields.concession_narrative",
+    "submarket.fields.market_name",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.submarket_name",
+    "underwriting.fields.spent_period_note"
+  ],
+  "report_identity": [
+    "Pine Ridge",
+    "4Q26"
+  ]
 }

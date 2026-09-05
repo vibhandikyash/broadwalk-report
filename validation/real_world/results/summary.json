@@ -1,26 +1,49 @@
 {
   "failed_count": 0,
   "passed": true,
-  "passed_count": 3,
-  "scenario_count": 3,
+  "passed_count": 4,
+  "scenario_count": 4,
   "scenarios": [
     {
+      "classification": "structural",
+      "complete": false,
+      "drafted": 0,
       "failures": [],
+      "gap_count": 40,
       "id": "harbor_point_3q26",
       "passed": true,
       "report_page_count": 10,
       "stage_after_report": "generated"
     },
     {
+      "classification": "structural",
+      "complete": false,
+      "drafted": 0,
       "failures": [],
+      "gap_count": 43,
       "id": "lakeside_commons_1q27",
       "passed": true,
       "report_page_count": 10,
       "stage_after_report": "generated"
     },
     {
+      "classification": "structural",
+      "complete": false,
+      "drafted": 0,
       "failures": [],
+      "gap_count": 42,
       "id": "pine_ridge_4q26",
+      "passed": true,
+      "report_page_count": 10,
+      "stage_after_report": "generated"
+    },
+    {
+      "classification": "complete",
+      "complete": true,
+      "drafted": 12,
+      "failures": [],
+      "gap_count": 0,
+      "id": "riverbend_station_4q25",
       "passed": true,
       "report_page_count": 10,
       "stage_after_report": "generated"

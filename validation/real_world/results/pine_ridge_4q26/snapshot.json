@@ -5,7 +5,7 @@
       "quarter_label": "4Q26",
       "start": "2026-10-01"
     },
-    "project_id": "3d206c62907f",
+    "project_id": "25d7c824d8fc",
     "project_name": "Pine Ridge 4Q26 Investor Report",
     "property_name": "Pine Ridge",
     "sources": [
@@ -85,7 +85,7 @@
           "note": "Yardi's own capital total; used to cross-check the table",
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Operations' row 50",
             "text": null
@@ -178,7 +178,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 47",
                   "text": "HVAC Additions"
@@ -193,7 +193,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 47",
                   "text": "HVAC Additions"
@@ -208,7 +208,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 47",
                   "text": "HVAC Additions"
@@ -233,7 +233,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 47",
                   "text": "HVAC Additions"
@@ -248,7 +248,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 47",
                   "text": "HVAC Additions"
@@ -275,7 +275,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 48",
                   "text": "Paint"
@@ -290,7 +290,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 48",
                   "text": "Paint"
@@ -305,7 +305,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 48",
                   "text": "Paint"
@@ -330,7 +330,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 48",
                   "text": "Paint"
@@ -345,7 +345,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 48",
                   "text": "Paint"
@@ -372,7 +372,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 46",
                   "text": "Plumbing Replacement"
@@ -387,7 +387,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 46",
                   "text": "Plumbing Replacement"
@@ -402,7 +402,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 46",
                   "text": "Plumbing Replacement"
@@ -427,7 +427,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 46",
                   "text": "Plumbing Replacement"
@@ -442,7 +442,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 46",
                   "text": "Plumbing Replacement"
@@ -1266,7 +1266,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 12",
                   "text": "Less: Concessions"
@@ -1281,7 +1281,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 12",
                   "text": "Less: Concessions"
@@ -1296,7 +1296,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 12",
                   "text": "Less: Concessions"
@@ -1331,7 +1331,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 12",
                   "text": "Less: Concessions"
@@ -1346,7 +1346,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 12",
                   "text": "Less: Concessions"
@@ -1383,7 +1383,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 43",
                   "text": "TOTAL DEBT SERVICE"
@@ -1398,7 +1398,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 43",
                   "text": "TOTAL DEBT SERVICE"
@@ -1413,7 +1413,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 43",
                   "text": "TOTAL DEBT SERVICE"
@@ -1448,7 +1448,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 43",
                   "text": "TOTAL DEBT SERVICE"
@@ -1463,7 +1463,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 43",
                   "text": "TOTAL DEBT SERVICE"
@@ -1500,7 +1500,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 27",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1515,7 +1515,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 27",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1530,7 +1530,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 27",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1565,7 +1565,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 27",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1580,7 +1580,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 27",
                   "text": "TOTAL GENERAL & ADMINISTRATIVE"
@@ -1617,7 +1617,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 11",
                   "text": "Loss/Gain to Lease"
@@ -1632,7 +1632,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 11",
                   "text": "Loss/Gain to Lease"
@@ -1647,7 +1647,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 11",
                   "text": "Loss/Gain to Lease"
@@ -1682,7 +1682,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 11",
                   "text": "Loss/Gain to Lease"
@@ -1697,7 +1697,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 11",
                   "text": "Loss/Gain to Lease"
@@ -1734,7 +1734,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 10",
                   "text": "Gross Potential Rent"
@@ -1749,7 +1749,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 10",
                   "text": "Gross Potential Rent"
@@ -1764,7 +1764,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 10",
                   "text": "Gross Potential Rent"
@@ -1799,7 +1799,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 10",
                   "text": "Gross Potential Rent"
@@ -1814,7 +1814,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 10",
                   "text": "Gross Potential Rent"
@@ -1851,7 +1851,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 39",
                   "text": "TOTAL INSURANCE"
@@ -1866,7 +1866,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 39",
                   "text": "TOTAL INSURANCE"
@@ -1881,7 +1881,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 39",
                   "text": "TOTAL INSURANCE"
@@ -1916,7 +1916,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 39",
                   "text": "TOTAL INSURANCE"
@@ -1931,7 +1931,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 39",
                   "text": "TOTAL INSURANCE"
@@ -1968,7 +1968,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 35",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -1983,7 +1983,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 35",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -1998,7 +1998,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 35",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2033,7 +2033,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 35",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2048,7 +2048,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 35",
                   "text": "TOTAL MANAGEMENT FEES"
@@ -2085,7 +2085,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 29",
                   "text": "TOTAL MARKETING"
@@ -2100,7 +2100,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 29",
                   "text": "TOTAL MARKETING"
@@ -2115,7 +2115,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 29",
                   "text": "TOTAL MARKETING"
@@ -2150,7 +2150,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 29",
                   "text": "TOTAL MARKETING"
@@ -2165,7 +2165,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 29",
                   "text": "TOTAL MARKETING"
@@ -2202,7 +2202,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 44",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2217,7 +2217,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 44",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2232,7 +2232,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 44",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2267,7 +2267,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 44",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2282,7 +2282,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 44",
                   "text": "NET CASH FLOW AFTER DEBT SERVICE"
@@ -2319,7 +2319,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 15",
                   "text": "NET RENTAL INCOME"
@@ -2334,7 +2334,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 15",
                   "text": "NET RENTAL INCOME"
@@ -2349,7 +2349,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 15",
                   "text": "NET RENTAL INCOME"
@@ -2384,7 +2384,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 15",
                   "text": "NET RENTAL INCOME"
@@ -2399,7 +2399,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 15",
                   "text": "NET RENTAL INCOME"
@@ -2436,7 +2436,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 41",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2451,7 +2451,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 41",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2466,7 +2466,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 41",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2501,7 +2501,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 41",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2516,7 +2516,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 41",
                   "text": "NET OPERATING INCOME/(LOSS)"
@@ -2553,7 +2553,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 21",
                   "text": "TOTAL OTHER INCOME"
@@ -2568,7 +2568,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 21",
                   "text": "TOTAL OTHER INCOME"
@@ -2583,7 +2583,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 21",
                   "text": "TOTAL OTHER INCOME"
@@ -2618,7 +2618,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 21",
                   "text": "TOTAL OTHER INCOME"
@@ -2633,7 +2633,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 21",
                   "text": "TOTAL OTHER INCOME"
@@ -2670,7 +2670,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 25",
                   "text": "TOTAL PAYROLL"
@@ -2685,7 +2685,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 25",
                   "text": "TOTAL PAYROLL"
@@ -2700,7 +2700,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 25",
                   "text": "TOTAL PAYROLL"
@@ -2735,7 +2735,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 25",
                   "text": "TOTAL PAYROLL"
@@ -2750,7 +2750,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 25",
                   "text": "TOTAL PAYROLL"
@@ -2787,7 +2787,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 14",
                   "text": "Pet Rent"
@@ -2802,7 +2802,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 14",
                   "text": "Pet Rent"
@@ -2817,7 +2817,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 14",
                   "text": "Pet Rent"
@@ -2852,7 +2852,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 14",
                   "text": "Pet Rent"
@@ -2867,7 +2867,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 14",
                   "text": "Pet Rent"
@@ -2904,7 +2904,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 37",
                   "text": "TOTAL TAXES"
@@ -2919,7 +2919,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 37",
                   "text": "TOTAL TAXES"
@@ -2934,7 +2934,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 37",
                   "text": "TOTAL TAXES"
@@ -2969,7 +2969,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 37",
                   "text": "TOTAL TAXES"
@@ -2984,7 +2984,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 37",
                   "text": "TOTAL TAXES"
@@ -3021,7 +3021,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 31",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3036,7 +3036,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 31",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3051,7 +3051,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 31",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3086,7 +3086,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 31",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3101,7 +3101,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 31",
                   "text": "TOTAL REPAIRS & MAINTENANCE"
@@ -3138,7 +3138,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 40",
                   "text": "TOTAL EXPENSES"
@@ -3153,7 +3153,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 40",
                   "text": "TOTAL EXPENSES"
@@ -3168,7 +3168,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 40",
                   "text": "TOTAL EXPENSES"
@@ -3203,7 +3203,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 40",
                   "text": "TOTAL EXPENSES"
@@ -3218,7 +3218,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 40",
                   "text": "TOTAL EXPENSES"
@@ -3255,7 +3255,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 22",
                   "text": "TOTAL REVENUE"
@@ -3270,7 +3270,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 22",
                   "text": "TOTAL REVENUE"
@@ -3285,7 +3285,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 22",
                   "text": "TOTAL REVENUE"
@@ -3320,7 +3320,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 22",
                   "text": "TOTAL REVENUE"
@@ -3335,7 +3335,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 22",
                   "text": "TOTAL REVENUE"
@@ -3372,7 +3372,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 33",
                   "text": "TOTAL UTILITIES"
@@ -3387,7 +3387,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 33",
                   "text": "TOTAL UTILITIES"
@@ -3402,7 +3402,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 33",
                   "text": "TOTAL UTILITIES"
@@ -3437,7 +3437,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 33",
                   "text": "TOTAL UTILITIES"
@@ -3452,7 +3452,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 33",
                   "text": "TOTAL UTILITIES"
@@ -3489,7 +3489,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 17",
                   "text": "TOTAL UTILITY INCOME"
@@ -3504,7 +3504,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 17",
                   "text": "TOTAL UTILITY INCOME"
@@ -3519,7 +3519,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 17",
                   "text": "TOTAL UTILITY INCOME"
@@ -3554,7 +3554,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 17",
                   "text": "TOTAL UTILITY INCOME"
@@ -3569,7 +3569,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 17",
                   "text": "TOTAL UTILITY INCOME"
@@ -3606,7 +3606,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 13",
                   "text": "Less: Vacancy"
@@ -3621,7 +3621,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 13",
                   "text": "Less: Vacancy"
@@ -3636,7 +3636,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 13",
                   "text": "Less: Vacancy"
@@ -3671,7 +3671,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 13",
                   "text": "Less: Vacancy"
@@ -3686,7 +3686,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'December Operations' rows 13",
                   "text": "Less: Vacancy"
@@ -3771,7 +3771,7 @@
           "note": "PTD debt service / 3 months (approximate)",
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Operations' row 43",
             "text": "TOTAL DEBT SERVICE"
@@ -4080,7 +4080,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 5",
                   "text": "PR.A1"
@@ -4095,7 +4095,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 5",
                   "text": "PR.A1"
@@ -4110,7 +4110,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Prior Unit Mix' rows 6",
                   "text": null
@@ -4125,7 +4125,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 5",
                   "text": "PR.A1"
@@ -4140,7 +4140,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 5",
                   "text": "PR.A1"
@@ -4177,7 +4177,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 6, 7",
                   "text": "PR.B1, PR.B2"
@@ -4192,7 +4192,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 6, 7",
                   "text": "PR.B1, PR.B2"
@@ -4207,7 +4207,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Prior Unit Mix' rows 7, 8",
                   "text": null
@@ -4222,7 +4222,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 6, 7",
                   "text": "PR.B1, PR.B2"
@@ -4237,7 +4237,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 6, 7",
                   "text": "PR.B1, PR.B2"
@@ -4274,7 +4274,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 8",
                   "text": "PR.C2"
@@ -4289,7 +4289,7 @@
                 "note": "Average resident rent weighted by occupied units",
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 8",
                   "text": "PR.C2"
@@ -4304,7 +4304,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Prior Unit Mix' rows 9",
                   "text": null
@@ -4319,7 +4319,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 8",
                   "text": "PR.C2"
@@ -4334,7 +4334,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Current Unit Mix' rows 8",
                   "text": "PR.C2"
@@ -4373,7 +4373,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "7c240fad48da",
+                "file_id": "fc289bf65849",
                 "filename": "ops_packet_final.xlsx",
                 "locator": "sheet 'Current Unit Mix' grand total",
                 "text": null
@@ -4388,7 +4388,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "7c240fad48da",
+                "file_id": "fc289bf65849",
                 "filename": "ops_packet_final.xlsx",
                 "locator": "sheet 'Current Unit Mix' grand total",
                 "text": null
@@ -4403,7 +4403,7 @@
               "note": null,
               "override": null,
               "source": {
-                "file_id": "7c240fad48da",
+                "file_id": "fc289bf65849",
                 "filename": "ops_packet_final.xlsx",
                 "locator": "sheet 'Prior Unit Mix' grand total",
                 "text": null
@@ -4475,7 +4475,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' header",
             "text": null
@@ -4490,7 +4490,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' summary block",
             "text": null
@@ -4505,7 +4505,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' summary block",
             "text": null
@@ -4520,7 +4520,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' summary block",
             "text": null
@@ -4535,7 +4535,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Trade Outs' section headers",
             "text": null
@@ -4573,6 +4573,16 @@
           "status": "missing",
           "value": null
         },
+        "no_activity_note": {
+          "alternatives": [],
+          "kind": "longtext",
+          "label": "No leasing activity statement",
+          "note": "Only needed when a leasing table is empty: state that no new leases or renewals commenced, so an empty table reads as reviewed rather than missing",
+          "override": null,
+          "source": null,
+          "status": "missing",
+          "value": null
+        },
         "occupancy_narrative": {
           "alternatives": [],
           "kind": "longtext",
@@ -4590,7 +4600,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'September Occupancy' header",
             "text": null
@@ -4605,7 +4615,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'September Occupancy' summary block",
             "text": null
@@ -4620,7 +4630,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'September Occupancy' summary block",
             "text": null
@@ -4665,7 +4675,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' summary block",
             "text": null
@@ -4742,7 +4752,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 14-14",
                   "text": "PR.B1"
@@ -4757,7 +4767,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 14-14",
                   "text": "PR.B1"
@@ -4772,7 +4782,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 14-14",
                   "text": "PR.B1"
@@ -4787,7 +4797,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 14-14",
                   "text": "PR.B1"
@@ -4822,7 +4832,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 14-14",
                   "text": "PR.B1"
@@ -4839,7 +4849,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 13-13",
                   "text": "PR.B2"
@@ -4854,7 +4864,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 13-13",
                   "text": "PR.B2"
@@ -4869,7 +4879,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 13-13",
                   "text": "PR.B2"
@@ -4884,7 +4894,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 13-13",
                   "text": "PR.B2"
@@ -4919,7 +4929,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 13-13",
                   "text": "PR.B2"
@@ -5054,7 +5064,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 6-6",
                   "text": "PR.A1"
@@ -5069,7 +5079,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 6-6",
                   "text": "PR.A1"
@@ -5084,7 +5094,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 6-6",
                   "text": "PR.A1"
@@ -5099,7 +5109,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 6-6",
                   "text": "PR.A1"
@@ -5134,7 +5144,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Trade Outs' rows 6-6",
                   "text": "PR.A1"
@@ -5230,7 +5240,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Competitive Set' row 5",
             "text": "Pine Ridge"
@@ -5245,7 +5255,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Current Unit Mix' grand total",
             "text": null
@@ -5270,7 +5280,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Competitive Set' row 5",
             "text": "Pine Ridge"
@@ -5325,7 +5335,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' title",
             "text": null
@@ -5410,7 +5420,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Occupancy' summary block",
             "text": "Totals"
@@ -5425,7 +5435,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Competitive Set' row 5",
             "text": "Pine Ridge"
@@ -5440,7 +5450,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Competitive Set' row 5",
             "text": "Pine Ridge"
@@ -5473,7 +5483,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Lease Trend' row 2",
             "text": null
@@ -5488,7 +5498,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Lease Trend' row 1",
             "text": null
@@ -5503,7 +5513,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Lease Trend' header row",
             "text": null
@@ -5528,7 +5538,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Lease Trend' header row",
             "text": null
@@ -5645,7 +5655,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5660,7 +5670,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5675,7 +5685,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5690,7 +5700,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5705,7 +5715,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5720,7 +5730,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5735,7 +5745,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 6",
                   "text": "2026-01"
@@ -5752,7 +5762,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5767,7 +5777,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5782,7 +5792,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5797,7 +5807,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5812,7 +5822,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5827,7 +5837,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5842,7 +5852,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 7",
                   "text": "2026-02"
@@ -5859,7 +5869,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5874,7 +5884,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5889,7 +5899,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5904,7 +5914,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5919,7 +5929,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5934,7 +5944,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5949,7 +5959,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 8",
                   "text": "2026-03"
@@ -5966,7 +5976,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -5981,7 +5991,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -5996,7 +6006,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -6011,7 +6021,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -6026,7 +6036,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -6041,7 +6051,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -6056,7 +6066,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 9",
                   "text": "2026-04"
@@ -6073,7 +6083,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6088,7 +6098,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6103,7 +6113,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6118,7 +6128,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6133,7 +6143,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6148,7 +6158,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6163,7 +6173,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 10",
                   "text": "2026-05"
@@ -6180,7 +6190,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6195,7 +6205,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6210,7 +6220,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6225,7 +6235,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6240,7 +6250,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6255,7 +6265,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6270,7 +6280,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 11",
                   "text": "2026-06"
@@ -6287,7 +6297,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6302,7 +6312,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6317,7 +6327,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6332,7 +6342,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6347,7 +6357,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6362,7 +6372,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6377,7 +6387,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 12",
                   "text": "2026-07"
@@ -6394,7 +6404,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6409,7 +6419,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6424,7 +6434,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6439,7 +6449,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6454,7 +6464,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6469,7 +6479,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6484,7 +6494,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 13",
                   "text": "2026-08"
@@ -6501,7 +6511,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6516,7 +6526,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6531,7 +6541,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6546,7 +6556,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6561,7 +6571,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6576,7 +6586,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6591,7 +6601,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 14",
                   "text": "2026-09"
@@ -6608,7 +6618,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6623,7 +6633,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6638,7 +6648,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6653,7 +6663,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6668,7 +6678,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6683,7 +6693,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6698,7 +6708,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 15",
                   "text": "2026-10"
@@ -6715,7 +6725,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6730,7 +6740,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6745,7 +6755,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6760,7 +6770,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6775,7 +6785,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6790,7 +6800,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6805,7 +6815,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 16",
                   "text": "2026-11"
@@ -6822,7 +6832,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6837,7 +6847,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6852,7 +6862,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6867,7 +6877,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6882,7 +6892,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6897,7 +6907,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6912,7 +6922,7 @@
                 "note": null,
                 "override": null,
                 "source": {
-                  "file_id": "7c240fad48da",
+                  "file_id": "fc289bf65849",
                   "filename": "ops_packet_final.xlsx",
                   "locator": "sheet 'Lease Trend' row 17",
                   "text": "2026-12"
@@ -6937,7 +6947,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Operations' row 19",
             "text": "Less: Write Off Bad Debt"
@@ -6952,7 +6962,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'December Operations' row 20",
             "text": "Former Resident Collections"
@@ -7165,7 +7175,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7201,7 +7211,7 @@
           "override": null,
           "source": null,
           "status": "derived",
-          "value": "Comp set average across 0 properties (simple average; unit counts incomplete)."
+          "value": "Comp set average across 2 comparables: leased % unit-weighted."
         },
         "inventory": {
           "alternatives": [],
@@ -7210,7 +7220,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7255,7 +7265,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 4",
             "text": "2026 Q3"
@@ -7270,7 +7280,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 4",
             "text": "2026 Q3"
@@ -7295,7 +7305,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7340,7 +7350,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7355,7 +7365,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7370,7 +7380,7 @@
           "note": null,
           "override": null,
           "source": {
-            "file_id": "7c240fad48da",
+            "file_id": "fc289bf65849",
             "filename": "ops_packet_final.xlsx",
             "locator": "sheet 'Market Conditions' row 3",
             "text": "2026 Q4"
@@ -7434,8 +7444,331 @@
             }
           ],
           "editable_rows": true,
-          "row_meta": {},
-          "rows": {},
+          "row_meta": {
+            "cedar-grove": {
+              "label": "Cedar Grove",
+              "manual": false,
+              "subject": false
+            },
+            "pine-ridge": {
+              "label": "Pine Ridge",
+              "manual": false,
+              "subject": true
+            },
+            "westlake-terrace": {
+              "label": "Westlake Terrace",
+              "manual": false,
+              "subject": false
+            }
+          },
+          "rows": {
+            "cedar-grove": {
+              "asking_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Asking rent",
+                "note": "No rent data for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "concession": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Concession $/mo",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "concession_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Concession %",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "effective_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Effective rent (NER)",
+                "note": "No effective rent for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "leased_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Leased %",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 6",
+                  "text": "Cedar Grove"
+                },
+                "status": "extracted",
+                "value": 0.91
+              },
+              "name": {
+                "alternatives": [],
+                "kind": "text",
+                "label": "Property",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 6",
+                  "text": "Cedar Grove"
+                },
+                "status": "extracted",
+                "value": "Cedar Grove"
+              },
+              "units": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Units",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 6",
+                  "text": "Cedar Grove"
+                },
+                "status": "extracted",
+                "value": 360
+              },
+              "vintage": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Vintage",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 6",
+                  "text": "Cedar Grove"
+                },
+                "status": "extracted",
+                "value": 2008
+              }
+            },
+            "pine-ridge": {
+              "asking_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Asking rent",
+                "note": "No rent data for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "concession": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Concession $/mo",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "concession_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Concession %",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "effective_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Effective rent (NER)",
+                "note": "No effective rent for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "leased_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Leased %",
+                "note": "Physical occupancy per the Yardi rent roll",
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'December Occupancy' summary block",
+                  "text": null
+                },
+                "status": "extracted",
+                "value": 0.8495145631067961
+              },
+              "name": {
+                "alternatives": [],
+                "kind": "text",
+                "label": "Property",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 5",
+                  "text": "Pine Ridge"
+                },
+                "status": "extracted",
+                "value": "Pine Ridge"
+              },
+              "units": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Units",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 5",
+                  "text": "Pine Ridge"
+                },
+                "status": "extracted",
+                "value": 412
+              },
+              "vintage": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Vintage",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 5",
+                  "text": "Pine Ridge"
+                },
+                "status": "extracted",
+                "value": 2004
+              }
+            },
+            "westlake-terrace": {
+              "asking_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Asking rent",
+                "note": "No rent data for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "concession": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Concession $/mo",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "concession_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Concession %",
+                "note": null,
+                "override": null,
+                "source": null,
+                "status": "derived",
+                "value": null
+              },
+              "effective_rent": {
+                "alternatives": [],
+                "kind": "money",
+                "label": "Effective rent (NER)",
+                "note": "No effective rent for this property in the supplied files; enter it",
+                "override": null,
+                "source": null,
+                "status": "missing",
+                "value": null
+              },
+              "leased_pct": {
+                "alternatives": [],
+                "kind": "percent",
+                "label": "Leased %",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 7",
+                  "text": "Westlake Terrace"
+                },
+                "status": "extracted",
+                "value": 0.89
+              },
+              "name": {
+                "alternatives": [],
+                "kind": "text",
+                "label": "Property",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 7",
+                  "text": "Westlake Terrace"
+                },
+                "status": "extracted",
+                "value": "Westlake Terrace"
+              },
+              "units": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Units",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 7",
+                  "text": "Westlake Terrace"
+                },
+                "status": "extracted",
+                "value": 296
+              },
+              "vintage": {
+                "alternatives": [],
+                "kind": "integer",
+                "label": "Vintage",
+                "note": null,
+                "override": null,
+                "source": {
+                  "file_id": "fc289bf65849",
+                  "filename": "ops_packet_final.xlsx",
+                  "locator": "sheet 'Competitive Set' row 7",
+                  "text": "Westlake Terrace"
+                },
+                "status": "extracted",
+                "value": 2001
+              }
+            }
+          },
           "title": "Comp set",
           "totals": {
             "asking_rent": {
@@ -7486,7 +7819,7 @@
               "override": null,
               "source": null,
               "status": "derived",
-              "value": null
+              "value": 0.9009756097560975
             },
             "name": {
               "alternatives": [],
@@ -7506,7 +7839,7 @@
               "override": null,
               "source": null,
               "status": "derived",
-              "value": null
+              "value": 328.0
             },
             "vintage": {
               "alternatives": [],
@@ -7516,7 +7849,7 @@
               "override": null,
               "source": null,
               "status": "derived",
-              "value": null
+              "value": 2005
             }
           }
         }

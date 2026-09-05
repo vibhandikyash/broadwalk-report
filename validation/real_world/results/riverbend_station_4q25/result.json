@@ -1,0 +1,859 @@
+{
+  "classification": "complete",
+  "completeness": {
+    "ai_drafts_pending": 12,
+    "complete": true,
+    "gap_count": 0,
+    "gaps": [],
+    "groups": [
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "property",
+        "label": "Property identity and facts",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "in_place_rent",
+        "label": "Current and prior in-place rent",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capital",
+        "label": "Capital summary",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "business_plan",
+        "label": "Business plan summary",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "rent_trend",
+        "label": "Submarket rent trend",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financing",
+        "label": "Financing terms",
+        "page": 4
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financials",
+        "label": "Financial performance",
+        "page": 6
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capex",
+        "label": "Capital projects",
+        "page": 7
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "submarket",
+        "label": "Submarket KPIs",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "comps",
+        "label": "Comparable set",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "occupancy",
+        "label": "Occupancy",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "leasing",
+        "label": "Leasing activity",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "status",
+        "label": "Status update",
+        "page": 10
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "goals",
+        "label": "Next-quarter goals",
+        "page": 10
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "narratives",
+        "label": "Commentary and narratives",
+        "page": 5
+      }
+    ]
+  },
+  "description": "Complete alternate-property package: every supported export family across three unfamiliar workbooks with shuffled sheets, two Slate PDFs, a property photo, reviewer corrections for every manual field, underwriting rows and a metadata-only comparable added as a manual row, and deterministic (mock) narrative drafts.",
+  "drafted": [
+    "commentary.fields.takeaway",
+    "commentary.fields.revenue_body",
+    "commentary.fields.opex_body",
+    "commentary.fields.noi_body",
+    "in_place_rent.fields.narrative",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.concession_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.renewal_narrative",
+    "capex.fields.narrative"
+  ],
+  "failures": [],
+  "file_summary": {
+    "failed": 0,
+    "needs_ocr": 0,
+    "processed": 5,
+    "unrecognized": 0,
+    "unsupported": 0
+  },
+  "files": [
+    {
+      "error": null,
+      "name": "portal-b.pdf",
+      "parts": [
+        {
+          "confidence": 0.9,
+          "doc_type": "slate_distributions",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "mkt_final_v3.xlsx",
+      "parts": [
+        {
+          "confidence": 1.0,
+          "doc_type": "rent_chart",
+          "locator": "sheet 'Rent Chart'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "hellodata_comps",
+          "locator": "sheet 'Comps'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "hellodata_listings",
+          "locator": "sheet 'Listings'",
+          "warnings": []
+        },
+        {
+          "confidence": 1.0,
+          "doc_type": "costar_submarket_excel",
+          "locator": "sheet 'CoStar'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "export (1).xlsx",
+      "parts": [
+        {
+          "confidence": 1.0,
+          "doc_type": "yardi_lease_trade_out",
+          "locator": "sheet 'Trade-Outs'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.9,
+          "doc_type": "yardi_balance_sheet",
+          "locator": "sheet 'Balance Sheet'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.0,
+          "doc_type": "unknown",
+          "locator": "sheet 'Junk Sheet'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "portal-a.pdf",
+      "parts": [
+        {
+          "confidence": 0.9,
+          "doc_type": "slate_capital_calls",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "q4pack.xlsx",
+      "parts": [
+        {
+          "confidence": 0.0,
+          "doc_type": "unknown",
+          "locator": "sheet 'Notes'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.8,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'Unit Mix Dec'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.92,
+          "doc_type": "yardi_budget_comparison",
+          "locator": "sheet 'P&L Q4'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.8,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'Rent Roll Dec'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.8,
+          "doc_type": "yardi_market_rent_schedule",
+          "locator": "sheet 'Unit Mix Sep'",
+          "warnings": []
+        },
+        {
+          "confidence": 0.8,
+          "doc_type": "yardi_rent_roll",
+          "locator": "sheet 'Rent Roll Sep'",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    }
+  ],
+  "issues_before_corrections": [
+    {
+      "message": "Missing: Acquisition date",
+      "path": "property.fields.acquired_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket (needed for a complete report, page 2)",
+      "path": "property.fields.submarket",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market / MSA (needed for a complete report, page 2)",
+      "path": "property.fields.msa",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepared by (needed for a complete report, page 2)",
+      "path": "property.fields.prepared_by",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Building class (needed for a complete report, page 2)",
+      "path": "property.fields.building_class",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Site size (acres) (needed for a complete report, page 2)",
+      "path": "property.fields.site_acres",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Hold period (years) (needed for a complete report, page 2)",
+      "path": "property.fields.hold_period_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Property description (needed for a complete report, page 2)",
+      "path": "property.fields.description",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: In-place rent commentary (needed for a complete report, page 2)",
+      "path": "in_place_rent.fields.narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Business plan summary (needed for a complete report, page 3)",
+      "path": "capital.fields.business_plan_summary",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Spent-to-date period note (needed for a complete report, page 3)",
+      "path": "underwriting.fields.spent_period_note",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Chart caption (needed for a complete report, page 3)",
+      "path": "rent_trend.fields.caption",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Lender (needed for a complete report, page 4)",
+      "path": "financing.fields.lender",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest rate (needed for a complete report, page 4)",
+      "path": "financing.fields.rate",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Rate type (needed for a complete report, page 4)",
+      "path": "financing.fields.rate_type",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Effective date (needed for a complete report, page 4)",
+      "path": "financing.fields.effective_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Maturity date (needed for a complete report, page 4)",
+      "path": "financing.fields.maturity_date",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Loan term (months) (needed for a complete report, page 4)",
+      "path": "financing.fields.term_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Interest-only period (months) (needed for a complete report, page 4)",
+      "path": "financing.fields.io_months",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Amortization (years) (needed for a complete report, page 4)",
+      "path": "financing.fields.amort_years",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Recourse (needed for a complete report, page 4)",
+      "path": "financing.fields.recourse",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Prepayment terms (needed for a complete report, page 4)",
+      "path": "financing.fields.prepayment",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Financing commentary (needed for a complete report, page 4)",
+      "path": "financing.fields.narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Quarter takeaway (needed for a complete report, page 5)",
+      "path": "commentary.fields.takeaway",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Revenue commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.revenue_body",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Revenue outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.revenue_outlook",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Operating expense commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.opex_body",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Operating expense outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.opex_outlook",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: NOI and cash flow commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.noi_body",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: NOI outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.noi_outlook",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Capital commentary (needed for a complete report, page 7)",
+      "path": "capex.fields.narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket (needed for a complete report, page 8)",
+      "path": "submarket.fields.submarket_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Market (needed for a complete report, page 8)",
+      "path": "submarket.fields.market_name",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Occupancy commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.occupancy_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Effective rent commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.rent_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Concessions commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.concession_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Occupancy commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.occupancy_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: New lease commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.new_lease_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Renewal commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.renewal_narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "The original underwriting budget is not in any source file; add rows on the review screen",
+      "path": "underwriting",
+      "severity": "info"
+    },
+    {
+      "message": "The HelloData comp summary also names 1 property not in the listings export (Brighton Walk); add them as rows on the review screen if they belong to this comp set",
+      "path": "submarket.tables.comps",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Prior quarter variance note (optional)",
+      "path": "in_place_rent.fields.prior_variance_note",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Business plan headline (optional)",
+      "path": "underwriting.fields.business_plan_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Servicer (optional)",
+      "path": "financing.fields.servicer",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: IO end date (optional)",
+      "path": "financing.fields.io_end_date",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: P&I payment (monthly) (optional)",
+      "path": "financing.fields.pi_payment",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Yield maintenance through (optional)",
+      "path": "financing.fields.yield_maintenance_through",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Open prepayment window (months) (optional)",
+      "path": "financing.fields.open_prepay_months",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Replacement reserve (monthly) (optional)",
+      "path": "financing.fields.replacement_reserve_monthly",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Repairs escrow (one-time) (optional)",
+      "path": "financing.fields.repairs_escrow",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Recent deliveries (optional)",
+      "path": "submarket.fields.recent_deliveries",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: No leasing activity statement (optional)",
+      "path": "occupancy.fields.no_activity_note",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 1: title (optional)",
+      "path": "status.fields.status1_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 1: headline (optional)",
+      "path": "status.fields.status1_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 1: body (optional)",
+      "path": "status.fields.status1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 2: title (optional)",
+      "path": "status.fields.status2_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 2: headline (optional)",
+      "path": "status.fields.status2_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 2: body (optional)",
+      "path": "status.fields.status2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 3: title (optional)",
+      "path": "status.fields.status3_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 3: headline (optional)",
+      "path": "status.fields.status3_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 3: body (optional)",
+      "path": "status.fields.status3_body",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 1: title (optional)",
+      "path": "status.fields.goal1_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 1: headline (optional)",
+      "path": "status.fields.goal1_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 1: body (optional)",
+      "path": "status.fields.goal1_body",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 2: title (optional)",
+      "path": "status.fields.goal2_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 2: headline (optional)",
+      "path": "status.fields.goal2_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 2: body (optional)",
+      "path": "status.fields.goal2_body",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 3: title (optional)",
+      "path": "status.fields.goal3_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 3: headline (optional)",
+      "path": "status.fields.goal3_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 3: body (optional)",
+      "path": "status.fields.goal3_body",
+      "severity": "info"
+    }
+  ],
+  "observed_values": {
+    "after_corrections": {
+      "financing.fields.lender": "Great Plains Life Insurance Company",
+      "financing.fields.replacement_reserve_annual": 57000.0,
+      "property.fields.density": 24.25531914893617,
+      "submarket.tables.comps.rows.brighton-walk.asking_rent": null,
+      "submarket.tables.comps.rows.brighton-walk.leased_pct": 0.94,
+      "submarket.tables.comps.rows.brighton-walk.units": 176,
+      "submarket.tables.comps.rows.brighton-walk.vintage": 2015,
+      "submarket.tables.comps.totals.asking_rent": 1883.7209302325582,
+      "submarket.tables.comps.totals.leased_pct": 0.8373410404624279,
+      "submarket.tables.comps.totals.units": 230.66666666666666,
+      "submarket.tables.comps.totals.vintage": 2008,
+      "underwriting.tables.budget.rows.interiors.pct_spent": 0.3526315789473684,
+      "underwriting.tables.budget.totals.original_budget": 1950000.0,
+      "underwriting.tables.budget.totals.pct_spent": 0.3484615384615385,
+      "underwriting.tables.budget.totals.spent_to_date": 679500.0
+    },
+    "before_corrections": {
+      "capex.fields.source_total_ptd": 82000.0,
+      "capex.tables.lines.totals.annual_budget": 392000.0,
+      "capex.tables.lines.totals.ptd_actual": 82000.0,
+      "capex.tables.lines.totals.ptd_budget": 98000.0,
+      "capex.tables.lines.totals.ytd_actual": 328000.0,
+      "capital.fields.distributions_itd": 180000.0,
+      "capital.fields.equity_invested": 12900000.0,
+      "capital.fields.price_per_unit": 179824.56140350876,
+      "capital.fields.purchase_price": 41000000.0,
+      "capital.fields.quarter_contributions": 350000.0,
+      "capital.fields.quarter_distributions": 180000.0,
+      "capital.fields.total_called": 12900000.0,
+      "commentary.fields.revenue_var_pct": 0.018031555221637866,
+      "financials.tables.lines.rows.debt_service.ptd_actual": 404550.0,
+      "financials.tables.lines.rows.gpr.ptd_actual": 1262000.0,
+      "financials.tables.lines.rows.insurance.ptd_var": 14000.0,
+      "financials.tables.lines.rows.net_cash_flow.ptd_actual": 208800.0,
+      "financials.tables.lines.rows.noi.ptd_actual": 613350.0,
+      "financials.tables.lines.rows.noi.ptd_var": 20780.0,
+      "financials.tables.lines.rows.total_opex.ptd_actual": 741650.0,
+      "financials.tables.lines.rows.total_revenue.ptd_actual": 1355000.0,
+      "financials.tables.lines.rows.total_revenue.ptd_budget": 1331000.0,
+      "financials.tables.lines.rows.total_revenue.ytd_actual": 5420000.0,
+      "financing.fields.borrower": "Riverbend Station Owner, LLC",
+      "financing.fields.implied_rate": 0.0522,
+      "financing.fields.interest_monthly": 134850.0,
+      "financing.fields.loan_amount": 31000000.0,
+      "financing.fields.reserve_balance": 265000.0,
+      "in_place_rent.tables.by_floor_plan.rows.0br.current_rent": 1340.0,
+      "in_place_rent.tables.by_floor_plan.rows.1br.current_rent": 1555.0,
+      "in_place_rent.tables.by_floor_plan.rows.2br.prior_rent": 1900.0,
+      "in_place_rent.tables.by_floor_plan.totals.current_rent": 1726.89,
+      "in_place_rent.tables.by_floor_plan.totals.prior_rent": 1696.84,
+      "in_place_rent.tables.by_floor_plan.totals.units": 228.0,
+      "occupancy.fields.change_bps": 219,
+      "occupancy.fields.current_date": "2025-12-31",
+      "occupancy.fields.current_occupied": 212.0,
+      "occupancy.fields.current_pct": 0.9298245614035088,
+      "occupancy.fields.future_applicants": 6.0,
+      "occupancy.fields.new_lease_count": 4.0,
+      "occupancy.fields.new_lease_lto_pct": -0.02425876010781671,
+      "occupancy.fields.prior_date": "2025-09-30",
+      "occupancy.fields.prior_occupied": 207.0,
+      "occupancy.fields.prior_pct": 0.9078947368421053,
+      "occupancy.fields.renewal_count": 3.0,
+      "occupancy.fields.renewal_lto_pct": 0.02198952879581152,
+      "occupancy.fields.total_units": 228.0,
+      "occupancy.tables.new_leases.totals.avg_current": 1810.0,
+      "occupancy.tables.new_leases.totals.avg_prior": 1855.0,
+      "occupancy.tables.renewals.totals.lto": 35.0,
+      "property.fields.address": "2450 Riverbend Drive",
+      "property.fields.city_state": "Denver, CO",
+      "property.fields.name": "Riverbend Station",
+      "property.fields.period_end": "2025-12-31",
+      "property.fields.prior_quarter_label": "3Q25",
+      "property.fields.quarter_label": "4Q25",
+      "property.fields.units": 228.0,
+      "property.fields.year_built": 1997,
+      "property.fields.zip": "80216",
+      "rent_trend.fields.comp_name": "Denver Comp Set",
+      "rent_trend.fields.subject_name": "Riverbend Station",
+      "submarket.fields.avg_asking_rent": 1855.0,
+      "submarket.fields.prior_vacancy": 0.078,
+      "submarket.fields.rent_growth_yoy": 0.021,
+      "submarket.fields.under_construction": 640.0,
+      "submarket.fields.vacancy": 0.074,
+      "submarket.tables.comps.rows.platte-street-lofts.asking_rent": 1987.5,
+      "submarket.tables.comps.rows.platte-street-lofts.effective_rent": 1910.0,
+      "submarket.tables.comps.rows.platte-street-lofts.leased_pct": 1.0,
+      "submarket.tables.comps.rows.platte-street-lofts.units": 312,
+      "submarket.tables.comps.rows.platte-street-lofts.vintage": 2008,
+      "submarket.tables.comps.rows.riverbend-station.asking_rent": 1703.3333333333333,
+      "submarket.tables.comps.rows.riverbend-station.leased_pct": 0.9298245614035088,
+      "submarket.tables.comps.rows.union-yard-flats.asking_rent": 1725.0,
+      "submarket.tables.comps.rows.union-yard-flats.leased_pct": 0.5,
+      "submarket.tables.comps.totals.asking_rent": 1883.7209302325582,
+      "submarket.tables.comps.totals.effective_rent": 1813.139534883721
+    }
+  },
+  "passed": true,
+  "project_id": "cbaa2905de0e",
+  "provenance": {
+    "1": {
+      "conflict": 0,
+      "corrected": 8,
+      "derived": 5,
+      "drafted": 0,
+      "extracted": 7,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "10": {
+      "conflict": 0,
+      "corrected": 15,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 2,
+      "missing_intentional": 3,
+      "missing_unexpected": 0
+    },
+    "2": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 9,
+      "drafted": 1,
+      "extracted": 20,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "3": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 7,
+      "drafted": 0,
+      "extracted": 111,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "4": {
+      "conflict": 0,
+      "corrected": 17,
+      "derived": 2,
+      "drafted": 0,
+      "extracted": 4,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "5": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 32,
+      "drafted": 4,
+      "extracted": 0,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "6": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 86,
+      "drafted": 0,
+      "extracted": 105,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "7": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 12,
+      "drafted": 1,
+      "extracted": 31,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "8": {
+      "conflict": 0,
+      "corrected": 2,
+      "derived": 10,
+      "drafted": 3,
+      "extracted": 30,
+      "missing_intentional": 5,
+      "missing_unexpected": 0
+    },
+    "9": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 17,
+      "drafted": 3,
+      "extracted": 39,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    }
+  },
+  "report": {
+    "complete": true,
+    "created_at": "2026-09-05T12:48:35+00:00",
+    "error": null,
+    "gap_count": 0,
+    "has_pdf": true,
+    "id": "81da9e3e6470",
+    "images_per_page": [
+      1,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "page_count": 10,
+    "page_images": [
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-01.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-02.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-03.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-04.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-05.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-06.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-07.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-08.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-09.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/pages/page-10.png"
+    ],
+    "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/riverbend_station_4q25/report.pdf",
+    "pdf_text_excerpt": "4Q25 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n4Q25\r\nRiverbend Station\r\nDenver, CO\r\n228-unit multifamily community. Quarterly performance review for the period\r\nending Dec 31, 2025.\r\n228\r\nUNITS\r\n1997\r\nVINTAGE\r\nMay ’23\r\nACQUIRED\r\n$41M PURCHASE PRICE\r\nPREPARED BY\r\nSummit Peak Advisors\r\nPeriod ending Dec 31, 2025\r\nQUARTERLY INVESTOR REPORT\nProperty Description\r\nRIVERBEND STATION · 4Q25\r\nVINTAGE 1997 · CLASS B · HOLD PERIOD 7 YR\r\nRiverbend Station is a 228-unit mid-rise community in Denver's River North district, built in 1997\r\non 9.4 acres with structured parking, a fitness center and a riverside courtyard. The plan upgrades\r\nunit interiors and amenities over a seven-year hold.\r\nADDRESS\r\n2450 Riverbend Drive\r\nDenver, CO 80216\r\nSUBMARKET\r\nRiver North\r\nMSA\r\nDenver-Aurora-Lakewood\r\nYEAR BUILT\r\n1997\r\nBUILDING CLASS\r\nB\r\nSITE / DENSITY\r\n9.4 ac · 24.3 u/ac\r\nACQUIRED\r\nMay 18, 2023\r\nAVG UNIT SIZE\r\n854 sf\r\n4Q25 AVG IN-PLACE RENT\r\n$1,727 / mo\r\nPRIOR QTR (3Q25)\r\n$1,697 / mo\r\nQOQ VARIANCE\r\n+$30 / +1.8%\r\nType Units Avg SF 3Q25 in-place rent 4Q25 in-place rent QoQ variance\r\nStudio · 1 BA 28 560 $1,310 $1,340 +$30 / +2.3%\r\n1 BR · 1 BA 96 720 $1,525 $1,555 +$30 / +2.0%\r\n2 BR · 2 BA 84 1,015 $1,900 $1,930 +$30 / +1.6%\r\n3 BR · 2 BA 20 1,230 $2,235 $2,265 +$30 / +1.3%\r\nTotal / Weighted 228 854 $1,697 $1,727 +$30 / +1.8%\r\nMock draft for Riverbend Station (4Q25): describe how in-place rents moved quarter over quarter by floor plan and\r\noverall. Figures used: by floor plan units 228; by floor plan avg sf 854; by floor plan current rent 1,727; by floor plan\r\nprior rent 1,697; by floor plan variance 30.05; by floor plan variance pct 0.0177.\r\nRIVERBEND STATION · 4Q25 · PROPERTY DESCRIPTION 02 / 10\nProperty Summary & Business Plan RIVERBEND STATION · 4Q25\r\nPURCHASE PRICE\r\n$41.0M\r\n$179,825 / unit · 228 units\r\nEQUITY INVESTED (ITD)\r\n$12.9M\r\n4Q25 EQUITY CONTRIBUTIONS\r\n$350,000\r\n$350,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$180,000\r\n$180,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\nSeven-",
+    "project_id": "cbaa2905de0e",
+    "status": "done",
+    "version": 1
+  },
+  "scenario": "riverbend_station_4q25",
+  "stage_after_ingestion": "review",
+  "stage_after_report": "generated",
+  "warnings": []
+}

@@ -1,0 +1,774 @@
+{
+  "id": "riverbend_station_4q25",
+  "classification": "complete",
+  "project_name": "Riverbend Station 4Q25 Investor Report",
+  "description": "Complete alternate-property package: every supported export family across three unfamiliar workbooks with shuffled sheets, two Slate PDFs, a property photo, reviewer corrections for every manual field, underwriting rows and a metadata-only comparable added as a manual row, and deterministic (mock) narrative drafts.",
+  "report_identity": [
+    "Riverbend Station",
+    "4Q25"
+  ],
+  "sources": [
+    {
+      "name": "market data 12-2025.xlsx",
+      "upload_as": "mkt_final_v3.xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "bal+leasing_export.xlsx",
+      "upload_as": "export (1).xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "FY25-Q4 ops bundle (rev2).xlsx",
+      "upload_as": "q4pack.xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "slate-cc-2025-12.pdf",
+      "upload_as": "portal-a.pdf",
+      "status": "processed"
+    },
+    {
+      "name": "slate-dist-2025-12.pdf",
+      "upload_as": "portal-b.pdf",
+      "status": "processed"
+    }
+  ],
+  "expected_values": {
+    "property.fields.name": {
+      "value": "Riverbend Station"
+    },
+    "property.fields.units": {
+      "value": 228
+    },
+    "property.fields.year_built": {
+      "value": 1997
+    },
+    "property.fields.address": {
+      "value": "2450 Riverbend Drive"
+    },
+    "property.fields.city_state": {
+      "value": "Denver, CO"
+    },
+    "property.fields.zip": {
+      "value": "80216"
+    },
+    "property.fields.quarter_label": {
+      "value": "4Q25"
+    },
+    "property.fields.period_end": {
+      "value": "2025-12-31"
+    },
+    "property.fields.prior_quarter_label": {
+      "value": "3Q25"
+    },
+    "in_place_rent.tables.by_floor_plan.rows.0br.current_rent": {
+      "value": 1340
+    },
+    "in_place_rent.tables.by_floor_plan.rows.1br.current_rent": {
+      "value": 1555
+    },
+    "in_place_rent.tables.by_floor_plan.rows.2br.prior_rent": {
+      "value": 1900
+    },
+    "in_place_rent.tables.by_floor_plan.totals.current_rent": {
+      "value": 1726.89,
+      "tolerance": 0.01
+    },
+    "in_place_rent.tables.by_floor_plan.totals.prior_rent": {
+      "value": 1696.84,
+      "tolerance": 0.01
+    },
+    "in_place_rent.tables.by_floor_plan.totals.units": {
+      "value": 228
+    },
+    "capital.fields.purchase_price": {
+      "value": 41000000
+    },
+    "capital.fields.price_per_unit": {
+      "value": 179824.56,
+      "tolerance": 0.01
+    },
+    "capital.fields.equity_invested": {
+      "value": 12900000
+    },
+    "capital.fields.quarter_contributions": {
+      "value": 350000
+    },
+    "capital.fields.total_called": {
+      "value": 12900000
+    },
+    "capital.fields.distributions_itd": {
+      "value": 180000
+    },
+    "capital.fields.quarter_distributions": {
+      "value": 180000
+    },
+    "financing.fields.loan_amount": {
+      "value": 31000000
+    },
+    "financing.fields.interest_monthly": {
+      "value": 134850
+    },
+    "financing.fields.implied_rate": {
+      "value": 0.0522,
+      "tolerance": 1e-06
+    },
+    "financing.fields.reserve_balance": {
+      "value": 265000
+    },
+    "financing.fields.borrower": {
+      "value": "Riverbend Station Owner, LLC"
+    },
+    "financials.tables.lines.rows.gpr.ptd_actual": {
+      "value": 1262000
+    },
+    "financials.tables.lines.rows.total_revenue.ptd_actual": {
+      "value": 1355000
+    },
+    "financials.tables.lines.rows.total_revenue.ptd_budget": {
+      "value": 1331000
+    },
+    "financials.tables.lines.rows.total_revenue.ytd_actual": {
+      "value": 5420000
+    },
+    "financials.tables.lines.rows.total_opex.ptd_actual": {
+      "value": 741650
+    },
+    "financials.tables.lines.rows.noi.ptd_actual": {
+      "value": 613350
+    },
+    "financials.tables.lines.rows.noi.ptd_var": {
+      "value": 20780
+    },
+    "financials.tables.lines.rows.debt_service.ptd_actual": {
+      "value": 404550
+    },
+    "financials.tables.lines.rows.net_cash_flow.ptd_actual": {
+      "value": 208800
+    },
+    "financials.tables.lines.rows.insurance.ptd_var": {
+      "value": 14000
+    },
+    "commentary.fields.revenue_var_pct": {
+      "value": 0.018031555,
+      "tolerance": 1e-06
+    },
+    "capex.tables.lines.totals.ptd_actual": {
+      "value": 82000
+    },
+    "capex.tables.lines.totals.ptd_budget": {
+      "value": 98000
+    },
+    "capex.tables.lines.totals.ytd_actual": {
+      "value": 328000
+    },
+    "capex.tables.lines.totals.annual_budget": {
+      "value": 392000
+    },
+    "capex.fields.source_total_ptd": {
+      "value": 82000
+    },
+    "submarket.fields.vacancy": {
+      "value": 0.074,
+      "tolerance": 1e-06
+    },
+    "submarket.fields.prior_vacancy": {
+      "value": 0.078,
+      "tolerance": 1e-06
+    },
+    "submarket.fields.rent_growth_yoy": {
+      "value": 0.021,
+      "tolerance": 1e-06
+    },
+    "submarket.fields.avg_asking_rent": {
+      "value": 1855
+    },
+    "submarket.fields.under_construction": {
+      "value": 640
+    },
+    "submarket.tables.comps.rows.platte-street-lofts.units": {
+      "value": 312
+    },
+    "submarket.tables.comps.rows.platte-street-lofts.vintage": {
+      "value": 2008
+    },
+    "submarket.tables.comps.rows.platte-street-lofts.leased_pct": {
+      "value": 1.0
+    },
+    "submarket.tables.comps.rows.platte-street-lofts.asking_rent": {
+      "value": 1987.5
+    },
+    "submarket.tables.comps.rows.platte-street-lofts.effective_rent": {
+      "value": 1910
+    },
+    "submarket.tables.comps.rows.union-yard-flats.asking_rent": {
+      "value": 1725
+    },
+    "submarket.tables.comps.rows.union-yard-flats.leased_pct": {
+      "value": 0.5
+    },
+    "submarket.tables.comps.rows.riverbend-station.leased_pct": {
+      "value": 0.9298245614,
+      "tolerance": 1e-06
+    },
+    "submarket.tables.comps.rows.riverbend-station.asking_rent": {
+      "value": 1703.333333,
+      "tolerance": 0.001
+    },
+    "submarket.tables.comps.totals.asking_rent": {
+      "value": 1883.7209,
+      "tolerance": 0.001
+    },
+    "submarket.tables.comps.totals.effective_rent": {
+      "value": 1813.1395,
+      "tolerance": 0.001
+    },
+    "occupancy.fields.current_date": {
+      "value": "2025-12-31"
+    },
+    "occupancy.fields.prior_date": {
+      "value": "2025-09-30"
+    },
+    "occupancy.fields.current_pct": {
+      "value": 0.9298245614,
+      "tolerance": 1e-06
+    },
+    "occupancy.fields.prior_pct": {
+      "value": 0.9078947368,
+      "tolerance": 1e-06
+    },
+    "occupancy.fields.current_occupied": {
+      "value": 212
+    },
+    "occupancy.fields.prior_occupied": {
+      "value": 207
+    },
+    "occupancy.fields.total_units": {
+      "value": 228
+    },
+    "occupancy.fields.future_applicants": {
+      "value": 6
+    },
+    "occupancy.fields.change_bps": {
+      "value": 219
+    },
+    "occupancy.fields.new_lease_count": {
+      "value": 4
+    },
+    "occupancy.fields.renewal_count": {
+      "value": 3
+    },
+    "occupancy.fields.new_lease_lto_pct": {
+      "value": -0.0242588,
+      "tolerance": 1e-05
+    },
+    "occupancy.fields.renewal_lto_pct": {
+      "value": 0.0219895,
+      "tolerance": 1e-05
+    },
+    "occupancy.tables.new_leases.totals.avg_prior": {
+      "value": 1855
+    },
+    "occupancy.tables.new_leases.totals.avg_current": {
+      "value": 1810
+    },
+    "occupancy.tables.renewals.totals.lto": {
+      "value": 35
+    },
+    "rent_trend.fields.subject_name": {
+      "value": "Riverbend Station"
+    },
+    "rent_trend.fields.comp_name": {
+      "value": "Denver Comp Set"
+    }
+  },
+  "expected_before_corrections_only": {
+    "submarket.tables.comps.totals.leased_pct": {
+      "value": 0.802326,
+      "tolerance": 1e-05
+    },
+    "submarket.tables.comps.totals.units": {
+      "value": 258
+    },
+    "submarket.tables.comps.totals.vintage": {
+      "value": 2005
+    }
+  },
+  "expected_table_rows": {
+    "rent_trend.tables.monthly": 12,
+    "submarket.tables.comps": 3,
+    "occupancy.tables.new_leases": 3,
+    "occupancy.tables.renewals": 3,
+    "capex.tables.lines": 6,
+    "in_place_rent.tables.by_floor_plan": 4
+  },
+  "invalid_corrections": [
+    {
+      "path": "property.fields.units",
+      "value": "two hundred"
+    },
+    {
+      "path": "financing.fields.rate",
+      "value": "5.22%"
+    },
+    {
+      "path": "commentary.fields.noi_actual",
+      "value": 1
+    },
+    {
+      "path": "financing.fields.maturity_date",
+      "value": "06/01/2030"
+    }
+  ],
+  "assets": {
+    "cover": "riverbend-photo.png",
+    "logo": "riverbend-photo.png",
+    "freeze_check": true
+  },
+  "corrections": [
+    {
+      "path": "property.fields.acquired_date",
+      "value": "2023-05-18"
+    },
+    {
+      "path": "property.fields.prepared_by",
+      "value": "Summit Peak Advisors"
+    },
+    {
+      "path": "property.fields.submarket",
+      "value": "River North"
+    },
+    {
+      "path": "property.fields.msa",
+      "value": "Denver-Aurora-Lakewood"
+    },
+    {
+      "path": "property.fields.building_class",
+      "value": "B"
+    },
+    {
+      "path": "property.fields.site_acres",
+      "value": 9.4
+    },
+    {
+      "path": "property.fields.hold_period_years",
+      "value": 7
+    },
+    {
+      "path": "property.fields.description",
+      "value": "Riverbend Station is a 228-unit mid-rise community in Denver's River North district, built in 1997 on 9.4 acres with structured parking, a fitness center and a riverside courtyard. The plan upgrades unit interiors and amenities over a seven-year hold."
+    },
+    {
+      "path": "capital.fields.business_plan_summary",
+      "value": "Seven-year hold underwrote $1.95M of capital: interior upgrades on turnover, an amenity refresh, and recurring roof, exterior and HVAC replacements."
+    },
+    {
+      "path": "underwriting.fields.spent_period_note",
+      "value": "Spent to Date reflects the period 06/2023 - 12/2025"
+    },
+    {
+      "path": "rent_trend.fields.caption",
+      "value": "New-lease gross rent per square foot rose steadily through 2025 for both the subject and the Denver comp set, with the subject closing the gap to the comp set by year end."
+    },
+    {
+      "path": "financing.fields.lender",
+      "value": "Great Plains Life Insurance Company"
+    },
+    {
+      "path": "financing.fields.rate",
+      "value": 0.0522
+    },
+    {
+      "path": "financing.fields.rate_type",
+      "value": "Fixed"
+    },
+    {
+      "path": "financing.fields.effective_date",
+      "value": "2023-05-18"
+    },
+    {
+      "path": "financing.fields.maturity_date",
+      "value": "2030-06-01"
+    },
+    {
+      "path": "financing.fields.term_months",
+      "value": 84
+    },
+    {
+      "path": "financing.fields.io_months",
+      "value": 36
+    },
+    {
+      "path": "financing.fields.io_end_date",
+      "value": "2026-06-01"
+    },
+    {
+      "path": "financing.fields.amort_years",
+      "value": 30
+    },
+    {
+      "path": "financing.fields.pi_payment",
+      "value": 170612
+    },
+    {
+      "path": "financing.fields.recourse",
+      "value": "Non-recourse with standard carve-outs"
+    },
+    {
+      "path": "financing.fields.prepayment",
+      "value": "Yield maintenance through December 2029, then open"
+    },
+    {
+      "path": "financing.fields.yield_maintenance_through",
+      "value": "2029-12-01"
+    },
+    {
+      "path": "financing.fields.open_prepay_months",
+      "value": 6
+    },
+    {
+      "path": "financing.fields.replacement_reserve_monthly",
+      "value": 4750
+    },
+    {
+      "path": "financing.fields.repairs_escrow",
+      "value": 95000
+    },
+    {
+      "path": "financing.fields.narrative",
+      "value": "The fixed-rate 5.22% loan is interest-only through June 2026, after which 30-year amortization applies for the balance of the seven-year term. Prepayment is locked under yield maintenance until December 2029 with a six-month open window before the June 2030 maturity."
+    },
+    {
+      "path": "commentary.fields.revenue_outlook",
+      "value": "Asking rents are expected to hold through the winter, with occupancy in the low 90s and modest gain-to-lease as the 2025 leases renew."
+    },
+    {
+      "path": "commentary.fields.opex_outlook",
+      "value": "Insurance renewed below budget for 2026; utilities remain the line to watch after a wet autumn raised water and wastewater charges."
+    },
+    {
+      "path": "commentary.fields.noi_outlook",
+      "value": "NOI is tracking slightly ahead of budget for the year; the interior program continues to fund from operations."
+    },
+    {
+      "path": "status.fields.status1_title",
+      "value": "Interior renovation program"
+    },
+    {
+      "path": "status.fields.status1_subtitle",
+      "value": "Fourteen units turned in the quarter; 61 of 228 complete."
+    },
+    {
+      "path": "status.fields.status1_body",
+      "value": "Turnover renovations continued at roughly one unit a week, delivering quartz counters, plank flooring and new appliances at an average cost of $6,600 per unit, slightly under the underwriting."
+    },
+    {
+      "path": "status.fields.status2_title",
+      "value": "Riverside courtyard"
+    },
+    {
+      "path": "status.fields.status2_subtitle",
+      "value": "Courtyard and grill area reopened in November."
+    },
+    {
+      "path": "status.fields.status2_body",
+      "value": "The amenity refresh finished on schedule; landscaping and irrigation repairs closed out the exterior scope for the year."
+    },
+    {
+      "path": "status.fields.goal1_title",
+      "value": "Occupancy and pricing"
+    },
+    {
+      "path": "status.fields.goal1_subtitle",
+      "value": "Hold occupancy above 93% and lift renewals 2-3%."
+    },
+    {
+      "path": "status.fields.goal1_body",
+      "value": "Renew the 41 leases expiring in the first quarter at a 2-3% increase while keeping physical occupancy above 93%."
+    },
+    {
+      "path": "status.fields.goal2_title",
+      "value": "Interior program"
+    },
+    {
+      "path": "status.fields.goal2_subtitle",
+      "value": "Complete 15 more renovated units."
+    },
+    {
+      "path": "status.fields.goal2_body",
+      "value": "Continue the turnover program at the current pace and test a $75 premium on renovated one-bedroom units."
+    },
+    {
+      "path": "status.fields.goal3_title",
+      "value": "Expense control"
+    },
+    {
+      "path": "status.fields.goal3_subtitle",
+      "value": "Finish the year within 1% of the expense budget."
+    },
+    {
+      "path": "status.fields.goal3_body",
+      "value": "Rebid the landscaping contract and complete the water sub-metering audit to bring utilities back to budget."
+    },
+    {
+      "path": "submarket.fields.submarket_name",
+      "value": "River North"
+    },
+    {
+      "path": "submarket.fields.market_name",
+      "value": "Denver"
+    }
+  ],
+  "row_additions": [
+    {
+      "table": "underwriting.tables.budget",
+      "key": "interiors",
+      "values": {
+        "category": "Unit interior upgrades (228 units)",
+        "section": "value_add",
+        "original_budget": 1140000,
+        "spent_to_date": 402000
+      }
+    },
+    {
+      "table": "underwriting.tables.budget",
+      "key": "amenity",
+      "values": {
+        "category": "Amenity refresh",
+        "section": "value_add",
+        "original_budget": 180000,
+        "spent_to_date": 95000
+      }
+    },
+    {
+      "table": "underwriting.tables.budget",
+      "key": "roof",
+      "values": {
+        "category": "Roof and exterior",
+        "section": "recurring",
+        "original_budget": 420000,
+        "spent_to_date": 118000
+      }
+    },
+    {
+      "table": "underwriting.tables.budget",
+      "key": "hvac",
+      "values": {
+        "category": "HVAC replacements",
+        "section": "recurring",
+        "original_budget": 210000,
+        "spent_to_date": 64500
+      }
+    },
+    {
+      "table": "submarket.tables.comps",
+      "key": "brighton-walk",
+      "values": {
+        "name": "Brighton Walk",
+        "units": 176,
+        "vintage": 2015,
+        "leased_pct": 0.94
+      }
+    }
+  ],
+  "expected_after_corrections": {
+    "property.fields.density": {
+      "value": 24.2553,
+      "tolerance": 0.001
+    },
+    "financing.fields.replacement_reserve_annual": {
+      "value": 57000
+    },
+    "financing.fields.lender": {
+      "value": "Great Plains Life Insurance Company"
+    },
+    "underwriting.tables.budget.totals.original_budget": {
+      "value": 1950000
+    },
+    "underwriting.tables.budget.totals.spent_to_date": {
+      "value": 679500
+    },
+    "underwriting.tables.budget.totals.pct_spent": {
+      "value": 0.348462,
+      "tolerance": 1e-05
+    },
+    "underwriting.tables.budget.rows.interiors.pct_spent": {
+      "value": 0.352632,
+      "tolerance": 1e-05
+    },
+    "submarket.tables.comps.rows.brighton-walk.units": {
+      "value": 176
+    },
+    "submarket.tables.comps.rows.brighton-walk.vintage": {
+      "value": 2015
+    },
+    "submarket.tables.comps.rows.brighton-walk.leased_pct": {
+      "value": 0.94
+    },
+    "submarket.tables.comps.rows.brighton-walk.asking_rent": {
+      "value": null
+    },
+    "submarket.tables.comps.totals.leased_pct": {
+      "value": 0.837341,
+      "tolerance": 1e-05
+    },
+    "submarket.tables.comps.totals.units": {
+      "value": 230.666667,
+      "tolerance": 0.001
+    },
+    "submarket.tables.comps.totals.vintage": {
+      "value": 2008
+    },
+    "submarket.tables.comps.totals.asking_rent": {
+      "value": 1883.7209,
+      "tolerance": 0.001
+    }
+  },
+  "reset_check": {
+    "path": "financing.fields.lender",
+    "expect": null
+  },
+  "narratives": "mock",
+  "expected_drafts": [
+    "commentary.fields.takeaway",
+    "commentary.fields.revenue_body",
+    "commentary.fields.opex_body",
+    "commentary.fields.noi_body",
+    "in_place_rent.fields.narrative",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.concession_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.renewal_narrative",
+    "capex.fields.narrative"
+  ],
+  "expected_warning_paths": [],
+  "forbidden_text": [
+    "The Boardwalk",
+    "Boardwalk",
+    "45726",
+    "Fort Myers",
+    "Fannie Mae",
+    "ZMR Capital",
+    "Harbor Point",
+    "Pine Ridge",
+    "Lakeside Commons",
+    "Regional Oaks",
+    "Deleon"
+  ],
+  "report": {
+    "page_count": 10,
+    "text_contains": [
+      "RIVERBEND STATION",
+      "4Q25"
+    ],
+    "pages": {
+      "1": [
+        "Riverbend Station",
+        "Denver, CO",
+        "228",
+        "1997",
+        "$41M",
+        "Summit Peak Advisors"
+      ],
+      "2": [
+        "Property Description",
+        "River North",
+        "Denver-Aurora-Lakewood",
+        "9.4 ac",
+        "$1,727",
+        "$1,697"
+      ],
+      "3": [
+        "Original underwriting budget",
+        "Unit interior upgrades",
+        "Amenity refresh",
+        "Roof and exterior",
+        "HVAC replacements",
+        "$1,950,000",
+        "$679,500",
+        "Seven-year hold",
+        "Denver Comp Set"
+      ],
+      "4": [
+        "Financing Overview",
+        "Great Plains Life Insurance Company",
+        "$31.00M",
+        "5.22%",
+        "Jun 1, 2030",
+        "84 months",
+        "$170,612",
+        "Non-recourse with standard carve-outs",
+        "$4,750",
+        "$95,000"
+      ],
+      "5": [
+        "Financial & Capital Commentary",
+        "Mock draft for Riverbend Station (4Q25)",
+        "Outlook",
+        "Asking rents are expected to hold",
+        "Insurance renewed below budget",
+        "NOI is tracking slightly ahead"
+      ],
+      "6": [
+        "Financial Performance",
+        "Gross Potential Rent",
+        "1,262,000",
+        "1,355,000",
+        "741,650",
+        "613,350",
+        "208,800"
+      ],
+      "7": [
+        "Capital Projects",
+        "Plumbing",
+        "HVAC",
+        "Paint",
+        "Flooring",
+        "Roof",
+        "Landscape",
+        "82,000",
+        "98,000"
+      ],
+      "8": [
+        "Submarket Comparison",
+        "7.4%",
+        "$1,855",
+        "640 units",
+        "Platte Street Lofts",
+        "Union Yard Flats",
+        "Brighton Walk",
+        "Mock draft for Riverbend Station"
+      ],
+      "9": [
+        "Occupancy & Leasing",
+        "92.98%",
+        "90.79%",
+        "+219 bps",
+        "4 NEW LEASES",
+        "3 RENEWALS",
+        "RB.A1",
+        "RB.C2",
+        "Mock draft for Riverbend Station"
+      ],
+      "10": [
+        "Status Update",
+        "Interior renovation program",
+        "Riverside courtyard",
+        "Occupancy and pricing",
+        "Interior program",
+        "Expense control",
+        "1Q26 Goals"
+      ]
+    }
+  },
+  "immutability_patch": {
+    "path": "property.fields.description",
+    "value": "This later edit must not change the saved report snapshot."
+  },
+  "issues_contains": [
+    "comp summary also names 1 property not in the listings export (Brighton Walk)"
+  ]
+}

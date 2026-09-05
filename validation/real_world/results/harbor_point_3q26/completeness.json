@@ -1,0 +1,546 @@
+{
+  "classification": "structural",
+  "completeness": {
+    "ai_drafts_pending": 0,
+    "complete": false,
+    "gap_count": 40,
+    "gaps": [
+      {
+        "group": "property",
+        "label": "Submarket",
+        "page": 2,
+        "path": "property.fields.submarket",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Market / MSA",
+        "page": 2,
+        "path": "property.fields.msa",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Building class",
+        "page": 2,
+        "path": "property.fields.building_class",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Site size (acres)",
+        "page": 2,
+        "path": "property.fields.site_acres",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Hold period (years)",
+        "page": 2,
+        "path": "property.fields.hold_period_years",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "business_plan",
+        "label": "Business plan summary",
+        "page": 3,
+        "path": "capital.fields.business_plan_summary",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "underwriting",
+        "label": "Spent-to-date period note",
+        "page": 3,
+        "path": "underwriting.fields.spent_period_note",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3,
+        "path": "underwriting.tables.budget",
+        "reason": "at least one row with a category, original budget and spent to date (enter the underwriting; it is not in any source export)"
+      },
+      {
+        "group": "financing",
+        "label": "Lender",
+        "page": 4,
+        "path": "financing.fields.lender",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Interest rate",
+        "page": 4,
+        "path": "financing.fields.rate",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Rate type",
+        "page": 4,
+        "path": "financing.fields.rate_type",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Effective date",
+        "page": 4,
+        "path": "financing.fields.effective_date",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Maturity date",
+        "page": 4,
+        "path": "financing.fields.maturity_date",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Loan term (months)",
+        "page": 4,
+        "path": "financing.fields.term_months",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Interest-only period (months)",
+        "page": 4,
+        "path": "financing.fields.io_months",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Amortization (years)",
+        "page": 4,
+        "path": "financing.fields.amort_years",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Recourse",
+        "page": 4,
+        "path": "financing.fields.recourse",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Prepayment terms",
+        "page": 4,
+        "path": "financing.fields.prepayment",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Financing commentary",
+        "page": 4,
+        "path": "financing.fields.narrative",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "submarket",
+        "label": "Submarket",
+        "page": 8,
+        "path": "submarket.fields.submarket_name",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "submarket",
+        "label": "Market",
+        "page": 8,
+        "path": "submarket.fields.market_name",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "comps",
+        "label": "Comp set",
+        "page": 8,
+        "path": "submarket.tables.comps",
+        "reason": "1 comparable(s) with leased %, asking or effective rent; at least 2 are needed"
+      },
+      {
+        "group": "status",
+        "label": "Status item 1: title",
+        "page": 10,
+        "path": "status.fields.status1_title",
+        "reason": "at least one status item with a title and body"
+      },
+      {
+        "group": "goals",
+        "label": "Goal 1: title",
+        "page": 10,
+        "path": "status.fields.goal1_title",
+        "reason": "at least one goal with a title and body"
+      },
+      {
+        "group": "narratives",
+        "label": "Quarter takeaway",
+        "page": 5,
+        "path": "commentary.fields.takeaway",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Revenue commentary",
+        "page": 5,
+        "path": "commentary.fields.revenue_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Operating expense commentary",
+        "page": 5,
+        "path": "commentary.fields.opex_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "NOI and cash flow commentary",
+        "page": 5,
+        "path": "commentary.fields.noi_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Revenue outlook",
+        "page": 5,
+        "path": "commentary.fields.revenue_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Operating expense outlook",
+        "page": 5,
+        "path": "commentary.fields.opex_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "NOI outlook",
+        "page": 5,
+        "path": "commentary.fields.noi_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "In-place rent commentary",
+        "page": 2,
+        "path": "in_place_rent.fields.narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Occupancy commentary",
+        "page": 8,
+        "path": "submarket.fields.occupancy_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Effective rent commentary",
+        "page": 8,
+        "path": "submarket.fields.rent_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Concessions commentary",
+        "page": 8,
+        "path": "submarket.fields.concession_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Occupancy commentary",
+        "page": 9,
+        "path": "occupancy.fields.occupancy_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Capital commentary",
+        "page": 7,
+        "path": "capex.fields.narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "New lease commentary",
+        "page": 9,
+        "path": "occupancy.fields.new_lease_narrative",
+        "reason": "commentary for a leasing table that has rows"
+      },
+      {
+        "group": "narratives",
+        "label": "Renewal commentary",
+        "page": 9,
+        "path": "occupancy.fields.renewal_narrative",
+        "reason": "commentary for a leasing table that has rows"
+      },
+      {
+        "group": "narratives",
+        "label": "Chart caption",
+        "page": 3,
+        "path": "rent_trend.fields.caption",
+        "reason": "caption for the rent trend chart"
+      }
+    ],
+    "groups": [
+      {
+        "complete": false,
+        "gap_count": 5,
+        "key": "property",
+        "label": "Property identity and facts",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "in_place_rent",
+        "label": "Current and prior in-place rent",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capital",
+        "label": "Capital summary",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "business_plan",
+        "label": "Business plan summary",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 2,
+        "key": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "rent_trend",
+        "label": "Submarket rent trend",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 11,
+        "key": "financing",
+        "label": "Financing terms",
+        "page": 4
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financials",
+        "label": "Financial performance",
+        "page": 6
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capex",
+        "label": "Capital projects",
+        "page": 7
+      },
+      {
+        "complete": false,
+        "gap_count": 2,
+        "key": "submarket",
+        "label": "Submarket KPIs",
+        "page": 8
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "comps",
+        "label": "Comparable set",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "occupancy",
+        "label": "Occupancy",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "leasing",
+        "label": "Leasing activity",
+        "page": 9
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "status",
+        "label": "Status update",
+        "page": 10
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "goals",
+        "label": "Next-quarter goals",
+        "page": 10
+      },
+      {
+        "complete": false,
+        "gap_count": 16,
+        "key": "narratives",
+        "label": "Commentary and narratives",
+        "page": 5
+      }
+    ]
+  },
+  "drafted": [],
+  "expected_gaps": [
+    "capex.fields.narrative",
+    "capital.fields.business_plan_summary",
+    "commentary.fields.noi_body",
+    "commentary.fields.noi_outlook",
+    "commentary.fields.opex_body",
+    "commentary.fields.opex_outlook",
+    "commentary.fields.revenue_body",
+    "commentary.fields.revenue_outlook",
+    "commentary.fields.takeaway",
+    "financing.fields.amort_years",
+    "financing.fields.effective_date",
+    "financing.fields.io_months",
+    "financing.fields.lender",
+    "financing.fields.maturity_date",
+    "financing.fields.narrative",
+    "financing.fields.prepayment",
+    "financing.fields.rate",
+    "financing.fields.rate_type",
+    "financing.fields.recourse",
+    "financing.fields.term_months",
+    "in_place_rent.fields.narrative",
+    "occupancy.fields.new_lease_narrative",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.fields.renewal_narrative",
+    "property.fields.building_class",
+    "property.fields.hold_period_years",
+    "property.fields.msa",
+    "property.fields.site_acres",
+    "property.fields.submarket",
+    "rent_trend.fields.caption",
+    "status.fields.goal1_title",
+    "status.fields.status1_title",
+    "submarket.fields.concession_narrative",
+    "submarket.fields.market_name",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.submarket_name",
+    "submarket.tables.comps",
+    "underwriting.fields.spent_period_note",
+    "underwriting.tables.budget"
+  ],
+  "file_summary": {
+    "failed": 0,
+    "needs_ocr": 0,
+    "processed": 3,
+    "unrecognized": 0,
+    "unsupported": 0
+  },
+  "provenance_by_page": {
+    "1": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 4,
+      "drafted": 0,
+      "extracted": 7,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "10": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 2,
+      "missing_intentional": 18,
+      "missing_unexpected": 0
+    },
+    "2": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 9,
+      "drafted": 0,
+      "extracted": 20,
+      "missing_intentional": 2,
+      "missing_unexpected": 0
+    },
+    "3": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 3,
+      "drafted": 0,
+      "extracted": 93,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "4": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 3,
+      "missing_intentional": 20,
+      "missing_unexpected": 0
+    },
+    "5": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 32,
+      "drafted": 0,
+      "extracted": 0,
+      "missing_intentional": 7,
+      "missing_unexpected": 0
+    },
+    "6": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 86,
+      "drafted": 0,
+      "extracted": 105,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "7": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 6,
+      "drafted": 0,
+      "extracted": 16,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "8": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 8,
+      "drafted": 0,
+      "extracted": 20,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "9": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 13,
+      "drafted": 0,
+      "extracted": 29,
+      "missing_intentional": 4,
+      "missing_unexpected": 0
+    }
+  }
+}

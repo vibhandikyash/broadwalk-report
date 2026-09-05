@@ -1,40 +1,106 @@
 {
   "id": "lakeside_commons_1q27",
+  "classification": "structural",
   "project_name": "Lakeside Commons 1Q27 Investor Report",
   "description": "Conflict and contamination-resistance package with duplicate periods, a decoy property, and an image-only PDF.",
   "sources": [
-    {"name": "Current_Quarter_Pack.xlsx", "status": "processed"},
-    {"name": "Archive_Export.xlsx", "status": "processed"},
-    {"name": "Regional_Support.xlsx", "status": "processed"},
-    {"name": "capital_activity.pdf", "status": "processed"},
-    {"name": "scanned_vendor_report.pdf", "status": "needs_ocr"}
+    {
+      "name": "Current_Quarter_Pack.xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "Archive_Export.xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "Regional_Support.xlsx",
+      "status": "processed"
+    },
+    {
+      "name": "capital_activity.pdf",
+      "status": "processed"
+    },
+    {
+      "name": "scanned_vendor_report.pdf",
+      "status": "needs_ocr"
+    }
   ],
   "expected_values": {
-    "property.fields.name": {"value": "Lakeside Commons"},
-    "property.fields.units": {"value": 196},
-    "property.fields.year_built": {"value": 2011},
-    "property.fields.quarter_label": {"value": "1Q27"},
-    "property.fields.period_end": {"value": "2027-03-31"},
-    "occupancy.fields.current_pct": {"value": 0.9234693878, "tolerance": 0.000001},
-    "occupancy.fields.current_occupied": {"value": 181},
-    "financials.tables.lines.rows.total_revenue.ptd_actual": {"value": 1050000},
-    "financials.tables.lines.rows.total_opex.ptd_actual": {"value": 610000},
-    "financials.tables.lines.rows.noi.ptd_actual": {"value": 440000},
-    "capital.fields.quarter_contributions": {"value": 275000},
-    "submarket.fields.vacancy": {"value": 0.067, "tolerance": 0.000001}
+    "property.fields.name": {
+      "value": "Lakeside Commons"
+    },
+    "property.fields.units": {
+      "value": 196
+    },
+    "property.fields.year_built": {
+      "value": 2011
+    },
+    "property.fields.quarter_label": {
+      "value": "1Q27"
+    },
+    "property.fields.period_end": {
+      "value": "2027-03-31"
+    },
+    "occupancy.fields.current_pct": {
+      "value": 0.9234693878,
+      "tolerance": 1e-06
+    },
+    "occupancy.fields.current_occupied": {
+      "value": 181
+    },
+    "financials.tables.lines.rows.total_revenue.ptd_actual": {
+      "value": 1050000
+    },
+    "financials.tables.lines.rows.total_opex.ptd_actual": {
+      "value": 610000
+    },
+    "financials.tables.lines.rows.noi.ptd_actual": {
+      "value": 440000
+    },
+    "capital.fields.quarter_contributions": {
+      "value": 275000
+    },
+    "submarket.fields.vacancy": {
+      "value": 0.067,
+      "tolerance": 1e-06
+    }
   },
   "corrections": [
-    {"path": "property.fields.acquired_date", "value": "2025-02-03"},
-    {"path": "property.fields.prepared_by", "value": "Bluewater Capital Group"},
-    {"path": "capital.fields.purchase_price", "value": 39200000},
-    {"path": "capital.fields.equity_invested", "value": 13700000},
-    {"path": "financing.fields.loan_amount", "value": 25500000},
-    {"path": "property.fields.description", "value": "A 196-unit lakeside community with recent interior and amenity upgrades."}
+    {
+      "path": "property.fields.acquired_date",
+      "value": "2025-02-03"
+    },
+    {
+      "path": "property.fields.prepared_by",
+      "value": "Bluewater Capital Group"
+    },
+    {
+      "path": "capital.fields.purchase_price",
+      "value": 39200000
+    },
+    {
+      "path": "capital.fields.equity_invested",
+      "value": 13700000
+    },
+    {
+      "path": "financing.fields.loan_amount",
+      "value": 25500000
+    },
+    {
+      "path": "property.fields.description",
+      "value": "A 196-unit lakeside community with recent interior and amenity upgrades."
+    }
   ],
   "expected_after_corrections": {
-    "capital.fields.purchase_price": {"value": 39200000},
-    "capital.fields.equity_invested": {"value": 13700000},
-    "financing.fields.loan_amount": {"value": 25500000}
+    "capital.fields.purchase_price": {
+      "value": 39200000
+    },
+    "capital.fields.equity_invested": {
+      "value": 13700000
+    },
+    "financing.fields.loan_amount": {
+      "value": 25500000
+    }
   },
   "issues_contains": [
     "Financials source: using",
@@ -42,7 +108,112 @@
     "set aside",
     "no extractable text"
   ],
-  "forbidden_text": ["The Boardwalk", "Harbor Point", "Regional Oaks"],
-  "report": {"page_count": 10, "text_contains": ["LAKESIDE COMMONS", "1Q27"]},
-  "immutability_patch": {"path": "property.fields.description", "value": "This later edit must not change the saved report snapshot."}
+  "forbidden_text": [
+    "The Boardwalk",
+    "Harbor Point",
+    "Regional Oaks"
+  ],
+  "report": {
+    "page_count": 10,
+    "text_contains": [
+      "LAKESIDE COMMONS",
+      "1Q27"
+    ]
+  },
+  "immutability_patch": {
+    "path": "property.fields.description",
+    "value": "This later edit must not change the saved report snapshot."
+  },
+  "expected_gaps": [
+    "capex.fields.narrative",
+    "capital.fields.business_plan_summary",
+    "capital.fields.distributions_itd",
+    "capital.fields.quarter_distributions",
+    "commentary.fields.noi_body",
+    "commentary.fields.noi_outlook",
+    "commentary.fields.opex_body",
+    "commentary.fields.opex_outlook",
+    "commentary.fields.revenue_body",
+    "commentary.fields.revenue_outlook",
+    "commentary.fields.takeaway",
+    "financing.fields.amort_years",
+    "financing.fields.effective_date",
+    "financing.fields.io_months",
+    "financing.fields.lender",
+    "financing.fields.maturity_date",
+    "financing.fields.narrative",
+    "financing.fields.prepayment",
+    "financing.fields.rate",
+    "financing.fields.rate_type",
+    "financing.fields.recourse",
+    "financing.fields.term_months",
+    "in_place_rent.fields.narrative",
+    "occupancy.fields.no_activity_note",
+    "occupancy.fields.occupancy_narrative",
+    "occupancy.tables.new_leases",
+    "occupancy.tables.renewals",
+    "property.fields.building_class",
+    "property.fields.hold_period_years",
+    "property.fields.msa",
+    "property.fields.site_acres",
+    "property.fields.submarket",
+    "rent_trend.fields.caption",
+    "status.fields.goal1_title",
+    "status.fields.status1_title",
+    "submarket.fields.concession_narrative",
+    "submarket.fields.market_name",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.submarket_name",
+    "submarket.tables.comps.totals.asking_rent",
+    "underwriting.fields.spent_period_note",
+    "underwriting.tables.budget"
+  ],
+  "expected_warning_paths": [
+    "capex.fields.narrative",
+    "capital",
+    "capital.fields.business_plan_summary",
+    "capital.fields.distributions_itd",
+    "capital.fields.quarter_contributions",
+    "capital.fields.quarter_distributions",
+    "commentary.fields.noi_body",
+    "commentary.fields.noi_outlook",
+    "commentary.fields.opex_body",
+    "commentary.fields.opex_outlook",
+    "commentary.fields.revenue_body",
+    "commentary.fields.revenue_outlook",
+    "commentary.fields.takeaway",
+    "financials",
+    "financing.fields.amort_years",
+    "financing.fields.effective_date",
+    "financing.fields.io_months",
+    "financing.fields.lender",
+    "financing.fields.maturity_date",
+    "financing.fields.narrative",
+    "financing.fields.prepayment",
+    "financing.fields.rate",
+    "financing.fields.rate_type",
+    "financing.fields.recourse",
+    "financing.fields.term_months",
+    "in_place_rent.fields.narrative",
+    "occupancy",
+    "occupancy.fields.no_activity_note",
+    "occupancy.fields.occupancy_narrative",
+    "property.fields.building_class",
+    "property.fields.hold_period_years",
+    "property.fields.msa",
+    "property.fields.site_acres",
+    "property.fields.submarket",
+    "rent_trend.fields.caption",
+    "submarket.fields.concession_narrative",
+    "submarket.fields.market_name",
+    "submarket.fields.occupancy_narrative",
+    "submarket.fields.rent_narrative",
+    "submarket.fields.submarket_name",
+    "underwriting.fields.spent_period_note"
+  ],
+  "report_identity": [
+    "Lakeside Commons",
+    "1Q27"
+  ]
 }

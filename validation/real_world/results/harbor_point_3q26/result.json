@@ -1,33 +1,417 @@
 {
+  "classification": "structural",
+  "completeness": {
+    "ai_drafts_pending": 0,
+    "complete": false,
+    "gap_count": 40,
+    "gaps": [
+      {
+        "group": "property",
+        "label": "Submarket",
+        "page": 2,
+        "path": "property.fields.submarket",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Market / MSA",
+        "page": 2,
+        "path": "property.fields.msa",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Building class",
+        "page": 2,
+        "path": "property.fields.building_class",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Site size (acres)",
+        "page": 2,
+        "path": "property.fields.site_acres",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "property",
+        "label": "Hold period (years)",
+        "page": 2,
+        "path": "property.fields.hold_period_years",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "business_plan",
+        "label": "Business plan summary",
+        "page": 3,
+        "path": "capital.fields.business_plan_summary",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "underwriting",
+        "label": "Spent-to-date period note",
+        "page": 3,
+        "path": "underwriting.fields.spent_period_note",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3,
+        "path": "underwriting.tables.budget",
+        "reason": "at least one row with a category, original budget and spent to date (enter the underwriting; it is not in any source export)"
+      },
+      {
+        "group": "financing",
+        "label": "Lender",
+        "page": 4,
+        "path": "financing.fields.lender",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Interest rate",
+        "page": 4,
+        "path": "financing.fields.rate",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Rate type",
+        "page": 4,
+        "path": "financing.fields.rate_type",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Effective date",
+        "page": 4,
+        "path": "financing.fields.effective_date",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Maturity date",
+        "page": 4,
+        "path": "financing.fields.maturity_date",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Loan term (months)",
+        "page": 4,
+        "path": "financing.fields.term_months",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Interest-only period (months)",
+        "page": 4,
+        "path": "financing.fields.io_months",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Amortization (years)",
+        "page": 4,
+        "path": "financing.fields.amort_years",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Recourse",
+        "page": 4,
+        "path": "financing.fields.recourse",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Prepayment terms",
+        "page": 4,
+        "path": "financing.fields.prepayment",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "financing",
+        "label": "Financing commentary",
+        "page": 4,
+        "path": "financing.fields.narrative",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "submarket",
+        "label": "Submarket",
+        "page": 8,
+        "path": "submarket.fields.submarket_name",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "submarket",
+        "label": "Market",
+        "page": 8,
+        "path": "submarket.fields.market_name",
+        "reason": "needed for a complete report"
+      },
+      {
+        "group": "comps",
+        "label": "Comp set",
+        "page": 8,
+        "path": "submarket.tables.comps",
+        "reason": "1 comparable(s) with leased %, asking or effective rent; at least 2 are needed"
+      },
+      {
+        "group": "status",
+        "label": "Status item 1: title",
+        "page": 10,
+        "path": "status.fields.status1_title",
+        "reason": "at least one status item with a title and body"
+      },
+      {
+        "group": "goals",
+        "label": "Goal 1: title",
+        "page": 10,
+        "path": "status.fields.goal1_title",
+        "reason": "at least one goal with a title and body"
+      },
+      {
+        "group": "narratives",
+        "label": "Quarter takeaway",
+        "page": 5,
+        "path": "commentary.fields.takeaway",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Revenue commentary",
+        "page": 5,
+        "path": "commentary.fields.revenue_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Operating expense commentary",
+        "page": 5,
+        "path": "commentary.fields.opex_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "NOI and cash flow commentary",
+        "page": 5,
+        "path": "commentary.fields.noi_body",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Revenue outlook",
+        "page": 5,
+        "path": "commentary.fields.revenue_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Operating expense outlook",
+        "page": 5,
+        "path": "commentary.fields.opex_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "NOI outlook",
+        "page": 5,
+        "path": "commentary.fields.noi_outlook",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "In-place rent commentary",
+        "page": 2,
+        "path": "in_place_rent.fields.narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Occupancy commentary",
+        "page": 8,
+        "path": "submarket.fields.occupancy_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Effective rent commentary",
+        "page": 8,
+        "path": "submarket.fields.rent_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Concessions commentary",
+        "page": 8,
+        "path": "submarket.fields.concession_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Occupancy commentary",
+        "page": 9,
+        "path": "occupancy.fields.occupancy_narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "Capital commentary",
+        "page": 7,
+        "path": "capex.fields.narrative",
+        "reason": "narrative text (reviewer written or AI drafted and reviewed)"
+      },
+      {
+        "group": "narratives",
+        "label": "New lease commentary",
+        "page": 9,
+        "path": "occupancy.fields.new_lease_narrative",
+        "reason": "commentary for a leasing table that has rows"
+      },
+      {
+        "group": "narratives",
+        "label": "Renewal commentary",
+        "page": 9,
+        "path": "occupancy.fields.renewal_narrative",
+        "reason": "commentary for a leasing table that has rows"
+      },
+      {
+        "group": "narratives",
+        "label": "Chart caption",
+        "page": 3,
+        "path": "rent_trend.fields.caption",
+        "reason": "caption for the rent trend chart"
+      }
+    ],
+    "groups": [
+      {
+        "complete": false,
+        "gap_count": 5,
+        "key": "property",
+        "label": "Property identity and facts",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "in_place_rent",
+        "label": "Current and prior in-place rent",
+        "page": 2
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capital",
+        "label": "Capital summary",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "business_plan",
+        "label": "Business plan summary",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 2,
+        "key": "underwriting",
+        "label": "Original underwriting budget",
+        "page": 3
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "rent_trend",
+        "label": "Submarket rent trend",
+        "page": 3
+      },
+      {
+        "complete": false,
+        "gap_count": 11,
+        "key": "financing",
+        "label": "Financing terms",
+        "page": 4
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "financials",
+        "label": "Financial performance",
+        "page": 6
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "capex",
+        "label": "Capital projects",
+        "page": 7
+      },
+      {
+        "complete": false,
+        "gap_count": 2,
+        "key": "submarket",
+        "label": "Submarket KPIs",
+        "page": 8
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "comps",
+        "label": "Comparable set",
+        "page": 8
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "occupancy",
+        "label": "Occupancy",
+        "page": 9
+      },
+      {
+        "complete": true,
+        "gap_count": 0,
+        "key": "leasing",
+        "label": "Leasing activity",
+        "page": 9
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "status",
+        "label": "Status update",
+        "page": 10
+      },
+      {
+        "complete": false,
+        "gap_count": 1,
+        "key": "goals",
+        "label": "Next-quarter goals",
+        "page": 10
+      },
+      {
+        "complete": false,
+        "gap_count": 16,
+        "key": "narratives",
+        "label": "Commentary and narratives",
+        "page": 5
+      }
+    ]
+  },
   "description": "Complete alternate-property package with all supported operational domains.",
+  "drafted": [],
   "failures": [],
+  "file_summary": {
+    "failed": 0,
+    "needs_ocr": 0,
+    "processed": 3,
+    "unrecognized": 0,
+    "unsupported": 0
+  },
   "files": [
-    {
-      "error": null,
-      "name": "notice_beta.pdf",
-      "parts": [
-        {
-          "confidence": 0.9,
-          "doc_type": "slate_distributions",
-          "locator": "pages 1-1",
-          "warnings": []
-        }
-      ],
-      "status": "processed"
-    },
-    {
-      "error": null,
-      "name": "notice_alpha.pdf",
-      "parts": [
-        {
-          "confidence": 0.8,
-          "doc_type": "slate_capital_calls",
-          "locator": "pages 1-1",
-          "warnings": []
-        }
-      ],
-      "status": "processed"
-    },
     {
       "error": null,
       "name": "opaque_bundle_71.xlsx",
@@ -106,6 +490,32 @@
         }
       ],
       "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "notice_beta.pdf",
+      "parts": [
+        {
+          "confidence": 0.9,
+          "doc_type": "slate_distributions",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
+    },
+    {
+      "error": null,
+      "name": "notice_alpha.pdf",
+      "parts": [
+        {
+          "confidence": 0.8,
+          "doc_type": "slate_capital_calls",
+          "locator": "pages 1-1",
+          "warnings": []
+        }
+      ],
+      "status": "processed"
     }
   ],
   "issues_before_corrections": [
@@ -125,223 +535,193 @@
       "severity": "warning"
     },
     {
-      "message": "Missing: Submarket",
+      "message": "Missing: Submarket (needed for a complete report, page 2)",
       "path": "property.fields.submarket",
       "severity": "warning"
     },
     {
-      "message": "Missing: Market / MSA",
+      "message": "Missing: Market / MSA (needed for a complete report, page 2)",
       "path": "property.fields.msa",
       "severity": "warning"
     },
     {
-      "message": "Missing: Prepared by",
+      "message": "Missing: Prepared by (needed for a complete report, page 2)",
       "path": "property.fields.prepared_by",
       "severity": "warning"
     },
     {
-      "message": "Missing: Building class",
+      "message": "Missing: Building class (needed for a complete report, page 2)",
       "path": "property.fields.building_class",
       "severity": "warning"
     },
     {
-      "message": "Missing: Site size (acres)",
+      "message": "Missing: Site size (acres) (needed for a complete report, page 2)",
       "path": "property.fields.site_acres",
       "severity": "warning"
     },
     {
-      "message": "Missing: Hold period (years)",
+      "message": "Missing: Hold period (years) (needed for a complete report, page 2)",
       "path": "property.fields.hold_period_years",
       "severity": "warning"
     },
     {
-      "message": "Missing: Prior quarter variance note",
-      "path": "in_place_rent.fields.prior_variance_note",
+      "message": "Missing: Property description (needed for a complete report, page 2)",
+      "path": "property.fields.description",
       "severity": "warning"
     },
     {
-      "message": "Missing: Spent-to-date period note",
+      "message": "Missing: In-place rent commentary (needed for a complete report, page 2)",
+      "path": "in_place_rent.fields.narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Business plan summary (needed for a complete report, page 3)",
+      "path": "capital.fields.business_plan_summary",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Spent-to-date period note (needed for a complete report, page 3)",
       "path": "underwriting.fields.spent_period_note",
       "severity": "warning"
     },
     {
-      "message": "Missing: Business plan headline",
-      "path": "underwriting.fields.business_plan_title",
+      "message": "Missing: Chart caption (needed for a complete report, page 3)",
+      "path": "rent_trend.fields.caption",
       "severity": "warning"
     },
     {
-      "message": "Missing: Chart title",
-      "path": "rent_trend.fields.chart_title",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Methodology note",
-      "path": "rent_trend.fields.methodology_note",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Replacement reserve balance",
-      "path": "financing.fields.reserve_balance",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Lender",
+      "message": "Missing: Lender (needed for a complete report, page 4)",
       "path": "financing.fields.lender",
       "severity": "warning"
     },
     {
-      "message": "Missing: Servicer",
-      "path": "financing.fields.servicer",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Interest rate",
+      "message": "Missing: Interest rate (needed for a complete report, page 4)",
       "path": "financing.fields.rate",
       "severity": "warning"
     },
     {
-      "message": "Missing: Rate type",
+      "message": "Missing: Rate type (needed for a complete report, page 4)",
       "path": "financing.fields.rate_type",
       "severity": "warning"
     },
     {
-      "message": "Missing: Effective date",
+      "message": "Missing: Effective date (needed for a complete report, page 4)",
       "path": "financing.fields.effective_date",
       "severity": "warning"
     },
     {
-      "message": "Missing: Maturity date",
+      "message": "Missing: Maturity date (needed for a complete report, page 4)",
       "path": "financing.fields.maturity_date",
       "severity": "warning"
     },
     {
-      "message": "Missing: Loan term (months)",
+      "message": "Missing: Loan term (months) (needed for a complete report, page 4)",
       "path": "financing.fields.term_months",
       "severity": "warning"
     },
     {
-      "message": "Missing: Interest-only period (months)",
+      "message": "Missing: Interest-only period (months) (needed for a complete report, page 4)",
       "path": "financing.fields.io_months",
       "severity": "warning"
     },
     {
-      "message": "Missing: IO end date",
-      "path": "financing.fields.io_end_date",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Amortization (years)",
+      "message": "Missing: Amortization (years) (needed for a complete report, page 4)",
       "path": "financing.fields.amort_years",
       "severity": "warning"
     },
     {
-      "message": "Missing: P&I payment (monthly)",
-      "path": "financing.fields.pi_payment",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Recourse",
+      "message": "Missing: Recourse (needed for a complete report, page 4)",
       "path": "financing.fields.recourse",
       "severity": "warning"
     },
     {
-      "message": "Missing: Prepayment terms",
+      "message": "Missing: Prepayment terms (needed for a complete report, page 4)",
       "path": "financing.fields.prepayment",
       "severity": "warning"
     },
     {
-      "message": "Missing: Yield maintenance through",
-      "path": "financing.fields.yield_maintenance_through",
+      "message": "Missing: Financing commentary (needed for a complete report, page 4)",
+      "path": "financing.fields.narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Open prepayment window (months)",
-      "path": "financing.fields.open_prepay_months",
+      "message": "Missing: Quarter takeaway (needed for a complete report, page 5)",
+      "path": "commentary.fields.takeaway",
       "severity": "warning"
     },
     {
-      "message": "Missing: Replacement reserve (monthly)",
-      "path": "financing.fields.replacement_reserve_monthly",
+      "message": "Missing: Revenue commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.revenue_body",
       "severity": "warning"
     },
     {
-      "message": "Missing: Repairs escrow (one-time)",
-      "path": "financing.fields.repairs_escrow",
+      "message": "Missing: Revenue outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.revenue_outlook",
       "severity": "warning"
     },
     {
-      "message": "Missing: Submarket",
+      "message": "Missing: Operating expense commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.opex_body",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Operating expense outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.opex_outlook",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: NOI and cash flow commentary (needed for a complete report, page 5)",
+      "path": "commentary.fields.noi_body",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: NOI outlook (needed for a complete report, page 5)",
+      "path": "commentary.fields.noi_outlook",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Capital commentary (needed for a complete report, page 7)",
+      "path": "capex.fields.narrative",
+      "severity": "warning"
+    },
+    {
+      "message": "Missing: Submarket (needed for a complete report, page 8)",
       "path": "submarket.fields.submarket_name",
       "severity": "warning"
     },
     {
-      "message": "Missing: Market",
+      "message": "Missing: Market (needed for a complete report, page 8)",
       "path": "submarket.fields.market_name",
       "severity": "warning"
     },
     {
-      "message": "Missing: Recent deliveries",
-      "path": "submarket.fields.recent_deliveries",
+      "message": "Missing: Occupancy commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.occupancy_narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Status item 1: title",
-      "path": "status.fields.status1_title",
+      "message": "Missing: Effective rent commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.rent_narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Status item 1: headline",
-      "path": "status.fields.status1_subtitle",
+      "message": "Missing: Concessions commentary (needed for a complete report, page 8)",
+      "path": "submarket.fields.concession_narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Status item 2: title",
-      "path": "status.fields.status2_title",
+      "message": "Missing: Occupancy commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.occupancy_narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Status item 2: headline",
-      "path": "status.fields.status2_subtitle",
+      "message": "Missing: New lease commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.new_lease_narrative",
       "severity": "warning"
     },
     {
-      "message": "Missing: Status item 3: title",
-      "path": "status.fields.status3_title",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Status item 3: headline",
-      "path": "status.fields.status3_subtitle",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 1: title",
-      "path": "status.fields.goal1_title",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 1: headline",
-      "path": "status.fields.goal1_subtitle",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 2: title",
-      "path": "status.fields.goal2_title",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 2: headline",
-      "path": "status.fields.goal2_subtitle",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 3: title",
-      "path": "status.fields.goal3_title",
-      "severity": "warning"
-    },
-    {
-      "message": "Missing: Goal 3: headline",
-      "path": "status.fields.goal3_subtitle",
+      "message": "Missing: Renewal commentary (needed for a complete report, page 9)",
+      "path": "occupancy.fields.renewal_narrative",
       "severity": "warning"
     },
     {
@@ -350,127 +730,167 @@
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Property description",
-      "path": "property.fields.description",
+      "message": "The HelloData comp summary also names 1 property not in the listings export (Bayview Landing); add them as rows on the review screen if they belong to this comp set",
+      "path": "submarket.tables.comps",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: In-place rent commentary",
-      "path": "in_place_rent.fields.narrative",
+      "message": "Missing: Prior quarter variance note (optional)",
+      "path": "in_place_rent.fields.prior_variance_note",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Business plan summary",
-      "path": "capital.fields.business_plan_summary",
+      "message": "Missing: Business plan headline (optional)",
+      "path": "underwriting.fields.business_plan_title",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Chart caption",
-      "path": "rent_trend.fields.caption",
+      "message": "Missing: Chart title (optional)",
+      "path": "rent_trend.fields.chart_title",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Financing commentary",
-      "path": "financing.fields.narrative",
+      "message": "Missing: Methodology note (optional)",
+      "path": "rent_trend.fields.methodology_note",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Quarter takeaway",
-      "path": "commentary.fields.takeaway",
+      "message": "Missing: Replacement reserve balance (optional)",
+      "path": "financing.fields.reserve_balance",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Revenue commentary",
-      "path": "commentary.fields.revenue_body",
+      "message": "Missing: Servicer (optional)",
+      "path": "financing.fields.servicer",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Revenue outlook",
-      "path": "commentary.fields.revenue_outlook",
+      "message": "Missing: IO end date (optional)",
+      "path": "financing.fields.io_end_date",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Operating expense commentary",
-      "path": "commentary.fields.opex_body",
+      "message": "Missing: P&I payment (monthly) (optional)",
+      "path": "financing.fields.pi_payment",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Operating expense outlook",
-      "path": "commentary.fields.opex_outlook",
+      "message": "Missing: Yield maintenance through (optional)",
+      "path": "financing.fields.yield_maintenance_through",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: NOI and cash flow commentary",
-      "path": "commentary.fields.noi_body",
+      "message": "Missing: Open prepayment window (months) (optional)",
+      "path": "financing.fields.open_prepay_months",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: NOI outlook",
-      "path": "commentary.fields.noi_outlook",
+      "message": "Missing: Replacement reserve (monthly) (optional)",
+      "path": "financing.fields.replacement_reserve_monthly",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Capital commentary",
-      "path": "capex.fields.narrative",
+      "message": "Missing: Repairs escrow (one-time) (optional)",
+      "path": "financing.fields.repairs_escrow",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Occupancy commentary",
-      "path": "submarket.fields.occupancy_narrative",
+      "message": "Missing: Recent deliveries (optional)",
+      "path": "submarket.fields.recent_deliveries",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Effective rent commentary",
-      "path": "submarket.fields.rent_narrative",
+      "message": "Narrative not written: No leasing activity statement (optional)",
+      "path": "occupancy.fields.no_activity_note",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Concessions commentary",
-      "path": "submarket.fields.concession_narrative",
+      "message": "Missing: Status item 1: title (optional)",
+      "path": "status.fields.status1_title",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Occupancy commentary",
-      "path": "occupancy.fields.occupancy_narrative",
+      "message": "Missing: Status item 1: headline (optional)",
+      "path": "status.fields.status1_subtitle",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: New lease commentary",
-      "path": "occupancy.fields.new_lease_narrative",
-      "severity": "info"
-    },
-    {
-      "message": "Narrative not written: Renewal commentary",
-      "path": "occupancy.fields.renewal_narrative",
-      "severity": "info"
-    },
-    {
-      "message": "Narrative not written: Status item 1: body",
+      "message": "Narrative not written: Status item 1: body (optional)",
       "path": "status.fields.status1_body",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Status item 2: body",
+      "message": "Missing: Status item 2: title (optional)",
+      "path": "status.fields.status2_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 2: headline (optional)",
+      "path": "status.fields.status2_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 2: body (optional)",
       "path": "status.fields.status2_body",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Status item 3: body",
+      "message": "Missing: Status item 3: title (optional)",
+      "path": "status.fields.status3_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Status item 3: headline (optional)",
+      "path": "status.fields.status3_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Status item 3: body (optional)",
       "path": "status.fields.status3_body",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Goal 1: body",
+      "message": "Missing: Goal 1: title (optional)",
+      "path": "status.fields.goal1_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 1: headline (optional)",
+      "path": "status.fields.goal1_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 1: body (optional)",
       "path": "status.fields.goal1_body",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Goal 2: body",
+      "message": "Missing: Goal 2: title (optional)",
+      "path": "status.fields.goal2_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 2: headline (optional)",
+      "path": "status.fields.goal2_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 2: body (optional)",
       "path": "status.fields.goal2_body",
       "severity": "info"
     },
     {
-      "message": "Narrative not written: Goal 3: body",
+      "message": "Missing: Goal 3: title (optional)",
+      "path": "status.fields.goal3_title",
+      "severity": "info"
+    },
+    {
+      "message": "Missing: Goal 3: headline (optional)",
+      "path": "status.fields.goal3_subtitle",
+      "severity": "info"
+    },
+    {
+      "message": "Narrative not written: Goal 3: body (optional)",
       "path": "status.fields.goal3_body",
       "severity": "info"
     }
@@ -506,17 +926,134 @@
     }
   },
   "passed": true,
-  "project_id": "803afd199010",
+  "project_id": "167d0fbe2617",
+  "provenance": {
+    "1": {
+      "conflict": 0,
+      "corrected": 3,
+      "derived": 4,
+      "drafted": 0,
+      "extracted": 7,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "10": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 2,
+      "missing_intentional": 18,
+      "missing_unexpected": 0
+    },
+    "2": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 9,
+      "drafted": 0,
+      "extracted": 20,
+      "missing_intentional": 2,
+      "missing_unexpected": 0
+    },
+    "3": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 3,
+      "drafted": 0,
+      "extracted": 93,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "4": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 1,
+      "drafted": 0,
+      "extracted": 3,
+      "missing_intentional": 20,
+      "missing_unexpected": 0
+    },
+    "5": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 32,
+      "drafted": 0,
+      "extracted": 0,
+      "missing_intentional": 7,
+      "missing_unexpected": 0
+    },
+    "6": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 86,
+      "drafted": 0,
+      "extracted": 105,
+      "missing_intentional": 0,
+      "missing_unexpected": 0
+    },
+    "7": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 6,
+      "drafted": 0,
+      "extracted": 16,
+      "missing_intentional": 1,
+      "missing_unexpected": 0
+    },
+    "8": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 8,
+      "drafted": 0,
+      "extracted": 20,
+      "missing_intentional": 6,
+      "missing_unexpected": 0
+    },
+    "9": {
+      "conflict": 0,
+      "corrected": 0,
+      "derived": 13,
+      "drafted": 0,
+      "extracted": 29,
+      "missing_intentional": 4,
+      "missing_unexpected": 0
+    }
+  },
   "report": {
-    "created_at": "2026-09-05T05:54:57+00:00",
+    "complete": false,
+    "created_at": "2026-09-05T12:48:31+00:00",
     "error": null,
+    "gap_count": 40,
     "has_pdf": true,
-    "id": "4491fa6b81a5",
+    "id": "1cbeb86a8672",
+    "images_per_page": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
     "page_count": 10,
+    "page_images": [
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-01.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-02.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-03.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-04.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-05.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-06.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-07.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-08.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-09.png",
+      "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/pages/page-10.png"
+    ],
     "pdf_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/report.pdf",
-    "pdf_text": "Harbor Point\r\n3Q26 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n3Q26\r\nHarbor Point\r\nCorpus Christi, TX\r\n264-unit multifamily community. Quarterly performance review for the period\r\nending Sep 30, 2026.\r\n264\r\nUNITS\r\n1988\r\nVINTAGE\r\nNov ’24\r\nACQUIRED\r\n$42M PURCHASE PRICE\r\nPREPARED BY\r\nNorthstar Asset Management\r\nPeriod ending Sep 30, 2026\r\nQUARTERLY INVESTOR REPORT\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Description\r\nHARBOR POINT · 3Q26\r\nVINTAGE 1988 · CLASS — · HOLD PERIOD — YR\r\nHarbor Point\r\nA 264-unit garden-style community serving a diversified coastal employment base.\r\nADDRESS\r\n880 Marina Drive\r\nCorpus Christi, TX 78401\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n1988\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nNov 15, 2024\r\nAVG UNIT SIZE\r\n886 sf\r\n3Q26 AVG IN-PLACE RENT\r\n$1,829 / mo\r\nPRIOR QTR (2Q26)\r\n$1,794 / mo\r\nQOQ VARIANCE\r\n+$35 / +2.0%\r\nType Units Avg SF 2Q26 in-place rent 3Q26 in-place rent QoQ variance\r\nStudio · 1 BA 24 540 $1,340 $1,375 +$35 / +2.6%\r\n1 BR · 1 BA 96 710 $1,570 $1,605 +$35 / +2.2%\r\n2 BR · 2 BA 112 1,010 $1,950 $1,985 +$35 / +1.8%\r\n3 BR · 2 BA 32 1,240 $2,285 $2,320 +$35 / +1.5%\r\nTotal / Weighted 264 886 $1,794 $1,829 +$35 / +2.0%\r\nHARBOR POINT · 3Q26 · PROPERTY DESCRIPTION 02 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Summary & Business Plan HARBOR POINT · 3Q26\r\nPURCHASE PRICE\r\n$42.2M\r\n$160,000 / unit · 264 units\r\nEQUITY INVESTED (ITD)\r\n$12.5M\r\n3Q26 EQUITY CONTRIBUTIONS\r\n$500,000\r\n$500,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$125,000\r\n$125,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS HARBOR POINT VS. COASTAL COMP SET\r\n—\r\n$2.03\r\n$2.13\r\n$2.23\r\n$2.34\r\n$2.44\r\nOct '25 Nov '25 Dec '25 Jan '26 Feb '26 Mar '26 Apr '26 May '26 Jun '26 Jul '26 Aug '26 Sep '26\r\nHarbor Point gross Harbor Point effective Coastal Comp Set gross Coastal Comp Set effective\r\nHARBOR POINT · 3Q26 · PROPERTY SUMMARY 03 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancing Overview\r\nHARBOR POINT · 3Q26\r\n— · — — · —\r\nSENIOR LOAN\r\n$28.00M\r\nInitial principal · — — · IO through — · matures —\r\nLENDER\r\n—\r\nBORROWER\r\nHarbor Point Holdings LLC\r\nEFFECTIVE DATE\r\n—\r\nMATURITY DATE\r\n—\r\nLOAN TERM\r\n−\r\nRATE\r\n— (implied 5.14%)\r\nIO PERIOD\r\n−\r\nAMORTIZATION\r\n−\r\nIO PAYMENT (MONTHLY)\r\n$120,000\r\nP&I PAYMENT (MONTHLY)\r\n—\r\nRECOURSE\r\n—\r\nRESERVE BALANCE\r\n—\r\nSTRUCTURE, PREPAYMENT & RESERVES\r\nLOAN PHASES\r\nIO period · — to — $120,000 / mo\r\nP&I phase · — to — — / mo\r\nPREPAYMENT\r\n—\r\nRESERVES & ESCROWS\r\nReplacement reserve — / mo\r\nRepairs escrow (one-time) —\r\nHARBOR POINT · 3Q26 · FINANCING 04 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancial & Capital Commentary HARBOR POINT · 3Q26\r\n3Q26 TAKEAWAY\r\n—\r\n01 · REVENUE +$8,000 VS. BUDGET\r\nTotal revenue of $1,340,000 finished +0.6% against the\r\n$1,332,000 budget. Gain/loss to lease was $50,000 versus a\r\n$60,000 budget (−16.7%).\r\n02 · OPERATING EXPENSES +$8,000 VS. BUDGET\r\nTotal operating expenses of $745,000 finished +1.1% against\r\nthe $753,000 budget. Insurance +$20,000 and utilities −$5,000\r\nversus budget.\r\n03 · NOI & CASH FLOW +$16,000 VS. BUDGET\r\nNOI of $595,000 finished +2.8% against the $579,000 budget.\r\nNet cash flow after debt service was $175,000 versus $159,000\r\nbudgeted (+$16,000). Capital spend was $60,000 against a\r\n$68,000 quarterly budget; year to date $180,000 of the\r\n$272,000 annual budget.\r\nHARBOR POINT · 3Q26 · FINANCIAL & CAPITAL COMMENTARY 05 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nFinancial Performance\r\nHARBOR POINT · 3Q26\r\nJUL-SEP 2026 VS. BUDGET & YTD\r\n$ in actuals 3Q26 actual 3Q26 budget Var % YTD actual YTD budget Var %\r\nRevenue\r\nGross Potential Rent 1,200,000 1,180,000 +1.7% 3,600,000 3,540,000 +1.7%\r\nLoss/Gain to Lease 50,000 60,000 −16.7% 150,000 180,000 −16.7%\r\nConcessions (30,000) (24,000) −25.0% (90,000) (72,000) −25.0%\r\nVacancy (80,000) (90,000) +11.1% (240,000) (270,000) +11.1%\r\nPet Rent 5,000 4,500 +11.1% 15,000 13,500 +11.1%\r\nNet Rental Income 1,145,000 1,130,500 +1.3% 3,435,000 3,391,500 +1.3%\r\nUtility Income 150,000 145,000 +3.4% 450,000 435,000 +3.4%\r\nOther Income (net of bad debt) 45,000 56,500 −20.4% 135,000 169,500 −20.4%\r\nTotal Revenue 1,340,000 1,332,000 +0.6% 4,020,000 3,996,000 +0.6%\r\nOperating expenses\r\nPayroll 170,000 168,000 −1.2% 510,000 504,000 −1.2%\r\nGeneral & Administrative 40,000 38,000 −5.3% 120,000 114,000 −5.3%\r\nMarketing 25,000 27,000 +7.4% 75,000 81,000 +7.4%\r\nRepairs & Maintenance 55,000 50,000 −10.0% 165,000 150,000 −10.0%\r\nUtilities 180,000 175,000 −2.9% 540,000 525,000 −2.9%\r\nManagement Fees 45,000 45,000 flat 135,000 135,000 flat\r\nProperty Taxes 160,000 160,000 flat 480,000 480,000 flat\r\nInsurance 70,000 90,000 +22.2% 210,000 270,000 +22.2%\r\nTotal Operating Expenses 745,000 753,000 +1.1% 2,235,000 2,259,000 +1.1%\r\nNet operating income\r\nNOI 595,000 579,000 +2.8% 1,785,000 1,737,000 +2.8%\r\nDebt Service 420,000 420,000 1,260,000 1,260,000\r\nNet Cash Flow After Debt Service 175,000 159,000 16,000 525,000 477,000 48,000\r\nHARBOR POINT · 3Q26 · FINANCIAL PERFORMANCE 06 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nCapital Projects\r\nHARBOR POINT · 3Q26\r\n3Q26 ACTIVITY\r\nLine item 3Q26 actual 3Q26 budget Var $ YTD actual YTD budget Var $ Annual budget\r\nPlumbing & Water Heaters 30,000 35,000 +5,000 90,000 105,000 +15,000 140,000\r\nHVAC Additions 20,000 25,000 +5,000 60,000 75,000 +15,000 100,000\r\nPaint 10,000 8,000 (2,000) 30,000 24,000 (6,000) 32,000\r\nTotal capital spend 60,000 68,000 +8,000 180,000 204,000 +24,000 272,000\r\nHARBOR POINT · 3Q26 · CAPITAL PROJECTS 07 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nSubmarket Comparison\r\nHARBOR POINT · 3Q26\r\nSOURCE: HELLODATA.AI LISTINGS AND COSTAR SUBMARKET DATA · — · 3Q26\r\nSUBMARKET VACANCY\r\n8.0%\r\nCoStar — · prior quarter 8.5%\r\nYOY ASKING RENT\r\n+2.5%\r\n$1,780/unit avg market asking · prior quarter +2.0%\r\nUNDER CONSTRUCTION\r\n380 units\r\n380 units under construction (2.5% of inventory)\r\nProperty name Units Vintage Leased % Asking rent Eff. rent (NER) Concession\r\nHarbor Point SUBJECT 264 1988 93.2% $1,900 $1,828 $73/mo (4%)\r\nMariner Flats 308 1996 100.0% $1,988 $1,903 $85/mo (4%)\r\nComp set average 308 1996 100.0% $1,988 $1,903 $85\r\nOCCUPANCY\r\n—\r\nEFFECTIVE RENT\r\n—\r\nCONCESSIONS\r\n—\r\nComp set average across 1 property (unit-weighted). Subject leased % is physical occupancy per the Yardi rent roll.\r\nHARBOR POINT · 3Q26 · SUBMARKET COMPARISON 08 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nOccupancy & Leasing\r\nHARBOR POINT · 3Q26\r\n3Q26 EXECUTED · 2 NEW LEASES · 2 RENEWALS\r\nJUN 30, 2026\r\n91.67%\r\n242 / 264 occupied\r\nSEP 30, 2026\r\n93.18%\r\n246 / 264 occupied · 8 future / applicants\r\nQUARTER CHANGE\r\n+152 bps\r\n—\r\nNEW LEASES · 3Q26 · BY FLOOR PLAN OVERALL +2.7%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nHP.A1 · 710 sf 1 $1,580 $1,625 +$45 +2.85%\r\nHP.C2 · 1,240 sf 1 $2,290 $2,350 +$60 +2.62%\r\nNew Leases total 2 $1,935 $1,988 +$53 +2.71%\r\nRENEWALS · 3Q26 · BY FLOOR PLAN OVERALL +3.7%\r\n—\r\nFloor plan Count Avg prior Avg current $ LTO % LTO\r\nHP.A1 · 710 sf 1 $1,540 $1,600 +$60 +3.90%\r\nHP.B2 · 1,010 sf 1 $1,940 $2,010 +$70 +3.61%\r\nRenewals total 2 $1,740 $1,805 +$65 +3.74%\r\nLTO REFLECTS LEASES OF ALL TERMS WITH A RENEWAL COMMENCEMENT OR NEW LEASE START DATE WITHIN 3Q26 (2026-07-01 TO 2026-09-30). SOURCE: YARDI LEASE\r\nTRADE-OUT REPORT.\r\nHARBOR POINT · 3Q26 · OCCUPANCY & LEASING 09 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nStatus Update & 4Q26 Goals HARBOR POINT · 3Q26\r\nSTATUS UPDATE\r\n3Q26 collections recovered: $5,000 · bad debt write-offs: $10,000\r\n4Q26 GOALS / INITIATIVES\r\nHARBOR POINT · 3Q26 · STATUS UPDATE & GOALS 10 / 10",
-    "project_id": "803afd199010",
-    "snapshot_path": "/Users/yashvibhandik/Desktop/Yash/Work/1.) The Boardwalk_2Q26 Source Files/Claude/validation/real_world/results/harbor_point_3q26/snapshot.json",
+    "pdf_text_excerpt": "Harbor Point\r\n3Q26 · LP QUARTERLY REPORT · CONFIDENTIAL\r\n3Q26\r\nDRAFT · 40 items outstanding on the review screen\r\nHarbor Point\r\nCorpus Christi, TX\r\n264-unit multifamily community. Quarterly performance review for the period\r\nending Sep 30, 2026.\r\n264\r\nUNITS\r\n1988\r\nVINTAGE\r\nNov ’24\r\nACQUIRED\r\n$42M PURCHASE PRICE\r\nPREPARED BY\r\nNorthstar Asset Management\r\nPeriod ending Sep 30, 2026\r\nQUARTERLY INVESTOR REPORT\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Description\r\nHARBOR POINT · 3Q26\r\nVINTAGE 1988 · CLASS — · HOLD PERIOD — YR\r\nHarbor Point\r\nA 264-unit garden-style community serving a diversified coastal employment base.\r\nADDRESS\r\n880 Marina Drive\r\nCorpus Christi, TX 78401\r\nSUBMARKET\r\n—\r\nMSA\r\n—\r\nYEAR BUILT\r\n1988\r\nBUILDING CLASS\r\n—\r\nSITE / DENSITY\r\n−\r\nACQUIRED\r\nNov 15, 2024\r\nAVG UNIT SIZE\r\n886 sf\r\n3Q26 AVG IN-PLACE RENT\r\n$1,829 / mo\r\nPRIOR QTR (2Q26)\r\n$1,794 / mo\r\nQOQ VARIANCE\r\n+$35 / +2.0%\r\nType Units Avg SF 2Q26 in-place rent 3Q26 in-place rent QoQ variance\r\nStudio · 1 BA 24 540 $1,340 $1,375 +$35 / +2.6%\r\n1 BR · 1 BA 96 710 $1,570 $1,605 +$35 / +2.2%\r\n2 BR · 2 BA 112 1,010 $1,950 $1,985 +$35 / +1.8%\r\n3 BR · 2 BA 32 1,240 $2,285 $2,320 +$35 / +1.5%\r\nTotal / Weighted 264 886 $1,794 $1,829 +$35 / +2.0%\r\nHARBOR POINT · 3Q26 · PROPERTY DESCRIPTION · DRAFT (40 outstanding) 02 / 10\nNORTHSTAR ASSET MANAGEMENT\r\nProperty Summary & Business Plan HARBOR POINT · 3Q26\r\nPURCHASE PRICE\r\n$42.2M\r\n$160,000 / unit · 264 units\r\nEQUITY INVESTED (ITD)\r\n$12.5M\r\n3Q26 EQUITY CONTRIBUTIONS\r\n$500,000\r\n$500,000 called this quarter\r\nCASH DISTRIBUTIONS (ITD)\r\n$125,000\r\n$125,000 distributed to date\r\nORIGINAL BUSINESS PLAN\r\n—\r\nORIGINAL UNDERWRITING BUDGET\r\nCategory Original UW Spent to date* % spent\r\nVALUE ADD PROJECTS\r\nTotal value add projects — — —\r\nRECURRING CAPEX\r\nTotal recurring capex — — —\r\nTotal underwritten capital — — —\r\n*—\r\nSUBMARKET RENT TRENDS HARBOR POINT VS. COASTAL COMP SET\r\n—\r\n$2.03\r\n$2.13\r\n$2.23\r\n$2.34\r\n$2.44\r\nOct '25 Nov '25 Dec '25 Jan '26 Feb '26 Mar '26 Apr '26 May '26 Jun '26 Jul '26 A",
+    "project_id": "167d0fbe2617",
     "status": "done",
     "version": 1
   },
