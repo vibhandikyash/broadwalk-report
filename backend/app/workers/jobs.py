@@ -196,9 +196,19 @@ def generate_report(report_id: str) -> None:
             db.update_report(report_id, snapshot=data.model_dump())
         out_dir = report_dir(r["project_id"])
         stem = f"report-v{r['version']}"
-        (out_dir / f"{stem}.json").write_text(json.dumps(data.model_dump(), indent=1, default=str))
+        (out_dir / f"{stem}.json").write_text(
+            json.dumps(data.model_dump(), indent=1, default=str), encoding="utf-8"
+        )
         html_path, pdf_path = out_dir / f"{stem}.html", out_dir / f"{stem}.pdf"
-        html_path.write_text(render_html(data, project, assets=assets.version_assets(out_dir, r["version"]), draft_gaps=r.get("gap_count") or 0))
+        html_path.write_text(
+            render_html(
+                data,
+                project,
+                assets=assets.version_assets(out_dir, r["version"]),
+                draft_gaps=r.get("gap_count") or 0,
+            ),
+            encoding="utf-8",
+        )
         db.update_report(report_id, html_path=str(html_path))
         render_pdf(html_path, pdf_path)
         db.update_report(report_id, status="done", pdf_path=str(pdf_path))
