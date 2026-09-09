@@ -24,6 +24,10 @@ class DocType(str, Enum):
     RENT_CHART = "rent_chart"
     SLATE_CAPITAL_CALLS = "slate_capital_calls"
     SLATE_DISTRIBUTIONS = "slate_distributions"
+    MANAGEMENT_MEMO = "management_memo"
+    LOAN_SUMMARY = "loan_summary"
+    CAPITAL_PROJECTS = "capital_projects"
+    UNDERWRITING_PLAN = "underwriting_plan"
     UNKNOWN = "unknown"
 
 
@@ -40,6 +44,10 @@ DOC_TYPE_LABELS: dict[DocType, str] = {
     DocType.RENT_CHART: "Rent trend chart workbook",
     DocType.SLATE_CAPITAL_CALLS: "Slate capital calls",
     DocType.SLATE_DISTRIBUTIONS: "Slate distributions",
+    DocType.MANAGEMENT_MEMO: "Asset management memorandum",
+    DocType.LOAN_SUMMARY: "Loan servicing summary",
+    DocType.CAPITAL_PROJECTS: "Capital project register",
+    DocType.UNDERWRITING_PLAN: "Original underwriting plan",
     DocType.UNKNOWN: "Unrecognized",
 }
 
@@ -62,6 +70,8 @@ PDF_SIGNATURES: list[Signature] = [
     (DocType.HELLODATA_COMPS, ["rents by unit type"], ["ner", "concession", "# leased", "hellodata"]),
     (DocType.SLATE_CAPITAL_CALLS, ["new capital call"], ["total called", "callable capital", "no capital calls yet", "contributed"]),
     (DocType.SLATE_DISTRIBUTIONS, ["new distribution"], ["no distributions yet", "gross amount", "net amount", "settled"]),
+    (DocType.MANAGEMENT_MEMO, ["asset manager", "quarter"], ["property facts", "approved hold", "operating update", "goals"]),
+    (DocType.LOAN_SUMMARY, ["loan", "principal"], ["interest rate", "maturity", "amortization", "servicer"]),
 ]
 
 MIN_CONFIDENCE = 0.6
@@ -101,9 +111,35 @@ def classify(doc: Document) -> list[Part]:
     parts: list[Part] = []
     if doc.kind == "xlsx":
         for sh in doc.sheets:
-            t, conf = best_match(norm(sh.head_text(25)), SHEET_SIGNATURES)
+            text = norm(sh.head_text(100))
+            t, conf = best_match(text, SHEET_SIGNATURES)
+            if t == DocType.UNKNOWN:
+                if all(x in text for x in ("account", "description", "ptd actual")):
+                    t, conf = DocType.YARDI_BUDGET_COMPARISON, 0.75
+                elif all(x in text for x in ("balance sheet", "account", "description", "current period")):
+                    t, conf = DocType.YARDI_BALANCE_SHEET, 0.75
+                elif all(x in text for x in ("as of", "unit type", "# of units", "average resident rent")):
+                    t, conf = DocType.YARDI_MARKET_RENT_SCHEDULE, 0.8
+                elif all(x in text for x in ("as of", "# of units", "occupied units", "vacant units")):
+                    t, conf = DocType.YARDI_RENT_ROLL, 0.8
+                elif all(x in text for x in ("lease id", "property name", "event type", "lease rent")):
+                    t, conf = DocType.YARDI_LEASE_TRADE_OUT, 0.8
+                elif all(x in text for x in ("project id", "capital category", "quarter actual")):
+                    t, conf = DocType.CAPITAL_PROJECTS, 0.8
+                elif all(x in text for x in ("program", "category", "original budget")):
+                    t, conf = DocType.UNDERWRITING_PLAN, 0.8
             parts.append(Part(t.value, conf, f"sheet '{sh.name}'", doc.file_id, doc.filename, sheet=sh))
     else:
-        t, conf = best_match(norm(doc.text[:30000]), PDF_SIGNATURES)
-        parts.append(Part(t.value, conf, f"pages 1-{len(doc.pages)}", doc.file_id, doc.filename, pages=doc.pages, created=doc.created))
+        normal = norm(doc.text[:30000])
+        t, conf = best_match(normal, PDF_SIGNATURES)
+        ocr_pages = [str(page.number) for page in doc.pages if page.ocr]
+        locator = f"pages 1-{len(doc.pages)}"
+        if ocr_pages:
+            locator += f"; Gemini vision OCR pages {', '.join(ocr_pages)}"
+        if "investor cash activity statement" in normal and "capital calls" in normal:
+            parts.append(Part(DocType.SLATE_CAPITAL_CALLS.value, 0.9, locator, doc.file_id, doc.filename, pages=doc.pages, created=doc.created))
+            if "distributions" in normal:
+                parts.append(Part(DocType.SLATE_DISTRIBUTIONS.value, 0.9, locator, doc.file_id, doc.filename, pages=doc.pages, created=doc.created))
+        else:
+            parts.append(Part(t.value, conf, locator, doc.file_id, doc.filename, pages=doc.pages, created=doc.created))
     return parts

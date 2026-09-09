@@ -25,14 +25,18 @@ def _int(v: float | None) -> int | None:
 def _from_sheet(part: Part) -> Extraction:
     sh = part.sheet
     assert sh is not None
-    hb = sh.header_block(["property", "built"], max_rows=1, search_rows=15)
+    hb = sh.header_block(["property", "units"], max_rows=1, search_rows=30)
     if hb is None:
-        raise ExtractionError("No 'Property' / 'Yr Built' header found")
+        raise ExtractionError("No 'Property' header found")
     hrow, _, headers = hb
     c_name = Sheet.col(headers, r"^property$", r"^property name")
     c_addr, c_built = Sheet.col(headers, r"^address"), Sheet.col(headers, r"built")
     c_units = Sheet.col(headers, r"^# ?units$", r"^units$")
     c_sqft, c_leased = Sheet.col(headers, r"avg sqft|avg sf"), Sheet.col(headers, r"^leased %")
+    c_occupied = Sheet.col(headers, r"^occupied units$")
+    c_leased_units = Sheet.col(headers, r"^leased units$")
+    c_asking = Sheet.col(headers, r"^asking rent$")
+    c_effective = Sheet.col(headers, r"^effective rent$")
     c_stories = Sheet.col(headers, r"stories")
     if c_name is None:
         raise ExtractionError("'Property' column not found")
@@ -47,13 +51,20 @@ def _from_sheet(part: Part) -> Extraction:
                 break
             continue
         blanks = 0
+        units = _int(to_number(sh.cell(r, c_units))) if c_units is not None else None
+        leased_units = _int(to_number(sh.cell(r, c_leased_units))) if c_leased_units is not None else None
         rec = {
             "name": name, "address": (sh.text(r, c_addr) or None) if c_addr is not None else None,
             "year_built": _int(to_number(sh.cell(r, c_built))) if c_built is not None else None,
-            "units": _int(to_number(sh.cell(r, c_units))) if c_units is not None else None,
+            "units": units,
             "stories": _int(to_number(sh.cell(r, c_stories))) if c_stories is not None else None,
             "avg_sqft": to_number(sh.cell(r, c_sqft)) if c_sqft is not None else None,
-            "leased_pct": as_fraction(to_number(sh.cell(r, c_leased))) if c_leased is not None else None,
+            "leased_pct": (as_fraction(to_number(sh.cell(r, c_leased))) if c_leased is not None
+                           else leased_units / units if leased_units is not None and units else None),
+            "occupied_units": _int(to_number(sh.cell(r, c_occupied))) if c_occupied is not None else None,
+            "leased_units": leased_units,
+            "asking_rent": to_number(sh.cell(r, c_asking)) if c_asking is not None else None,
+            "effective_rent": to_number(sh.cell(r, c_effective)) if c_effective is not None else None,
             "row": r,
         }
         if norm(name).startswith("comp average"):

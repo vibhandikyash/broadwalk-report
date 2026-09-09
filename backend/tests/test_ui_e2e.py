@@ -170,13 +170,15 @@ def test_full_workflow_in_the_browser(tmp_path):
         out.write_bytes(pdf.body())
         with pdfplumber.open(out) as doc:
             text = "\n".join(p.extract_text() or "" for p in doc.pages)
-            assert len(doc.pages) == 10
+            total = len(doc.pages)
+            assert total > 10  # the ten fixed pages plus the provenance appendix
         low = text.lower()
         assert "amenity upkeep" in low and "lender-required repairs" in low and "seven of eight items" in low and "insurance savings" in low
         assert "38,100,000" in text or "$38.1m" in low
         assert "westchase" not in low
-        for n in range(2, 11):
-            assert text.count(f"{n:02d} / 10") == 1, n
+        for n in range(2, total + 1):
+            # Bounded: a figure such as '207 / 228 occupied' contains the substring '07 / 22'.
+            assert len(re.findall(rf"(?<!\d){n:02d} / {total}(?!\d)", text)) == 1, n
         snap = page.request.get(URL + href.replace("/download", "/snapshot")).json()
         assert snap["sections"]["status"]["fields"]["status1_title"]["override"] == "Lender-required repairs"
 

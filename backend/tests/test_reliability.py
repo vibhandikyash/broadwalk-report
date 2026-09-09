@@ -199,4 +199,7 @@ def test_versions_snapshot_reviewed_data_at_request_time(tmp_path):
                 out = tmp_path / f"v{v['version']}.pdf"
                 out.write_bytes(r.content)
                 with pdfplumber.open(out) as doc:
-                    assert lender in doc.pages[3].extract_text()
+                    # data-sources sheets sit between the fixed pages, so find the page by its heading
+                    financing = next(t for t in (p.extract_text() or "" for p in doc.pages)
+                                     if "Financing Overview" in t and "SOURCE PROVENANCE" not in t)
+                assert lender in financing

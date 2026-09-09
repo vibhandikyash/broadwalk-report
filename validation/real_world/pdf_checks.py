@@ -11,6 +11,9 @@ import pypdfium2 as pdfium
 ROOT = Path(__file__).resolve().parents[2]
 HEADINGS = ["Property Description", "Property Summary & Business Plan", "Financing Overview", "Financial & Capital Commentary",
             "Financial Performance", "Capital Projects", "Submarket Comparison", "Occupancy & Leasing", "Status Update"]  # pages 2..10
+# Each fixed page is followed by its data-sources sheet(s), so a physical page index is not a report
+# page number. The sheets carry this tag in their header; the fixed pages never do.
+PROVENANCE_MARK = "SOURCE PROVENANCE"
 
 
 def _check_pdf_module():
@@ -85,14 +88,20 @@ def structural_problems(pdf_path: Path, pages: int = 10) -> list[str]:
                 problems.append(f"page {i}: {len(missing)} word(s) draw no ink, e.g. {missing[:4]}")
         text = "\n".join(text_parts)
     for k in range(2, pages + 1):
-        if text.count(f"{k:02d} / {pages}") != 1:
+        if len(m.footer_marks(text, k, pages)) != 1:
             problems.append(f"footer marker '{k:02d} / {pages}' missing or duplicated")
     if not any("SourceSerif" in f for f in fonts) or not any("JetBrainsMono" in f for f in fonts):
         problems.append(f"expected fonts not embedded: {sorted(fonts)}")
     return problems
 
 
+def report_page_indices(texts: list[str]) -> list[int]:
+    """Positions of the fixed report pages, with the interleaved data-sources sheets filtered out."""
+    return [i for i, t in enumerate(texts) if PROVENANCE_MARK not in t]
+
+
 def heading_problems(texts: list[str]) -> list[str]:
+    """`texts` must already be the fixed report pages (see report_page_indices)."""
     problems = []
     for i, heading in enumerate(HEADINGS, start=2):
         if i > len(texts) or heading.casefold() not in texts[i - 1].casefold():

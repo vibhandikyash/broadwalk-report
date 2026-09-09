@@ -40,19 +40,20 @@ def extract(part: Part) -> Extraction:
     sh = part.sheet
     assert sh is not None
     as_of = find_as_of(sh)
-    hb = sh.header_block(["unit type", "units"], max_rows=3, search_rows=20)
+    hb = sh.header_block(["unit type"], max_rows=3, search_rows=120)
     if hb is None:
         raise ExtractionError("No 'Unit Type' / 'Units' header found")
     hrow, k, headers = hb
     name, ref = find_property(sh, max_row=hrow)
     c_label = Sheet.col(headers, r"^unit type$")
-    c_units = Sheet.col(headers, r"^units$")
+    c_units = Sheet.col(headers, r"^units$", r"# of units")
     if c_label is None or c_units is None:
         raise ExtractionError("'Unit Type' or 'Units' column not found")
     c_sqft = Sheet.col(headers, r"sq ?ft|sqft|square")
     c_occ = Sheet.col(headers, r"occupied")
     c_arr = Sheet.col(headers, r"^average resident rent", r"^avg resident rent", r"resident rent")
     c_mkt = Sheet.col(headers, r"^unit type rent$", r"^market rent")
+    c_date = Sheet.col(headers, r"^as of$")
     unit_types: list[dict] = []
     total: dict | None = None
     for r in range(hrow + k, sh.nrows):
@@ -67,6 +68,10 @@ def extract(part: Part) -> Extraction:
             "avg_resident_rent": to_number(sh.cell(r, c_arr)) if c_arr is not None else None,
             "row": r,
         }
+        if c_date is not None:
+            from ..readers.document import to_date
+            date = to_date(sh.cell(r, c_date))
+            rec["as_of"] = date.isoformat() if date else None
         nl = norm(label)
         if nl.startswith("grand total") or nl.startswith("total"):
             total = rec
@@ -77,6 +82,16 @@ def extract(part: Part) -> Extraction:
         unit_types.append({"label": clean, "code": code, "bedrooms": beds, "bathrooms": baths, **rec})
     if not unit_types:
         raise ExtractionError("No unit-type rows found")
+    dated = sorted({u.get("as_of") for u in unit_types if u.get("as_of")})
+    if dated:
+        snapshots = []
+        for date in dated:
+            rows = [u for u in unit_types if u.get("as_of") == date]
+            snapshots.append({"as_of": date, "property_name": name, "property_ref": ref, "unit_types": rows,
+                              "total": {"units": sum(u["units"] or 0 for u in rows),
+                                        "sqft": sum((u["sqft"] or 0) * (u["units"] or 0) for u in rows) / sum(u["units"] or 0 for u in rows),
+                                        "avg_resident_rent": sum((u["avg_resident_rent"] or 0) * (u["units"] or 0) for u in rows) / sum(u["units"] or 0 for u in rows)}})
+        return Extraction(doc_type=part.doc_type, locator=part.locator, data={"_snapshots": snapshots})
     warnings = [] if as_of else ["'As Of' date not found"]
     if any(u["bedrooms"] is None for u in unit_types):
         warnings.append("Bedroom count could not be parsed for some unit types; they are grouped as 'Other'")

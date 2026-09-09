@@ -1,5 +1,5 @@
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { ProjectDetail, ProjectFile, Report, ReportDataUi, UiField, UiSection } from '../core/models';
+import { ProjectDetail, ProjectFile, Provenance, Report, ReportDataUi, UiField, UiSection } from '../core/models';
 
 export function routeStub(id = 'p1') {
   return { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id }) } } };
@@ -24,21 +24,35 @@ export function detail(over: Partial<ProjectDetail> = {}): ProjectDetail {
   };
 }
 
+export function provenance(over: Partial<Provenance> = {}): Provenance {
+  return {
+    origin: 'extracted', label: 'Extracted', detail: "rr.xlsx · sheet 'RR' summary block", filename: 'rr.xlsx',
+    locator: "sheet 'RR' summary block", doc_type: 'yardi_rent_roll', doc_label: 'Yardi Rent Roll summary (occupancy)',
+    quote: 'Totals', ocr_confidence: null, reason: null, ocr: false, ...over,
+  };
+}
+
 export function uiField(over: Partial<UiField> = {}): UiField {
   return {
     path: 'property.fields.units', key: 'units', label: 'Units', kind: 'integer', value: 338, override: null, effective: 338, status: 'extracted',
-    source: { filename: 'rr.xlsx', locator: "sheet 'RR' summary block", text: 'Totals' }, alternatives: [], note: null, readonly: false, ...over,
+    source: { filename: 'rr.xlsx', locator: "sheet 'RR' summary block", text: 'Totals' }, provenance: provenance(),
+    alternatives: [], note: null, readonly: false, ...over,
   };
 }
 
 export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
   const units = uiField();
-  const lender = uiField({ path: 'financing.fields.lender', key: 'lender', label: 'Lender', kind: 'text', value: null, effective: null, status: 'missing', source: null });
+  const missingProv = provenance({
+    origin: 'missing', label: 'Not found', filename: null, locator: null, doc_type: null, doc_label: null, quote: null,
+    detail: 'Loan servicing summary would carry this value, and no such file was uploaded.',
+    reason: 'Loan servicing summary would carry this value, and no such file was uploaded.',
+  });
+  const lender = uiField({ path: 'financing.fields.lender', key: 'lender', label: 'Lender', kind: 'text', value: null, effective: null, status: 'missing', source: null, provenance: missingProv });
   const price = uiField({
     path: 'capital.fields.purchase_price', key: 'purchase_price', label: 'Purchase price', kind: 'money', value: 48000000, effective: 48000000, status: 'conflict',
     alternatives: [{ value: 38100000, source: { filename: 'costar.pdf' }, note: 'CoStar recorded sale price' }],
   });
-  const noi = uiField({ path: 'commentary.fields.noi_actual', key: 'noi_actual', label: 'NOI actual', kind: 'money', value: 550, effective: 550, status: 'derived', readonly: true, source: null });
+  const noi = uiField({ path: 'commentary.fields.noi_actual', key: 'noi_actual', label: 'NOI actual', kind: 'money', value: 550, effective: 550, status: 'derived', readonly: true, source: null, provenance: provenance({ origin: 'computed', label: 'Calculated', detail: 'Calculated by the system from other values in this report', filename: null, locator: null, doc_type: null, doc_label: null, quote: null }) });
   const sections: UiSection[] = [
     { key: 'property', title: 'Property', page: 1, fields: [units], tables: [] },
     { key: 'capital', title: 'Capital Summary', page: 3, fields: [price], tables: [] },
@@ -66,7 +80,11 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
       groups: [{ key: 'financing', label: 'Financing terms', page: 4, complete: false, gap_count: 1 }, { key: 'status', label: 'Status update', page: 10, complete: false, gap_count: 1 }],
     } },
     issues: [{ path: 'financing.fields.lender', severity: 'warning', message: 'Missing: Lender' }, { path: null, severity: 'info', message: 'notes.docx: unsupported' }],
-    sections, meta: {}, narrative_status: null, narrative_error: null, ...over,
+    sections, meta: {}, narrative_status: null, narrative_error: null,
+    provenance: { counts: { extracted: 2, ocr: 1, computed: 2, manual: 2, ai_draft: 0, missing: 1 }, files: [
+      { filename: 'rr.xlsx', doc_labels: ['Yardi Rent Roll summary (occupancy)'], method: 'native', ocr_pages: [], ocr_confidence: null },
+      { filename: 'scan.pdf', doc_labels: ['Slate capital calls'], method: 'ocr', ocr_pages: [1], ocr_confidence: 0.94 },
+    ] }, ...over,
   };
 }
 

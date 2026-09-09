@@ -4,15 +4,17 @@ from __future__ import annotations
 from ..classify.classifier import Part
 from ..readers.document import Sheet
 from .base import Extraction, ExtractionError
-from .yardi_common import parse_period, walk_lines
+from .yardi_common import find_as_of, find_property, parse_period, walk_lines
 
 
 def extract(part: Part) -> Extraction:
     sh = part.sheet
     assert sh is not None
-    hb = sh.header_block(["balance", "beginning"], max_rows=2, search_rows=15)
+    hb = sh.header_block(["balance", "beginning"], max_rows=2, search_rows=120)
     if hb is None:
-        raise ExtractionError("No 'Balance' / 'Beginning' header found")
+        hb = sh.header_block(["current period"], max_rows=2, search_rows=120)
+    if hb is None:
+        raise ExtractionError("No current balance header found")
     hrow, k, headers = hb
     colmap = {
         "current": Sheet.col(headers, r"^balance", r"current"),
@@ -26,4 +28,7 @@ def extract(part: Part) -> Extraction:
     if not lines:
         raise ExtractionError("No balance sheet lines found")
     return Extraction(doc_type=part.doc_type, locator=part.locator,
-                      data={"period": parse_period(sh.head_text(6)), "columns": sorted(colmap), "lines": lines})
+                      data={"period": parse_period(sh.head_text(hrow)), "as_of": find_as_of(sh),
+                            "property_name": find_property(sh, max_row=hrow)[0],
+                            "property_ref": find_property(sh, max_row=hrow)[1],
+                            "columns": sorted(colmap), "lines": lines})

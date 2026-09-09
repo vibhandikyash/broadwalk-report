@@ -5,11 +5,14 @@ Raster: every page is rendered with PDFium (the engine behind Chrome's viewer) a
 contain ink, so text that survives extraction but does not draw (missing or broken glyphs) fails the check.
 
 Usage: python scripts/check_pdf.py report.pdf [--pages 10] [--expect "Fannie Mae" --expect "Total capital spend"]
+--pages asserts an exact page count; omit it to accept the file's own count, which a report carrying
+the variable-length provenance appendix needs.
 """
 from __future__ import annotations
 
 import argparse
 import math
+import re
 import sys
 
 import pdfplumber
@@ -19,6 +22,11 @@ from pdfminer.pdftypes import resolve1
 SCALE = 2.0        # 144 dpi
 INK_MIN = 0.02     # share of dark pixels a word's box must contain
 DARK = 170         # 8-bit luminance below which a pixel counts as ink
+
+
+def footer_marks(text: str, page: int, pages: int) -> list[str]:
+    """Occurrences of the 'NN / TOTAL' footer, bounded so figures such as '207 / 228 occupied' do not count."""
+    return re.findall(rf"(?<!\d){page:02d} / {pages}(?!\d)", text)
 
 
 def _type3_fonts(page) -> list[str]:
@@ -53,15 +61,18 @@ def _words_without_ink(page, image) -> list[str]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("pdf")
-    ap.add_argument("--pages", type=int, default=10)
+    # 0 means "however many the file has": the report is ten fixed pages plus a provenance appendix
+    # whose length depends on the data, and the footer check below is what actually catches overflow.
+    ap.add_argument("--pages", type=int, default=0)
     ap.add_argument("--expect", action="append", default=[])
     a = ap.parse_args()
     problems: list[str] = []
     raster = pdfium.PdfDocument(a.pdf)
     with pdfplumber.open(a.pdf) as doc:
         n = len(doc.pages)
-        if n != a.pages:
+        if a.pages and n != a.pages:
             problems.append(f"expected {a.pages} pages, found {n}")
+        expected_pages = a.pages or n
         text_parts, fonts = [], set()
         for i, p in enumerate(doc.pages, start=1):
             if abs(p.width - 720) > 0.5 or abs(p.height - 404.88) > 0.5:
@@ -76,9 +87,9 @@ def main() -> int:
             if missing:
                 problems.append(f"page {i}: {len(missing)} word(s) extract but draw no ink when rasterised, e.g. {missing[:5]}")
     text = "\n".join(text_parts)
-    for k in range(2, a.pages + 1):
-        if text.count(f"{k:02d} / {a.pages}") != 1:
-            problems.append(f"footer marker '{k:02d} / {a.pages}' missing or duplicated (content overflowed?)")
+    for k in range(2, expected_pages + 1):
+        if len(footer_marks(text, k, expected_pages)) != 1:
+            problems.append(f"footer marker '{k:02d} / {expected_pages}' missing or duplicated (content overflowed?)")
     if not any("SourceSerif" in f for f in fonts) or not any("JetBrainsMono" in f for f in fonts):
         problems.append(f"expected Source Serif 4 and JetBrains Mono to be embedded; found {sorted(fonts)}")
     for s in a.expect:

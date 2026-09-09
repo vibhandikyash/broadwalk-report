@@ -6,7 +6,7 @@ what is wrong or missing, let the optional AI draft the narrative paragraphs fro
 an immutable PDF version, edit, regenerate.
 
 Local-first by design: a FastAPI backend with SQLite, an Angular 21 frontend, and Playwright's Chromium for the
-PDF. Nothing leaves the machine unless you enable AI drafting with your own key.
+PDF. Nothing leaves the machine unless you enable AI drafting or Gemini vision OCR with your own key.
 
 Status: feature-complete for the brief, verified on the supplied Boardwalk dataset and on four independent
 property packages. See `STATUS.md` for what is implemented and what is still weak, `CHANGELOG.md` for the
@@ -37,7 +37,8 @@ history, and `validation/real_world/ASSESSMENT.md` for the scored verdict (90/10
 
 ## What it produces
 
-A ten-page 16:9 PDF (720 x 404.88 pt) that follows the structure of the client's reference report:
+A 16:9 PDF (720 x 404.88 pt) whose ten fixed pages follow the structure of the client's reference report.
+Each of those pages is followed by its own data-sources sheet, and the last page lists every file used:
 
 | Page | Section | Main sources |
 |---:|---|---|
@@ -51,6 +52,19 @@ A ten-page 16:9 PDF (720 x 404.88 pt) that follows the structure of the client's
 | 8 | Submarket Comparison: vacancy, asking rent, construction, comp set table | CoStar, HelloData listings and comps |
 | 9 | Occupancy and Leasing: occupancy, new leases and renewals by floor plan | rent roll, lease trade-out |
 | 10 | Status Update and next-quarter Goals | reviewer |
+
+**Data-sources sheets** show a reader how the report was produced. One or more follow each page above and cover
+only that page's figures, so the explanation sits next to what it explains: extracted values carry the file and
+the line, values marked `OCR` were transcribed from a scanned page, calculated values say so, and each value the
+page prints as an em dash states why it is absent — the report that carries it was never uploaded, the file was
+read but has no such line, or a calculation is waiting on an input. A closing **Source Files & Extraction
+Method** page counts the values by origin and lists every file with its recognised type and whether its text was
+machine-readable or recovered by vision OCR.
+
+The sheets grow with the data, so the total page count varies; the ten fixed pages never change, and they are
+still pages 1 to 10 of the report even though they are no longer consecutive in the PDF. Code that has to tell
+them apart looks for `SOURCE PROVENANCE` in a page's header (see `pdf_checks.report_page_indices`).
+`render_html(..., provenance_appendix=False)` omits the sheets entirely.
 
 Every version is an immutable snapshot with its PDF, HTML and JSON data. A version generated while required items
 are still missing is a **draft**, marked on every page and named `...-draft.pdf`.
@@ -121,8 +135,8 @@ CHANGELOG.md, STATUS.md, CLAUDE_CODE_HANDOFF.md, .env.example
 - Node.js 22.12 or newer and npm 10 or newer (22.16 with npm 10.9 tested; with nvm: `nvm use 22`). Node 18 is
   too old for Angular 21.
 - Chromium for PDF rendering, installed once by Playwright during setup (about 150 MB).
-- No cloud services. AI narrative drafting is optional and needs either an Anthropic API key or a local Claude
-  Code login.
+- No required cloud services. AI narrative drafting and Gemini vision OCR are optional; OCR sends only scanned
+  or low-text PDF pages when a Gemini API key is configured.
 
 ## Quick start
 
@@ -174,6 +188,11 @@ Environment variables, read from the process environment first and then from `.e
 | `NARRATIVE_PROVIDER` | `auto` | `api` (Anthropic SDK with an API key), `agent-sdk` (Claude Agent SDK on the local Claude Code login), `mock` (deterministic drafts built only from the structured figures; for tests and offline demonstrations), `off`. `auto` picks `api` when a key is set, else `agent-sdk` when that package is installed, else nothing |
 | `ANTHROPIC_API_KEY` | unset | Enables the `api` provider |
 | `ANTHROPIC_MODEL` | unset | Model override. `api` defaults to `claude-opus-5`; `agent-sdk` defaults to the Claude Code CLI's configured model |
+| `GEMINI_API_KEY` | unset | Enables page-level Gemini vision OCR for scanned or low-text PDF pages |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model used for vision OCR |
+| `OCR_DPI` | `200` | Resolution used to render each affected PDF page before OCR |
+| `OCR_TIMEOUT_SECONDS` | `60` | Timeout for each Gemini page request |
+| `OCR_MIN_TEXT_CHARS` | `20` | Minimum alphanumeric characters for a page to be treated as having usable local text |
 
 ### External services
 
@@ -181,6 +200,7 @@ Environment variables, read from the process environment first and then from `.e
 |---|---|---|---|
 | Anthropic Claude API (`api` provider) | Drafts narrative paragraphs from the structured, reviewed numbers. Optional; the app is fully functional without it. | `ANTHROPIC_API_KEY` | Your own key in `.env`. |
 | Claude Agent SDK (`agent-sdk` provider) | Same drafting through the bundled Claude Code CLI, using whatever that CLI is logged in with. Meant for a developer's own machine; per Anthropic's terms a distributed product must use the API-key provider. | none (`pip install -r backend/requirements-llm.txt`, then log in with `claude`) | The CLI's own credentials; the app stores nothing. One call per narrative field, no tools, no settings or CLAUDE.md loaded. |
+| Google Gemini API | Transcribes scanned or low-text PDF pages one page at a time before normal classification and extraction. Optional. | `GEMINI_API_KEY` | Your own key in `.env`; affected page images leave the machine and OCR results are cached under the uploaded file's project folder. |
 
 Nothing else leaves the machine. Playwright's Chromium is downloaded once at setup time.
 
@@ -190,7 +210,7 @@ Nothing else leaves the machine. Playwright's Chromium is downloaded once at set
 2. **Upload source files.** Files page, drop or pick `.xlsx` / `.xlsm` / `.pdf` files (any names, any order; the
    drop zone is keyboard operable). Every file gets a status: `queued`, `processing`, `processed`, `failed`
    (corrupt or unreadable), `unsupported` (file type), `not recognised` (readable but no known report inside; not
-   used until you set its type), `needs OCR` (image-only PDF). One bad file never blocks the others, and a
+   used until you set its type), `needs OCR` (image-only PDF when Gemini OCR is unavailable or fails). One bad file never blocks the others, and a
    project with nothing usable still reaches the review screen with the problems listed. Optional report images
    (cover photo, logo) are uploaded on the same page and embedded in the PDF.
 3. **Review extracted data.** Review page. Left: report sections in page order with a count of items needing
@@ -272,9 +292,16 @@ Recognised by content, never by filename or sheet name:
 | Rent chart workbook | gross PSF, effective PSF and lease count by month for the subject and the comp set | page 3 |
 | Slate capital calls | a "New capital call" statement, or its "no capital calls yet" form; exports are ranked by print date | page 3 |
 | Slate distributions | a "New distribution" statement, or its "no distributions yet" form; exports are ranked by print date | page 3 |
+| Generic operating and balance tables | Account/description columns with semantic actual, budget or current-balance headers, including shifted headers | pages 3, 4, 5, 6 |
+| Date-keyed rent and occupancy tables | As-of, unit, rent and occupied/vacant header aliases; multiple dates in one sheet become separate snapshots | pages 1, 2, 9 |
+| Combined lease activity | Lease ID, property, event type, dates and rent columns; overlapping exports are deduplicated by lease ID | pages 3, 9 |
+| Capital project and underwriting tables | Capital category with quarter/YTD values, or program/category with original budget and spent-to-date values | pages 3, 7 |
+| Management memorandum | Explicit property facts, acquisition, approved hold and operating goals from searchable or OCR-recovered text | pages 1, 2, 3, 10 |
+| Loan servicing summary | Explicit principal, rate, dates, payment and reserve terms | pages 3, 4 |
+| Investor cash activity statement | Explicit reporting period, capital calls and distributions; unknown activity remains missing | page 3 |
 
-Anything else that reads is `not recognised` (and can be typed by hand); image-only PDFs are `needs OCR`;
-other file types are `unsupported`.
+Anything else that reads is `not recognised` (and can be typed by hand); scanned and low-text PDF pages are
+transcribed by Gemini when configured, otherwise an image-only PDF is `needs OCR`; other file types are `unsupported`.
 
 ## API reference
 
@@ -375,6 +402,9 @@ project, so it is also called after an upload batch and on a project read, and j
   still generates.
 - Percentages are normalised to fractions however the source expresses them (91.71, 0.9171 or "91.71%"); dates
   are parsed from several formats; extra sheets and pages that match nothing are ignored and reported.
+- PDF pages without a usable text layer are rendered at 200 DPI and sent individually to Gemini vision OCR when
+  configured. The returned text re-enters the normal classifier/extractor pipeline; page provenance, confidence,
+  warnings and a local content-addressed cache make the external fallback visible and repeatable.
 - Comparable properties: the listings export defines the comp set; the HelloData comp sheet defines it only when
   there is no listings export; the one-page comp PDF defines it only when it is the only source and otherwise
   enriches matching rows. Cells with no source stay empty and editable, averages use available values only, and
@@ -414,9 +444,12 @@ project, so it is also called after an upload batch and on a project read, and j
   glyph outlines.
 - The rent-trend chart is a dependency-free SVG (`report/chart.py`); its legend wraps onto extra rows when the
   series names are long, and each extra row grows the canvas rather than covering the axis.
-- `scripts/check_pdf.py <pdf> --expect "<text>"` verifies page count, page size, embedded fonts, the absence
-  of Type 3 fonts, the end-of-page footer markers and expected text, and rasterises every page with PDFium to
-  confirm that every extracted word draws.
+- The data-sources sheets are built in `render.py` (`appendix_items` groups rows by printed page, `paginate`
+  splits them into sheets, `number_pages` interleaves and numbers everything). Each row is forced to one line by
+  a fixed table layout, so a sheet holds a known number of them and the overflow check never has to reject it.
+- `scripts/check_pdf.py <pdf> --expect "<text>"` verifies page size, embedded fonts, the absence of Type 3 fonts,
+  the end-of-page footer markers and expected text, and rasterises every page with PDFium to confirm that every
+  extracted word draws. Pass `--pages N` to also assert an exact page count.
 
 ### Accessibility
 
@@ -511,10 +544,10 @@ settled and which commit rendered it.
 
 The short list; `STATUS.md` has the full one with the flaws that were found and not yet fixed.
 
-- Loan terms, the original underwriting budget, property facts (acreage, class, hold period), the business plan,
-  status updates and goals are not present in any supported export. They are manual fields flagged as missing
-  until a reviewer enters them.
-- Image-only (scanned) PDFs get the `needs OCR` status; no OCR is implemented.
+- Unfamiliar prose and table schemas outside the supported semantic roles still require a new alias/mapping or
+  reviewer input; extracted management and loan facts are limited to explicit statements.
+- Gemini vision OCR requires an external API key and network access, and its transcription still requires human
+  review; without the key, image-only PDFs retain the `needs OCR` status.
 - Only the supported export families are extracted; an unrelated schema needs a new extractor or mapping.
 - Two same-period sources of identical completeness have no tie-breaker; the reviewer excludes one.
 - Tables that do not fit a page are refused rather than continued on an extra page.
@@ -523,14 +556,12 @@ The short list; `STATUS.md` has the full one with the flaws that were found and 
 
 ## Next steps
 
-1. OCR for scanned PDFs behind the same reader interface.
-2. A loan-document extractor (term sheet PDF) feeding the financing page.
-3. Continuation pages for long tables, with renumbered footers.
-4. A measured chart legend and a per-page raster comparison against golden images.
-5. Per-sheet document type overrides for multi-sheet workbooks.
-6. A side-by-side source viewer on the review screen.
-7. A mapping editor in the UI for `pl_mapping.toml` and `capex_mapping.toml`.
-8. A recorded live-provider run with a replay fixture.
+1. Continuation pages for long tables, with renumbered footers.
+2. A measured chart legend and a per-page raster comparison against golden images.
+3. Per-sheet document type overrides for multi-sheet workbooks.
+4. A side-by-side source viewer on the review screen, including OCR page images and bounding boxes.
+5. A mapping editor in the UI for `pl_mapping.toml` and `capex_mapping.toml`.
+6. A recorded live-provider run with a replay fixture.
 
 ## Licences and data
 

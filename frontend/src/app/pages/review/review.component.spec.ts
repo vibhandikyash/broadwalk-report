@@ -141,6 +141,40 @@ describe('ReviewComponent', () => {
     expect(document.activeElement).toBe(el.querySelector('#section-heading'));
   });
 
+  it('states under every field where its value came from, and flags OCR in a table cell', async () => {
+    const fixture = setup({});
+    const el: HTMLElement = fixture.nativeElement;
+    const line = el.querySelector('.field .prov') as HTMLElement;
+    expect(line.textContent).toContain('Extracted');
+    expect(line.textContent).toContain("rr.xlsx · sheet 'RR' summary block");
+    // a missing value explains itself rather than showing a bare dash
+    fixture.componentInstance.select('financing');
+    fixture.detectChanges();
+    const missing = el.querySelector('.field .prov') as HTMLElement;
+    expect(missing.textContent).toContain('Not found');
+    expect(missing.textContent).toContain('no such file was uploaded');
+    expect(missing.querySelector('.prov-dot.prov-missing')).not.toBeNull();
+    // table cells get the compact tag with the full sentence as its tooltip
+    fixture.componentInstance.select('underwriting');
+    fixture.detectChanges();
+    const tag = el.querySelector('table.cells .prov-tag') as HTMLElement;
+    expect(tag.textContent).toContain('src');
+    expect(tag.getAttribute('title')).toContain('Extracted');
+  });
+
+  it('summarises the origins and names the files that needed OCR', () => {
+    const fixture = setup({});
+    const panel = fixture.nativeElement.querySelector('details.prov-panel') as HTMLElement;
+    expect(panel.querySelector('.counts')!.textContent).toContain('via OCR');
+    const items = panel.querySelectorAll('li');
+    expect(items.length).toBe(2);
+    expect(items[1].textContent).toContain('scan.pdf');
+    expect(items[1].querySelector('.prov-tag.prov-ocr')).not.toBeNull();
+    expect(items[1].textContent).toContain('on page 1');
+    expect(items[1].textContent).toContain('94% confidence');
+    expect(items[0].querySelector('.prov-tag.prov-ocr')).toBeNull();
+  });
+
   it('explains an unreachable backend', () => {
     const fixture = setup({ reportData: () => throwError(() => backendDown), getProject: () => throwError(() => backendDown) });
     expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('not reachable');

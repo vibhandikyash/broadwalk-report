@@ -183,15 +183,23 @@ def _period(sel: Selection) -> tuple[Period, list[dict]]:
     return Period(dt.date(today.year, (q - 1) * 3 + 1, 1), calc.quarter_end(today.year, q)), [note]
 
 
+def _source_entry(role: str, src: Src) -> dict:
+    prov = src.provenance or {}
+    return {"role": role, "doc_type": src.doc_type, "filename": src.filename, "locator": src.locator,
+            "method": prov.get("method") or "native", "ocr_pages": prov.get("ocr_pages") or [],
+            "ocr_confidence": prov.get("ocr_confidence")}
+
+
 def _sources_used(sel: Selection) -> list[dict]:
     out = []
-    for key in ("budget", "balance_sheet", "lto", "listings", "costar_excel", "costar_pdf", "rent_chart", "capital_calls", "distributions"):
+    for key in ("budget", "balance_sheet", "lto", "listings", "costar_excel", "costar_pdf", "rent_chart", "capital_calls", "distributions",
+                "management_memo", "capital_projects", "underwriting_plan"):
         src = getattr(sel, key)
         if src:
-            out.append({"role": key, "doc_type": src.doc_type, "filename": src.filename, "locator": src.locator})
-    for key in ("rent_rolls", "schedules", "comps"):
+            out.append(_source_entry(key, src))
+    for key in ("rent_rolls", "schedules", "comps", "loan_summaries"):
         for src in getattr(sel, key):
-            out.append({"role": key, "doc_type": src.doc_type, "filename": src.filename, "locator": src.locator})
+            out.append(_source_entry(key, src))
     return out
 
 
@@ -204,10 +212,14 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     sch = _at_or_before(sel.schedules, p.end)
     named = [x for x in (rr, sch, *sel.rent_rolls, *sel.schedules) if x and x.data.get("property_name")]
     name_src = named[0] if named else None
-    name = name_src.data["property_name"] if name_src else (sel.lto.data.get("property_name") if sel.lto else None)
+    memo = sel.management_memo
+    name = (name_src.data["property_name"] if name_src else
+            (sel.lto.data.get("property_name") if sel.lto else None) or
+            (memo.data.get("property_name") if memo else None) or sel.property_name)
     ctx.property_name = name
     f["name"] = F("Property name", "text", name,
-                  name_src.source("title") if name_src else (sel.lto.source("first row") if sel.lto and name else None))
+                  name_src.source("title") if name_src else
+                  (sel.lto.source("first row") if sel.lto and name else memo.source("page 1") if memo and name else None))
     for ex in sel.excluded:
         f["name"].alternatives.append(Alternative(value=ex.data.get("property_name"), source=Source(**ex.source()), note="set aside: different property"))
     units_src = rr or (sel.rent_rolls[-1] if sel.rent_rolls else None)
@@ -216,7 +228,8 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     elif sch and (sch.data.get("total") or {}).get("units"):
         units, units_source = sch.data["total"]["units"], sch.source("grand total")
     else:
-        units, units_source = None, None
+        units = memo.data.get("units") if memo else None
+        units_source = memo.source("page 1", "property facts") if units is not None else None
     ctx.units = units
     f["units"] = F("Units", "integer", units, units_source)
     sale = _subject_sale(sel, name)
@@ -230,16 +243,19 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     if meta and meta.get("units"):
         unit_alts.append((meta["units"], meta["_src"], "HelloData comp summary"))
     _conflict(ctx, f["units"], "property.fields.units", "Unit count", unit_alts, tolerance=0)
-    yb = sale["year_built"] if sale else (meta.get("year_built") if meta else None)
-    f["year_built"] = F("Year built", "integer", yb, sale_src if sale else (meta["_src"] if meta and yb else None))
+    yb = sale["year_built"] if sale else (meta.get("year_built") if meta else None) or (memo.data.get("year_built") if memo else None)
+    f["year_built"] = F("Year built", "integer", yb, sale_src if sale else (meta["_src"] if meta and meta.get("year_built") else memo.source("page 1") if memo and yb else None))
     if sale and meta and meta.get("year_built"):
         _conflict(ctx, f["year_built"], "property.fields.year_built", "Year built", [(meta["year_built"], meta["_src"], "HelloData comp summary")], tolerance=0)
-    f["acquired_date"] = F("Acquisition date", "date", sale["sale_date"] if sale else None, sale_src)
+    acquired = sale["sale_date"] if sale else (memo.data.get("acquired_date") if memo else None)
+    f["acquired_date"] = F("Acquisition date", "date", acquired, sale_src if sale else (memo.source("page 1") if acquired else None))
     addr, addr_src = (meta["address"], meta["_src"]) if meta and meta.get("address") else (None, None)
     if addr is None:
         _, prop = _subject_listing(sel, name)
         if prop and prop.get("address"):
             addr, addr_src = prop["address"], sel.listings.source(f"row {prop['first_row'] + 1}", prop["address"])
+    if addr is None and memo and memo.data.get("address"):
+        addr, addr_src = memo.data["address"], memo.source("page 1", "property facts")
     street, city, state, zip_ = _split_address(addr)
     f["address"] = F("Street address", "text", street, addr_src)
     city_state, cs_src = (f"{city}, {state}" if city and state else None), addr_src
@@ -256,11 +272,15 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
                          sch.source("grand total") if sqft else (meta["_src"] if meta and meta.get("avg_sqft") else None))
     f["prepared_by"] = F("Prepared by", "text", cp.data.get("licensed_to") if cp else None,
                          cp.source("footer", "Licensed to") if cp and cp.data.get("licensed_to") else None)
-    f["building_class"] = M("Building class", "text")
-    f["site_acres"] = M("Site size (acres)", "number")
+    building_class = memo.data.get("building_class") if memo else None
+    site_acres = memo.data.get("site_acres") if memo else None
+    f["building_class"] = F("Building class", "text", building_class, memo.source("page 1") if building_class else None)
+    f["site_acres"] = F("Site size (acres)", "number", site_acres, memo.source("page 1") if site_acres else None)
     f["density"] = D("Density (units per acre)", "number")
-    f["hold_period_years"] = M("Hold period (years)", "integer")
-    f["description"] = M("Property description", "longtext")
+    hold = memo.data.get("hold_period_years") if memo else None
+    f["hold_period_years"] = F("Hold period (years)", "integer", hold, memo.source("page 1", "approved hold") if hold else None)
+    f["description"] = F("Property description", "longtext", memo.data.get("property_description") if memo else None,
+                         memo.source("page 1") if memo else None)
     f["quarter_label"] = D("Quarter", "text")
     f["period_label"] = D("Period", "text")
     f["period_end"] = D("Period end", "date")
@@ -293,25 +313,28 @@ def _in_place_rent(ctx: Ctx, data: ReportData) -> Section:
     def groups(src: Src | None) -> dict[str, list[dict]]:
         g: dict[str, list[dict]] = {}
         for u in (src.data.get("unit_types", []) if src else []):
-            key = f"{u['bedrooms']}br" if u.get("bedrooms") is not None else "other"
+            key = f"{u['bedrooms']}br" if u.get("bedrooms") is not None else f"plan-{slug(u.get('code') or u['label'])}"
             g.setdefault(key, []).append(u)
         return g
 
     cur_groups, prior_groups = groups(cur), groups(prior)
-    for key in sorted(cur_groups, key=lambda k: (k == "other", int(k[:-2]) if k != "other" else 99)):
+    def group_order(key: str) -> tuple[int, int | str]:
+        return (0, int(key[:-2])) if key.endswith("br") and key[:-2].isdigit() else (1, key)
+
+    for key in sorted(cur_groups, key=group_order):
         us = cur_groups[key]
-        label = _group_label(us)
+        label = _group_label(us) if us[0].get("bedrooms") is not None else (us[0].get("code") or us[0]["label"])
         row = t.new_row(key, label=label)
         src = cur.source(f"rows {', '.join(str(u['row'] + 1) for u in us)}", ", ".join(u.get("code") or u["label"] for u in us))
         row["type"] = F("Type", "text", label, src)
         row["units"] = F("Units", "integer", calc.sum_or_none(u.get("units") for u in us), src)
         row["avg_sf"] = F("Avg SF", "number", calc.wavg((u.get("sqft"), u.get("units")) for u in us), src)
         row["current_rent"] = F(f"{p.quarter_label} in-place rent", "money",
-                                calc.wavg((u.get("avg_resident_rent"), u.get("occupied_units")) for u in us), src,
-                                note="Average resident rent weighted by occupied units")
+                                calc.wavg((u.get("avg_resident_rent"), u.get("occupied_units") or u.get("units")) for u in us), src,
+                                note="Average resident rent weighted by occupied units when supplied, otherwise total units")
         pus = prior_groups.get(key, [])
         row["prior_rent"] = F(f"{p.prior_quarter_label} in-place rent", "money",
-                              calc.wavg((u.get("avg_resident_rent"), u.get("occupied_units")) for u in pus) if pus else None,
+                              calc.wavg((u.get("avg_resident_rent"), u.get("occupied_units") or u.get("units")) for u in pus) if pus else None,
                               prior.source(f"rows {', '.join(str(u['row'] + 1) for u in pus)}") if pus else None,
                               note=None if pus else "No prior-quarter Market Rent Schedule found for this floor plan")
     t.totals["type"] = F("Type", "text", "Total / Weighted", status="derived")
@@ -353,9 +376,14 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
             hit = match_lines(lines, [pat])
             if hit:
                 used.append(hit[0])
-        if used:
-            price = sum(h["values"].get("current") or 0 for h in used)
-    src = bs.source(f"rows {', '.join(str(h['row'] + 1) for h in used)}", " + ".join(h["label"] for h in used)) if used else None
+    if used:
+        price = sum(h["values"].get("current") or 0 for h in used)
+    memo = sel.management_memo
+    if price is None and memo and memo.data.get("purchase_price") is not None:
+        price = memo.data["purchase_price"]
+        used = []
+    src = (bs.source(f"rows {', '.join(str(h['row'] + 1) for h in used)}", " + ".join(h["label"] for h in used)) if used else
+           memo.source("page 1", "acquisition and plan") if memo and price is not None else None)
     f["purchase_price"] = F("Purchase price", "money", price, src, note="Land + Building + FF&E at cost from the balance sheet" if used else None)
     sale = _subject_sale(sel, ctx.property_name)
     if sale and sale.get("price"):
@@ -369,8 +397,10 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
                                 "The balance sheet value is used; choose the alternative to show the contract price.", "capital.fields.purchase_price")
     f["price_per_unit"] = D("Price per unit", "money")
     eq = match_lines(lines, [r"owner'?s? contributions?", r"contributed capital", r"partners?'? contributions?", r"capital contributions?", r"members?'? contributions?"])
-    f["equity_invested"] = F("Equity invested (ITD)", "money", eq[0]["values"].get("current") if eq else None,
-                             bs.source(f"row {eq[0]['row'] + 1}", eq[0]["label"]) if eq else None)
+    equity = eq[0]["values"].get("current") if eq else (memo.data.get("equity_invested") if memo else None)
+    f["equity_invested"] = F("Equity invested (ITD)", "money", equity,
+                             bs.source(f"row {eq[0]['row'] + 1}", eq[0]["label"]) if eq else
+                             (memo.source("page 1", "contributed equity") if equity is not None else None))
     cc = sel.capital_calls
     if cc:
         in_q = [c for c in cc.data.get("calls", []) if c.get("due_date") and p.start.isoformat() <= c["due_date"] <= p.end.isoformat()]
@@ -404,7 +434,9 @@ def _capital(ctx: Ctx, data: ReportData) -> Section:
         f["quarter_distributions"] = M(f"{p.quarter_label} distributions", "money")
     f["contributions_note"] = D("Contributions caption", "text")
     f["distributions_note"] = D("Distributions caption", "text")
-    f["business_plan_summary"] = M("Business plan summary", "longtext")
+    memo = sel.management_memo
+    f["business_plan_summary"] = F("Business plan summary", "longtext", memo.data.get("business_plan_summary") if memo else None,
+                                   memo.source("page 1") if memo else None)
     if not bs:
         ctx.note("warning", "No balance sheet found; purchase price, equity and loan principal are missing", "capital")
     return s
@@ -434,10 +466,23 @@ def _underwriting(ctx: Ctx, data: ReportData) -> Section:
     for ck in ("original_budget", "spent_to_date", "pct_spent"):
         t.totals[ck] = D(t.columns[[c.key for c in t.columns].index(ck)].label, "percent" if ck == "pct_spent" else "money")
     t.totals["category"] = F("Category", "text", "Total Underwritten Capital", status="derived")
+    plan = ctx.sel.underwriting_plan
+    if plan:
+        for item in plan.data.get("rows", []):
+            key = slug(f"{item.get('program')} {item['category']}")
+            row = t.new_row(key, label=item["category"])
+            src = plan.source(f"row {item['row'] + 1}", item["category"])
+            row["category"] = F("Category", "text", item["category"], src)
+            program = norm(item.get("program"))
+            row["section"] = F("Section", "text", "recurring" if "recurring" in program else "value_add", src)
+            row["original_budget"] = F("Original budget", "money", item.get("original_budget"), src)
+            row["spent_to_date"] = F("Spent to date", "money", item.get("spent_to_date"), src)
+            row["pct_spent"] = D("% spent", "percent")
     s.tables["budget"] = t
     s.fields["spent_period_note"] = M("Spent-to-date period note", "text", note="e.g. 'Spent to Date reflects the period 08/2025 - 06/2026'")
     s.fields["business_plan_title"] = M("Business plan headline", "text")
-    ctx.note("info", "The original underwriting budget is not in any source file; add rows on the review screen", "underwriting")
+    if not plan:
+        ctx.note("info", "The original underwriting budget is not in any source file; add rows on the review screen", "underwriting")
     return s
 
 
@@ -450,12 +495,13 @@ def _computed_trend(ctx: Ctx) -> list[dict]:
 
     if sel.lto:
         for r in sel.lto.data.get("sections", {}).get("move_ins", {}).get("rows", []):
-            if not (r.get("start") and r.get("sqft") and r.get("lease_rent") is not None):
+            if not (r.get("start") and r.get("sqft") and r.get("lease_rent") is not None
+                    and r.get("effective_rent") is not None and (r.get("term") or 0) >= 12):
                 continue
             m = slot(r["start"][:7])
             m["sn"] += 1
             m["sr"] += r["lease_rent"]
-            m["se"] += r["effective_rent"] if r.get("effective_rent") is not None else r["lease_rent"]
+            m["se"] += r["effective_rent"]
             m["ss"] += r["sqft"]
     if sel.listings:
         subject, _ = _subject_listing(sel, ctx.property_name)
@@ -469,8 +515,7 @@ def _computed_trend(ctx: Ctx) -> list[dict]:
                 m["ce"] += agg["effective_sum"]
                 m["cs"] += agg["sqft_sum"]
     end = ctx.period.end
-    first = dt.date(end.year - 1, end.month, 1) + dt.timedelta(days=32)  # twelve months ending at the period end
-    lo, hi = first.strftime("%Y-%m"), end.strftime("%Y-%m")
+    lo, hi = ctx.period.start.strftime("%Y-%m"), end.strftime("%Y-%m")
     return [{"month": ym, "subject_n": m["sn"] or None, "subject_gross_psf": calc.ratio(m["sr"], m["ss"]),
              "subject_eff_psf": calc.ratio(m["se"], m["ss"]), "comp_n": m["cn"] or None,
              "comp_gross_psf": calc.ratio(m["cr"], m["cs"]), "comp_eff_psf": calc.ratio(m["ce"], m["cs"])}
@@ -531,8 +576,16 @@ def _financing(ctx: Ctx, data: ReportData) -> Section:
     bs = sel.balance_sheet
     lines = bs.data["lines"] if bs else []
     loan = match_lines(lines, [r"^total mortgage payable", r"mortgage payable", r"notes? payable", r"loan payable", r"^total long term liabilities"], prefer_total=True)
-    f["loan_amount"] = F("Loan principal", "money", loan[0]["values"].get("current") if loan else None,
-                         bs.source(f"row {loan[0]['row'] + 1}", loan[0]["label"]) if loan else None)
+    loan_doc = sel.loan_summaries[0] if sel.loan_summaries else None
+    loan_value = loan_doc.data.get("loan_amount") if loan_doc else (loan[0]["values"].get("current") if loan else None)
+    loan_source = loan_doc.source("page 1", "principal") if loan_doc else (bs.source(f"row {loan[0]['row'] + 1}", loan[0]["label"]) if loan else None)
+    f["loan_amount"] = F("Loan principal", "money", loan_value, loan_source)
+    balance_candidates = []
+    for source in sel.balance_sheets:
+        matches = match_lines(source.data.get("lines", []), [r"mortgage payable", r"loan payable"], prefer_total=True)
+        if matches:
+            balance_candidates.append((matches[0]["values"].get("current"), source.source(f"row {matches[0]['row'] + 1}"), "balance sheet"))
+    _conflict(ctx, f["loan_amount"], "financing.fields.loan_amount", "Loan principal", balance_candidates, tolerance=0)
     interest, i_src, i_note = None, None, None
     acc = match_lines(lines, [r"accrued interest"])
     if acc and acc[0]["values"].get("current"):
@@ -543,6 +596,8 @@ def _financing(ctx: Ctx, data: ReportData) -> Section:
         if ptd is not None:
             interest, i_src = ptd / p.months, sel.budget.source(f"row {il[0]['row'] + 1}", il[0]["label"])
             i_note = f"PTD debt service / {p.months} months (approximate)"
+    if loan_doc and loan_doc.data.get("interest_monthly") is not None:
+        interest, i_src, i_note = loan_doc.data["interest_monthly"], loan_doc.source("page 1"), "Loan servicing summary"
     f["interest_monthly"] = F("Monthly interest (IO payment)", "money", interest, i_src, note=i_note)
     f["implied_rate"] = D("Implied interest rate", "percent", note="interest_monthly x 12 / loan_amount")
     reserve = match_lines(lines, [r"capital improvements? escrow", r"replacement reserve", r"escrow / reserve"])
@@ -550,6 +605,7 @@ def _financing(ctx: Ctx, data: ReportData) -> Section:
                              bs.source(f"row {reserve[0]['row'] + 1}", reserve[0]["label"]) if reserve else None)
     ent = sel.capital_calls or sel.distributions
     f["borrower"] = F("Borrower", "text", ent.data.get("entity") if ent else None, ent.source("entity header") if ent and ent.data.get("entity") else None)
+    loan_key_map = {"io_end_date": "io_through", "amort_years": "amortization_months", "pi_payment": "pi_monthly"}
     for key, label, kind in (
         ("lender", "Lender", "text"), ("servicer", "Servicer", "text"), ("rate", "Interest rate", "percent"), ("rate_type", "Rate type", "text"),
         ("effective_date", "Effective date", "date"), ("maturity_date", "Maturity date", "date"), ("term_months", "Loan term (months)", "integer"),
@@ -558,7 +614,12 @@ def _financing(ctx: Ctx, data: ReportData) -> Section:
         ("yield_maintenance_through", "Yield maintenance through", "date"), ("open_prepay_months", "Open prepayment window (months)", "integer"),
         ("replacement_reserve_monthly", "Replacement reserve (monthly)", "money"), ("repairs_escrow", "Repairs escrow (one-time)", "money"),
     ):
-        f[key] = M(label, kind, note="Loan documents were not supplied; enter manually")
+        source_key = loan_key_map.get(key, key)
+        value = loan_doc.data.get(source_key) if loan_doc else None
+        if key == "amort_years" and value is not None:
+            value = value / 12
+        f[key] = F(label, kind, value, loan_doc.source("page 1") if value is not None else None,
+                   note=None if value is not None else "Not found in supplied loan documents; enter manually")
     f["replacement_reserve_annual"] = D("Replacement reserve (annual)", "money")
     f["narrative"] = M("Financing commentary", "longtext")
     return s
@@ -640,7 +701,17 @@ def _capex(ctx: Ctx, data: ReportData) -> Section:
     t = Table(title="Capital projects", columns=cols)
     labels = {c.key: c.label for c in cols}
     b = sel.budget
-    if b:
+    project_source = sel.capital_projects
+    if project_source:
+        for line in project_source.data.get("lines", []):
+            key = slug(line["label"])
+            row = t.new_row(key, label=line["label"])
+            src = project_source.source(f"row {line['row'] + 1}", line["label"])
+            t.row_meta[key].update({"expense": True})
+            for ck in VALUE_COLS:
+                value = line["values"].get(ck)
+                row[ck] = F(labels[ck], "money", value, src if value is not None else None)
+    elif b:
         lines = []
         for ln in b.data["lines"]:
             if ln["is_total"] or ln["unlabeled"] or not section_matches(ln["section"], sec["include"], sec["exclude"]):
@@ -744,13 +815,17 @@ def _submarket(ctx: Ctx, data: ReportData) -> Section:  # noqa: C901
         row["units"] = F("Units", "integer", units[0], units[1], note=None if units[0] is not None else "Unit count is not in the supplied files; enter it")
         built = next(((c["year_built"], _summary_src(c, src)) for c, src in summaries if c.get("year_built") is not None), (None, None))
         row["vintage"] = F("Vintage", "integer", built[0], built[1], note=None if built[0] is not None else "Year built is not in the supplied files; enter it")
-        if listing and listing.get("asking_n"):
+        if sheet and sheet[0].get("asking_rent") is not None:
+            row["asking_rent"] = F("Asking rent", "money", sheet[0]["asking_rent"], _summary_src(*sheet), note="Asking rent from the comp summary")
+        elif listing and listing.get("asking_n"):
             row["asking_rent"] = F("Asking rent", "money", calc.ratio(listing["asking_sum"], listing["asking_n"]), li_src, note="Mean asking rent across all listing rows")
         elif pdf and pdf[0].get("avg_rent") is not None:
             row["asking_rent"] = F("Asking rent", "money", pdf[0]["avg_rent"], _summary_src(*pdf), note="Average rent from the comp summary")
         else:
             row["asking_rent"] = F("Asking rent", "money", None, note="No rent data for this property in the supplied files; enter it")
-        if listing and listing.get("effective_n"):
+        if sheet and sheet[0].get("effective_rent") is not None:
+            row["effective_rent"] = F("Effective rent (NER)", "money", sheet[0]["effective_rent"], _summary_src(*sheet), note="Effective rent from the comp summary")
+        elif listing and listing.get("effective_n"):
             row["effective_rent"] = F("Effective rent (NER)", "money", calc.ratio(listing["effective_sum"], listing["effective_n"]), li_src, note="Mean effective rent across all listing rows")
         elif pdf and pdf[0].get("ner") is not None:
             row["effective_rent"] = F("Effective rent (NER)", "money", pdf[0]["ner"], _summary_src(*pdf), note="Net effective rent from the comp summary")
@@ -864,6 +939,7 @@ def _occupancy(ctx: Ctx, data: ReportData) -> Section:
             C("floor_plan", "Floor plan", "text"), C("sqft", "SF", "integer"), C("count", "Count", "integer"), C("avg_prior", "Avg prior rent"),
             C("avg_current", "Avg current rent"), C("lto", "$ trade-out", derived=True), C("lto_pct", "% trade-out", "percent", derived=True)])
         rows = lto.data.get("sections", {}).get(skey, {}).get("rows", []) if lto else []
+        rows = [row for row in rows if not row.get("start") or p.start.isoformat() <= row["start"] <= p.end.isoformat()]
         groups: dict[str, list[dict]] = {}
         for r in rows:
             groups.setdefault(r["unit_type"], []).append(r)
@@ -914,14 +990,15 @@ def _status(ctx: Ctx, data: ReportData) -> Section:
     f["bad_debt_writeoff"] = F(f"{p.quarter_label} bad debt write-offs", "money", wo[0]["values"].get("ptd_actual") if wo else None,
                                b.source(f"row {wo[0]['row'] + 1}", wo[0]["label"]) if wo else None)
     f["next_quarter_label"] = D("Next quarter", "text")
-    for i in (1, 2, 3):
-        f[f"status{i}_title"] = M(f"Status item {i}: title", "text")
-        f[f"status{i}_subtitle"] = M(f"Status item {i}: headline", "text")
-        f[f"status{i}_body"] = M(f"Status item {i}: body", "longtext")
-    for i in (1, 2, 3):
-        f[f"goal{i}_title"] = M(f"Goal {i}: title", "text")
-        f[f"goal{i}_subtitle"] = M(f"Goal {i}: headline", "text")
-        f[f"goal{i}_body"] = M(f"Goal {i}: body", "longtext")
+    memo = sel.management_memo
+    for prefix, label, items in (("status", "Status item", memo.data.get("status_items", []) if memo else []),
+                                 ("goal", "Goal", memo.data.get("goal_items", []) if memo else [])):
+        for i in (1, 2, 3):
+            item = items[i - 1] if i <= len(items) else {}
+            src = memo.source("page 1", item.get("body")) if memo and item else None
+            f[f"{prefix}{i}_title"] = F(f"{label} {i}: title", "text", item.get("title"), src)
+            f[f"{prefix}{i}_subtitle"] = F(f"{label} {i}: headline", "text", item.get("subtitle"), src)
+            f[f"{prefix}{i}_body"] = F(f"{label} {i}: body", "longtext", item.get("body"), src)
     return s
 
 

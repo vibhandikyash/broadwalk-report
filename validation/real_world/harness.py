@@ -444,14 +444,20 @@ def _check_pdf(manifest, classification, pdf_path: Path, out: Path, after: dict,
     texts = pdf_checks.page_texts(pdf_path)
     pdf_text = "\n".join(texts)
     report_expectation = manifest.get("report", {})
+    # Each fixed page is followed by its data-sources sheet(s), so a physical index is not a report page
+    # number: page_count still counts the fixed pages and manifest page numbers still address those.
+    body = pdf_checks.report_page_indices(texts)
+    report_texts = [texts[i] for i in body]
     expected_pages = report_expectation.get("page_count", 10)
-    if len(texts) != expected_pages:
-        failures.append(f"report page count: expected {expected_pages}, observed {len(texts)}")
+    if len(report_texts) != expected_pages:
+        failures.append(f"report page count: expected {expected_pages}, observed {len(report_texts)}")
+    if len(texts) == len(report_texts):
+        failures.append("the report carries no data-sources sheets")
     for fragment in report_expectation.get("text_contains", []):
         if fragment.casefold() not in pdf_text.casefold():
             failures.append(f"report PDF is missing text: {fragment!r}")
     for page_no, fragments in (report_expectation.get("pages") or {}).items():
-        page_text = texts[int(page_no) - 1] if int(page_no) <= len(texts) else ""
+        page_text = report_texts[int(page_no) - 1] if int(page_no) <= len(report_texts) else ""
         for fragment in fragments:
             if fragment.casefold() not in page_text.casefold():
                 failures.append(f"page {page_no} is missing text: {fragment!r}")
@@ -462,7 +468,7 @@ def _check_pdf(manifest, classification, pdf_path: Path, out: Path, after: dict,
         if forbidden.casefold() in corpus.casefold():
             failures.append(f"effective report data contains forbidden identity: {forbidden!r}")
     if classification == "complete":
-        failures.extend(pdf_checks.heading_problems(texts))
+        failures.extend(pdf_checks.heading_problems(report_texts))
         if "DRAFT" in pdf_text:
             failures.append("a complete report must not carry the draft marker")
         name, quarter = manifest.get("report_identity", (None, None)) if isinstance(manifest.get("report_identity"), list) else (None, None)
@@ -474,13 +480,13 @@ def _check_pdf(manifest, classification, pdf_path: Path, out: Path, after: dict,
         failures.append("a structural (incomplete) report must carry the draft marker")
     images = pdf_checks.image_counts(pdf_path)
     if has_cover:
-        if images[0] < 1 or images[1] < 1:
-            failures.append(f"uploaded cover image missing from page 1 or 2 (images per page {images[:2]})")
-    elif images[0] != 0:
+        if images[body[0]] < 1 or images[body[1]] < 1:
+            failures.append(f"uploaded cover image missing from report page 1 or 2 (images per page {images[:2]})")
+    elif images[body[0]] != 0:
         failures.append("a scenario without an image should render the placeholder, not an embedded image")
-    failures.extend(pdf_checks.structural_problems(pdf_path, expected_pages))
+    failures.extend(pdf_checks.structural_problems(pdf_path, len(texts)))
     pages = pdf_checks.render_pages(pdf_path, out / "pages")
-    result["report"].update({"page_count": len(texts), "pdf_path": str(pdf_path), "images_per_page": images, "page_images": [str(p) for p in pages],
+    result["report"].update({"page_count": len(report_texts), "total_pdf_pages": len(texts), "pdf_path": str(pdf_path), "images_per_page": images, "page_images": [str(p) for p in pages],
                              "pdf_text_excerpt": pdf_text[:2000]})
 
 

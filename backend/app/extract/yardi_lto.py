@@ -11,6 +11,7 @@ import re
 from ..classify.classifier import Part
 from ..readers.document import norm, to_date, to_number
 from .base import Extraction, ExtractionError
+from .yardi_common import find_property
 
 SECTION_TITLES = {"renewals": r"lease renewals?", "move_ins": r"move[- ]?ins?", "transfers": r"unit transfers?"}
 RANGE_RE = re.compile(r"between\s+(\d{4}-\d{2}-\d{2})\s+and\s+(\d{4}-\d{2}-\d{2})", re.I)
@@ -65,6 +66,44 @@ def _section_title(sh, hrow: int) -> tuple[str | None, dict | None]:
 def extract(part: Part) -> Extraction:
     sh = part.sheet
     assert sh is not None
+    generic = sh.header_block(["lease id", "event type", "lease rent"], max_rows=1, search_rows=120)
+    if generic is not None:
+        hrow, _, headers = generic
+        patterns = {
+            "lease_id": r"^lease id$", "property_name": r"^property name$", "event_type": r"^event type$",
+            "unit": r"^unit$", "unit_type": r"^unit type$", "resident_name": r"resident name",
+            "start": r"lease start", "prev_lease_rent": r"previous lease rent", "lease_rent": r"^lease rent$",
+            "effective_rent": r"^effective rent$", "sqft": r"sq ?ft", "term": r"lease term",
+        }
+        columns = {key: next((i for i, header in enumerate(headers) if re.search(rx, header)), None)
+                   for key, rx in patterns.items()}
+        sections = {"move_ins": {"rows": []}, "renewals": {"rows": []}, "transfers": {"rows": []}}
+        property_name = None
+        for r in range(hrow + 1, sh.nrows):
+            event = norm(sh.text(r, columns["event_type"])) if columns["event_type"] is not None else ""
+            section = "move_ins" if event in ("new", "move in", "move-in") else "renewals" if event.startswith("renew") else "transfers" if event.startswith("transfer") else None
+            if section is None:
+                continue
+            def text_value(key: str):
+                column = columns[key]
+                return sh.text(r, column) if column is not None else None
+            def number_value(key: str):
+                column = columns[key]
+                return to_number(sh.cell(r, column)) if column is not None else None
+            start = to_date(sh.cell(r, columns["start"])) if columns["start"] is not None else None
+            property_name = property_name or text_value("property_name")
+            sections[section]["rows"].append({
+                "lease_id": text_value("lease_id"), "unit": text_value("unit"), "unit_type": text_value("unit_type"),
+                "resident_name": text_value("resident_name"), "start": start.isoformat() if start else None,
+                "prev_lease_rent": number_value("prev_lease_rent"), "lease_rent": number_value("lease_rent"),
+                "effective_rent": number_value("effective_rent"), "sqft": number_value("sqft"),
+                "term": number_value("term"), "row": r,
+            })
+        period_match = re.search(r"period\s*=\s*(\d{4}-\d{2}-\d{2})\s*-\s*(\d{4}-\d{2}-\d{2})", sh.head_text(hrow), re.I)
+        period = {"start": period_match.group(1), "end": period_match.group(2)} if period_match else None
+        return Extraction(doc_type=part.doc_type, locator=part.locator,
+                          data={"period": period, "property_name": property_name,
+                                "property_ref": find_property(sh, max_row=hrow)[1], "sections": sections})
     header_rows = [r for r in range(sh.nrows)
                    if "resident name" in norm(sh.row_text(r)) and "lease rent" in norm(sh.row_text(r))]
     if not header_rows:

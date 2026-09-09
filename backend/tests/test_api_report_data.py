@@ -31,6 +31,13 @@ def test_report_data_read_patch_rows_and_rebuild(tmp_path):
         units = next(f for f in prop["fields"] if f["key"] == "units")
         assert units["effective"] == 338 and units["status"] == "extracted" and units["source"]["locator"].startswith("sheet 'RR'")
         assert ui["summary"]["missing"] > 0 and ui["built_at"]
+        # every field carries the answer to "where did this come from", and the project summarises it
+        assert units["provenance"]["origin"] == "extracted" and units["provenance"]["ocr"] is False
+        assert "all.xlsx" in units["provenance"]["detail"] and units["provenance"]["reason"] is None
+        lender = next(f for s in ui["sections"] if s["key"] == "financing" for f in s["fields"] if f["key"] == "lender")
+        assert lender["provenance"]["origin"] == "missing" and lender["provenance"]["reason"]
+        assert sum(ui["provenance"]["counts"].values()) > 0 and ui["provenance"]["files"]
+        assert all(f["method"] == "native" for f in ui["provenance"]["files"])
         fin = next(t for s in ui["sections"] if s["key"] == "financials" for t in s["tables"])
         noi = next(r for r in fin["rows"] if r["key"] == "noi")
         assert next(c for c in noi["cells"] if c["key"] == "ptd_var")["readonly"] is True

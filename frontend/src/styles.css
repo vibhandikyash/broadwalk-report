@@ -65,3 +65,18 @@ button.issue:disabled { cursor: default; opacity: 1; }
 }
 .ok { color: var(--green); }
 .completeness { margin-top: 10px; font-size: 12px; } .completeness .pg { color: var(--mute); font-size: 11px; margin-right: 4px; }
+/* Provenance: where a value came from, shown under every field and as a tag inside table cells. */
+.prov { display: flex; align-items: baseline; gap: 5px; margin-top: 4px; font-size: 11px; line-height: 1.35; }
+.prov .prov-label { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.prov .prov-detail { color: var(--mute); overflow-wrap: anywhere; }
+.prov-dot { flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mute); vertical-align: middle; }
+.prov > .prov-dot { align-self: flex-start; margin-top: 4px; }  /* stay on the first line when the detail wraps */
+.prov-dot.prov-extracted { background: var(--green); } .prov-dot.prov-computed { background: var(--navy); } .prov-dot.prov-manual { background: #1d4ed8; }
+.prov-dot.prov-ai_draft { background: #6b21a8; } .prov-dot.prov-missing { background: var(--red); } .prov-dot.prov-ocr { background: var(--amber); }
+.prov-tag { display: inline-block; font-size: 10px; line-height: 1.5; padding: 0 5px; border-radius: 3px; background: var(--wash); color: var(--mute); white-space: nowrap; cursor: help; }
+.prov-tag.prov-extracted { background: #e6f0ea; color: var(--green); } .prov-tag.prov-ocr { background: #fff4e0; color: var(--amber); font-weight: 600; }
+.prov-tag.prov-computed { background: #eef1f6; color: var(--navy); } .prov-tag.prov-manual { background: #e9f1fb; color: #1d4ed8; }
+.prov-tag.prov-ai_draft { background: #f3e8ff; color: #6b21a8; } .prov-tag.prov-missing { background: #fdecea; color: var(--red); }
+.grid.cells .prov-tag { margin-top: 2px; }
+.prov-panel { margin-top: 10px; font-size: 12px; } .prov-panel li { padding: 3px 0; border-bottom: 1px solid var(--line); }
+.prov-panel .counts { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 4px 0 8px; } .prov-panel .counts span { white-space: nowrap; }

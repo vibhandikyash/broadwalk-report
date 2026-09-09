@@ -62,4 +62,6 @@ def test_select_prefers_ytd_budget_single_part_listings_and_notes_alternatives()
     sel = select(srcs)
     assert sel.budget.file_id == "b" and sel.listings.file_id == "d" and sel.costar_excel is None
     assert len(sel.notes) == 2 and all(n["severity"] == "warning" for n in sel.notes)
-    assert Src("x", "f.xlsx", "t", "sheet 'S'", {}).source("row 3", "GPR") == {"file_id": "x", "filename": "f.xlsx", "locator": "sheet 'S' row 3", "text": "GPR"}
+    assert Src("x", "f.xlsx", "t", "sheet 'S'", {}).source("row 3", "GPR") == {
+        "file_id": "x", "filename": "f.xlsx", "doc_type": "t", "locator": "sheet 'S' row 3", "text": "GPR",
+        "method": "native", "ocr_confidence": None}

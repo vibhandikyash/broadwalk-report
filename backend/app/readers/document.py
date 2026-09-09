@@ -164,6 +164,9 @@ class Sheet:
 class Page:
     number: int
     text: str
+    ocr: bool = False
+    ocr_confidence: float | None = None
+    ocr_blocks: list[dict] = field(default_factory=list)
 
     @property
     def lines(self) -> list[str]:
@@ -178,6 +181,7 @@ class Document:
     sheets: list[Sheet] = field(default_factory=list)
     pages: list[Page] = field(default_factory=list)
     created: str | None = None  # document creation date (ISO) when the file carries one, e.g. PDF metadata
+    warnings: list[str] = field(default_factory=list)
 
     @property
     def text(self) -> str:

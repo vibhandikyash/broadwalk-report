@@ -39,8 +39,21 @@ let counter = 0;
         </fieldset>
       }
       @if (f().note) { <div class="small muted" [id]="id + '-note'">{{ f().note }}</div> }
+      @if (p(); as pv) {
+        @if (compact()) {
+          <span class="prov-tag prov-{{ pv.origin }}" [title]="pv.label + ' — ' + pv.detail"><span class="sr-only">{{ pv.label }}: </span>{{ tag(pv.origin) }}</span>
+        } @else {
+          <div class="prov small" [id]="id + '-prov'">
+            <span class="prov-dot prov-{{ pv.origin }}" aria-hidden="true"></span><span class="prov-label">{{ pv.label }}</span>
+            @if (pv.ocr) { <span class="prov-tag prov-ocr">OCR</span> }
+            <span class="prov-detail">{{ pv.detail }}</span>
+          </div>
+        }
+      }
       @if (showSource() && f().source; as s) {
-        <div class="source small" [id]="id + '-src'"><strong>{{ s.filename ?? 'computed' }}</strong> {{ s.locator }} @if (s.text) { <span class="muted">· "{{ s.text }}"</span> }</div>
+        <div class="source small" [id]="id + '-src'"><strong>{{ s.filename ?? 'computed' }}</strong> {{ s.locator }} @if (s.text) { <span class="muted">· "{{ s.text }}"</span> }
+          @if (p().doc_label; as doc) { <div class="muted">Recognised as {{ doc }}</div> }
+        </div>
       }
     </div>`,
 })
@@ -58,7 +71,13 @@ export class FieldEditorComponent {
     if (v == null || v === '') return '';
     return this.f().kind === 'percent' ? String(Math.round(Number(v) * 1e6) / 1e4) : String(v);
   });
-  describedBy = computed(() => (this.f().note ? this.id + '-note' : null));
+  /** Where this value came from, or why it is absent; the backend answers for every field. */
+  p = computed(() => this.f().provenance);
+  describedBy = computed(() => [this.f().note ? this.id + '-note' : null, this.compact() ? null : this.id + '-prov'].filter(Boolean).join(' ') || null);
+  /** Compact table cells have no room for a sentence: a two-letter tag carries the origin, the full text is the tooltip. */
+  tag(origin: string): string {
+    return { extracted: 'src', ocr: 'OCR', computed: 'calc', manual: 'you', ai_draft: 'ai', missing: 'none' }[origin] ?? origin;
+  }
 
   edit(value: string): void { this.changed.emit({ path: this.f().path, value: value === '' ? null : value }); }
   editNumber(value: string | number | null): void {

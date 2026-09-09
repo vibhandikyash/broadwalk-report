@@ -67,16 +67,18 @@ def _process(f: dict) -> None:
     if f.get("doc_type_override") and len(parts) == 1:
         parts[0].doc_type, parts[0].confidence = f["doc_type_override"], 1.0
     extractions, parts_json = [], []
-    for part in parts:
+    for index, part in enumerate(parts):
         pj = {**part.to_json(), "warnings": []}
         if part.doc_type != DocType.UNKNOWN.value:
             try:
                 ex = run_extractor(part)
                 extractions.append(ex.model_dump())
-                pj["warnings"] = list(ex.warnings)
+                pj["warnings"] = ([*doc.warnings, *ex.warnings] if index == 0 else list(ex.warnings))
             except Exception as e:  # noqa: BLE001 - one part failing must not fail the file
                 log.warning("extraction failed for %s %s: %s", f["original_filename"], part.locator, e)
                 pj["warnings"] = [f"Extraction failed: {e}"]
+        if index == 0 and doc.warnings and not pj["warnings"]:
+            pj["warnings"] = list(doc.warnings)
         parts_json.append(pj)
     recognised = [p for p in parts_json if p["doc_type"] != DocType.UNKNOWN.value]
     if not recognised:

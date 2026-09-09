@@ -9,6 +9,11 @@ import { FieldChange, FieldEditorComponent } from './field-editor.component';
 import { TableEditorComponent } from './table-editor.component';
 
 export interface OverrideEntry { path: string; text: string; }
+/** Origins in the order the summary reads best; the backend supplies the counts. */
+const ORIGIN_LABELS = [
+  { key: 'extracted', label: 'extracted' }, { key: 'ocr', label: 'via OCR' }, { key: 'computed', label: 'calculated' },
+  { key: 'manual', label: 'entered by you' }, { key: 'ai_draft', label: 'AI drafts' }, { key: 'missing', label: 'not found' },
+];
 
 @Component({
   selector: 'app-review',
@@ -62,6 +67,24 @@ export interface OverrideEntry { path: string; text: string; }
                 @for (g of c.gaps; track g.path) {
                   <li><button type="button" class="issue issue-warning small" (click)="jumpTo(g.path)"><span class="pg">p{{ g.page }}</span> {{ g.label }} <span class="muted">({{ g.reason }})</span></button></li>
                 }
+              </ul>
+            </details>
+          }
+          @if (d.provenance; as pv) {
+            <details class="prov-panel"><summary>Where the data came from</summary>
+              <div class="counts small">
+                @for (c of originCounts(pv.counts); track c.key) {
+                  <span><span class="prov-dot prov-{{ c.key }}"></span> {{ c.count }} {{ c.label }}</span>
+                }
+              </div>
+              <p class="small muted">Every field below states its own source. The same trail is printed in Appendix A of the generated report.</p>
+              <ul class="plain small">
+                @for (f of pv.files; track f.filename) {
+                  <li><strong>{{ f.filename }}</strong>
+                    @if (f.method !== 'native') { <span class="prov-tag prov-ocr">OCR</span> }
+                    <div class="muted">{{ f.doc_labels.join('; ') }}@if (f.method !== 'native') { · text recovered by vision OCR@if (f.ocr_pages.length) { on page{{ f.ocr_pages.length === 1 ? '' : 's' }} {{ f.ocr_pages.join(', ') }} }@if (f.ocr_confidence != null) { ({{ (f.ocr_confidence * 100).toFixed(0) }}% confidence) } }</div>
+                  </li>
+                } @empty { <li class="muted">No source file has been consolidated yet.</li> }
               </ul>
             </details>
           }
@@ -142,6 +165,9 @@ export class ReviewComponent {
     return s.fields.filter((f) => this.attention(f)).length + s.tables.reduce((n, t) => n + t.rows.reduce((m, r) => m + r.cells.filter((c) => this.attention(c)).length, 0), 0);
   }
   visibleFields(s: UiSection) { return this.attentionOnly() ? s.fields.filter((f) => this.attention(f)) : s.fields; }
+  originCounts(counts: Record<string, number>): { key: string; label: string; count: number }[] {
+    return ORIGIN_LABELS.filter((o) => counts[o.key]).map((o) => ({ key: o.key, label: o.label, count: counts[o.key] }));
+  }
 
   select(key: string): void { this.selected.set(key); }
   onChange(ch: FieldChange): void { const m = new Map(this.pending()); m.set(ch.path, ch.value); this.pending.set(m); }

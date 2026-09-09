@@ -3,4 +3,6 @@ import tempfile
 
 os.environ["APP_DATA_DIR"] = tempfile.mkdtemp(prefix="irg-test-")
 os.environ["APP_WORKERS"] = "2"
-os.environ.pop("ANTHROPIC_API_KEY", None)
+# Empty values deliberately override the developer's local .env during tests.
+os.environ["ANTHROPIC_API_KEY"] = ""
+os.environ["GEMINI_API_KEY"] = ""

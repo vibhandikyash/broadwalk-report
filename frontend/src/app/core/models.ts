@@ -16,14 +16,33 @@ export interface ProjectDetail extends Project {
   files: ProjectFile[]; reports: Report[]; stage: Stage; report_built: boolean; processing: string[]; assets: Record<AssetKind, boolean>;
 }
 export interface DocTypeOption { key: string; label: string; }
-export interface Health { ok: boolean; llm_enabled: boolean; llm_provider: string | null; pdf_renderer: boolean; workers: number; }
-export interface Source { file_id?: string | null; filename?: string | null; locator?: string | null; text?: string | null; }
+export interface Health {
+  ok: boolean;
+  llm_enabled: boolean;
+  llm_provider: string | null;
+  ocr_enabled?: boolean;
+  ocr_provider?: string | null;
+  pdf_renderer: boolean;
+  workers: number;
+}
+export type Method = 'native' | 'ocr' | 'mixed';
+export interface Source {
+  file_id?: string | null; filename?: string | null; locator?: string | null; text?: string | null;
+  doc_type?: string | null; method?: Method; ocr_confidence?: number | null;
+}
 export interface Alternative { value: unknown; source: Source | null; note: string | null; }
 export type Kind = 'money' | 'number' | 'integer' | 'percent' | 'date' | 'text' | 'longtext';
 export type Status = 'extracted' | 'derived' | 'manual' | 'ai_draft' | 'missing' | 'conflict';
+export type Origin = 'extracted' | 'ocr' | 'computed' | 'manual' | 'ai_draft' | 'missing';
+/** Where a value came from, or why it is absent. Produced by the backend so the review screen and the report agree. */
+export interface Provenance {
+  origin: Origin; label: string; detail: string; filename: string | null; locator: string | null;
+  doc_type: string | null; doc_label: string | null; quote: string | null; ocr_confidence: number | null;
+  reason: string | null; ocr: boolean;
+}
 export interface UiField {
   path: string; key: string; label: string; kind: Kind; value: unknown; override: unknown; effective: unknown; status: Status;
-  source: Source | null; alternatives: Alternative[]; note: string | null; readonly: boolean;
+  source: Source | null; provenance: Provenance; alternatives: Alternative[]; note: string | null; readonly: boolean;
 }
 export interface UiColumn { key: string; label: string; kind: Kind; derived: boolean; }
 export interface UiRow { key: string; label: string; manual: boolean; subject: boolean; cells: UiField[]; }
@@ -35,9 +54,13 @@ export interface GapGroup { key: string; label: string; page: number; complete: 
 /** Structural means a PDF can be generated; complete means every requirement of a finished report is met. */
 export interface Completeness { complete: boolean; gap_count: number; ai_drafts_pending: number; gaps: Gap[]; groups: GapGroup[]; }
 export interface Summary { missing: number; conflicts: number; ai_drafts: number; errors: number; warnings: number; infos: number; completeness?: Completeness; }
+export interface ProvenanceFile {
+  filename: string; doc_labels: string[]; method: Method; ocr_pages: number[]; ocr_confidence: number | null;
+}
+export interface ProvenanceSummary { counts: Record<Origin, number>; files: ProvenanceFile[]; }
 export interface ReportDataUi {
   built_at: string | null; summary: Summary; issues: Issue[]; sections: UiSection[]; meta: Record<string, unknown>;
-  narrative_status: string | null; narrative_error: string | null;
+  narrative_status: string | null; narrative_error: string | null; provenance?: ProvenanceSummary;
 }
 export interface Change { path: string; value: unknown; }
 export interface PatchBody { changes?: Change[]; add_rows?: { table: string; key?: string; values: Record<string, unknown> }[]; delete_rows?: { table: string; key: string }[]; }

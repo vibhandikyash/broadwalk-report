@@ -13,11 +13,24 @@ from typing import Callable
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from ..models import ReportData, Table
+from ..consolidate.provenance import counts, describe, source_files
+from ..models import Field, ReportData, Table
 from .chart import line_chart_svg
-from .formatters import FILTERS, MINUS
+from .formatters import FILTERS, MINUS, NONE
 
 REPORT_DIR = Path(__file__).resolve().parent
+BODY_PAGES = 10  # the fixed report; each page is followed by the provenance sheets for its own values
+APPENDIX_ROWS_PER_PAGE = 18  # measured: a sheet fits ~23 single-line rows, so this leaves room for group headings
+# Which printed page a section's values land on. Section.page is the review screen's grouping; the
+# cover repeats a few property and capital figures whose detail belongs with pages 2 and 3.
+SHEET_PAGE = {"property": 2, "in_place_rent": 2, "capital": 3, "underwriting": 3, "rent_trend": 3,
+              "financing": 4, "commentary": 5, "financials": 6, "capex": 7, "submarket": 8,
+              "occupancy": 9, "status": 10}
+# The report reserves the word DRAFT for the incomplete-version marker, so the appendix names an
+# AI-written value differently from the review screen's 'AI draft' chip.
+ORIGIN_LABELS = (("extracted", "Extracted"), ("ocr", "Extracted by OCR"), ("computed", "Calculated"),
+                 ("manual", "Entered by reviewer"), ("ai_draft", "AI-written"), ("missing", "Not found"))
+ORIGIN_LABEL = dict(ORIGIN_LABELS)
 env = Environment(loader=FileSystemLoader(REPORT_DIR / "templates"), autoescape=select_autoescape(["html"]),
                   trim_blocks=True, lstrip_blocks=True)
 env.filters.update(FILTERS)
@@ -73,7 +86,122 @@ def _sum(rows: list[dict], col: str) -> float | None:
     return sum(vals) if vals else None
 
 
-def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0) -> dict:
+_VALUE_FILTERS: dict[str, Callable] = {
+    "money": FILTERS["money"], "percent": lambda v: FILTERS["pct"](v, 2), "integer": FILTERS["integer"],
+    "number": lambda v: FILTERS["num"](v, 2), "date": FILTERS["date_long"],
+}
+
+
+# Years are integers that the report prints without grouping; the appendix must match it, not invent "1,973".
+_PLAIN_NUMBER_KEYS = {"year_built", "vintage", "zip"}
+
+
+def _value_text(path: str, f: Field, limit: int = 34) -> str:
+    """The field's value as the report shows it, clipped so an appendix row stays one line high."""
+    filt = FILTERS["text"] if path.rsplit(".", 1)[-1] in _PLAIN_NUMBER_KEYS else _VALUE_FILTERS.get(f.kind, FILTERS["text"])
+    rendered = filt(f.effective)
+    flat = " ".join(str(rendered).split())
+    return flat if len(flat) <= limit else flat[: limit - 1].rstrip() + "…"
+
+
+def _appendix_field(path: str, f: Field, data: ReportData, label: str) -> dict:
+    p = describe(path, f, data)
+    return {"kind": "row", "label": label, "value": _value_text(path, f), "origin": p.origin,
+            "method": ORIGIN_LABEL[p.origin], "detail": p.detail}
+
+
+def _appendix_table_row(tpath: str, rkey: str, label: str, cells: dict[str, Field], data: ReportData, columns: list) -> dict:
+    """One appendix line for a whole table row: rows are extracted from a single source line, so the
+    interesting facts are that source and which columns of the row came back empty."""
+    order = [c.key for c in columns if c.key in cells]
+    inputs = [k for k in order if cells[k].status != "derived"]
+    filled = [k for k in inputs if cells[k].effective not in (None, "")]
+    empty = [cells[k].label for k in inputs if cells[k].effective in (None, "")]
+    sourced = next((k for k in filled if cells[k].source and cells[k].source.filename), None)
+    anchor = sourced or (filled[0] if filled else (inputs[0] if inputs else order[0]))
+    p = describe(f"{tpath}.rows.{rkey}.{anchor}", cells[anchor], data)
+    detail = p.detail
+    if empty and filled:
+        detail = f"{detail} No value in the source for: {', '.join(empty)}."
+    return {"kind": "row", "label": label, "value": f"{len(filled)} of {len(inputs)} values", "origin": p.origin,
+            "method": ORIGIN_LABEL[p.origin], "detail": " ".join(detail.split())[:150]}
+
+
+def _section_rows(skey: str, sec, data: ReportData) -> list[dict]:
+    """One row per field, per table row and per table total. The table's name prefixes a row only when
+    the section has more than one table, since otherwise the sheet's heading already says which it is."""
+    rows = [_appendix_field(f"{skey}.fields.{fkey}", f, data, f.label) for fkey, f in sec.fields.items()]
+    for tkey, t in sec.tables.items():
+        tpath = f"{skey}.tables.{tkey}"
+        prefix = f"{t.title}: " if len(sec.tables) > 1 else ""
+        for rkey, cells in t.rows.items():
+            label = t.row_meta.get(rkey, {}).get("label", rkey)
+            rows.append(_appendix_table_row(tpath, rkey, f"{prefix}{label}", cells, data, t.columns))
+        for ckey, f in t.totals.items():
+            rows.append(_appendix_field(f"{tpath}.totals.{ckey}", f, data, f"{prefix}Total {f.label}"))
+    return rows
+
+
+def appendix_items(data: ReportData) -> dict[int, list[dict]]:
+    """The provenance rows for each printed report page, so a page's sources follow the page itself.
+
+    A page fed by more than one section gets a heading per section; a page fed by one does not, because
+    the sheet's own header already names it.
+    """
+    grouped: dict[int, list[tuple[str, list[dict]]]] = {}
+    for skey, sec in data.sections.items():
+        rows = _section_rows(skey, sec, data)
+        if rows:
+            grouped.setdefault(SHEET_PAGE.get(skey, sec.page), []).append((sec.title, rows))
+    out: dict[int, list[dict]] = {}
+    for page, sections in sorted(grouped.items()):
+        items: list[dict] = []
+        for title, rows in sections:
+            if len(sections) > 1:
+                items.append({"kind": "head", "label": title, "page": page})
+            items.extend(rows)
+        out[page] = items
+    return out
+
+
+def paginate(items: list[dict], per_page: int = APPENDIX_ROWS_PER_PAGE) -> list[list[dict]]:
+    """Chunk into sheets, never leaving a group heading stranded as the last line of a sheet."""
+    pages: list[list[dict]] = []
+    current: list[dict] = []
+    for item in items:
+        stranded = current and len(current) == per_page - 1 and item["kind"] == "head"
+        if len(current) >= per_page or stranded:
+            pages.append(current)
+            current = []
+        current.append(item)
+    if current:
+        pages.append(current)
+    return pages
+
+
+def number_pages(by_page: dict[int, list[dict]], per_page: int = APPENDIX_ROWS_PER_PAGE) -> tuple[dict[int, int], dict[int, list[dict]], int]:
+    """Interleave: each fixed page, then its provenance sheets, then the closing summary.
+
+    Returns the printed number of each fixed page, the sheets that follow it (each carrying its own
+    printed number and its position within that page's set), and the total page count.
+    """
+    printed: dict[int, int] = {}
+    sheets: dict[int, list[dict]] = {}
+    n = 0
+    for body in range(1, BODY_PAGES + 1):
+        n += 1
+        printed[body] = n
+        chunks = paginate(by_page.get(body, []), per_page)
+        entries = []
+        for index, items in enumerate(chunks, start=1):
+            n += 1
+            entries.append({"items": items, "page": n, "index": index, "count": len(chunks)})
+        sheets[body] = entries
+    return printed, sheets, n + 1  # + the closing source-file summary
+
+
+def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0,
+            provenance_appendix: bool = True) -> dict:
     v = data.value
     uw_rows = _rows(data.table("underwriting.tables.budget"))
     uw_groups = {"value_add": [r for r in uw_rows if str(r["c"].get("section") or "").lower().startswith("value")],
@@ -94,8 +222,16 @@ def context(data: ReportData, project: dict | None = None, assets: dict[str, str
     chart_svg = line_chart_svg([_month_tick(r["c"].get("month")) for r in trend], series) if trend else ""
     capex_rows = _rows(data.table("capex.tables.lines"), sort_key=lambda r: (-(r["c"].get("ptd_actual") or 0), -(r["c"].get("ptd_budget") or 0)))
     fin_t = data.table("financials.tables.lines")
+    if provenance_appendix:
+        printed, sheets, total = number_pages(appendix_items(data))
+    else:
+        printed, sheets, total = {n: n for n in range(1, BODY_PAGES + 1)}, {}, BODY_PAGES
     return {
-        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "assets": assets or {}, "draft_gaps": int(draft_gaps or 0),
+        "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "NONE": NONE, "assets": assets or {}, "draft_gaps": int(draft_gaps or 0),
+        "pno": printed, "prov_sheets": sheets, "prov_origins": ORIGIN_LABELS, "provenance": provenance_appendix,
+        "prov_counts": counts(data) if provenance_appendix else {},
+        "prov_files": source_files(data) if provenance_appendix else [],
+        "body_pages": BODY_PAGES, "total_pages": total,
         "css": (REPORT_DIR / "static" / "report.css").read_text(), "fonts_css": _fonts_css(),
         "ipr_rows": _rows(data.table("in_place_rent.tables.by_floor_plan")), "ipr_totals": _totals(data.table("in_place_rent.tables.by_floor_plan")),
         "uw_groups": uw_groups, "uw_sub": uw_sub, "uw_totals": _totals(data.table("underwriting.tables.budget")), "chart_svg": chart_svg,
@@ -107,9 +243,14 @@ def context(data: ReportData, project: dict | None = None, assets: dict[str, str
     }
 
 
-def render_html(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0) -> str:
-    """draft_gaps > 0 marks every page as a draft: the reviewed data does not yet satisfy the completeness specification."""
-    return env.get_template("report.html").render(**context(data, project, assets, draft_gaps))
+def render_html(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0,
+                provenance_appendix: bool = True) -> str:
+    """draft_gaps > 0 marks every page as a draft: the reviewed data does not yet satisfy the completeness specification.
+
+    provenance_appendix appends the source-and-method pages that say, for every value in the report,
+    which file and line it came from, whether OCR was needed, or why it is absent.
+    """
+    return env.get_template("report.html").render(**context(data, project, assets, draft_gaps, provenance_appendix))
 
 
 def chromium_available() -> bool:

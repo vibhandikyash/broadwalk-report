@@ -31,6 +31,24 @@ def extract(part: Part) -> Extraction:
     assert sh is not None
     name, ref = find_property(sh)
     as_of = find_as_of(sh)
+    simple = sh.header_block(["as of", "occupied units"], max_rows=1, search_rows=120)
+    if simple is not None:
+        hrow, _, headers = simple
+        c_date, c_total = Sheet.col(headers, r"^as of$"), Sheet.col(headers, r"# of units", r"^units$")
+        c_occ, c_vac = Sheet.col(headers, r"occupied units"), Sheet.col(headers, r"vacant units")
+        snapshots = []
+        for r in range(hrow + 1, sh.nrows):
+            from ..readers.document import to_date
+            date = to_date(sh.cell(r, c_date)) if c_date is not None else None
+            total = to_number(sh.cell(r, c_total)) if c_total is not None else None
+            occupied = to_number(sh.cell(r, c_occ)) if c_occ is not None else None
+            if date and total is not None and occupied is not None:
+                snapshots.append({"as_of": date.isoformat(), "property_name": name, "property_ref": ref,
+                                  "total_units": total, "occupied_units": occupied,
+                                  "vacant_units": to_number(sh.cell(r, c_vac)) if c_vac is not None else total - occupied,
+                                  "occupancy_pct": occupied / total if total else None, "future_applicants": None})
+        if snapshots:
+            return Extraction(doc_type=part.doc_type, locator=part.locator, data={"_snapshots": snapshots})
     hb = sh.header_block(["summary groups", "# of"], max_rows=3, search_rows=120)
     if hb is None:
         raise ExtractionError("Rent Roll summary block ('Summary Groups' with '# Of Units') not found")

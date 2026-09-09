@@ -61,11 +61,11 @@ def extract(part: Part) -> Extraction:
             iso = leased.isoformat()
             p["min_leased"] = iso if p["min_leased"] is None or iso < p["min_leased"] else p["min_leased"]
             p["max_leased"] = iso if p["max_leased"] is None or iso > p["max_leased"] else p["max_leased"]
-            if asking is not None and sqft:
+            if asking is not None and eff is not None and sqft:
                 m = p["monthly"].setdefault(leased.strftime("%Y-%m"), {"n": 0, "asking_sum": 0.0, "effective_sum": 0.0, "sqft_sum": 0.0})
                 m["n"] += 1
                 m["asking_sum"] += asking
-                m["effective_sum"] += eff if eff is not None else asking
+                m["effective_sum"] += eff
                 m["sqft_sum"] += sqft
     if not props:
         raise ExtractionError("No listing rows found under the header")

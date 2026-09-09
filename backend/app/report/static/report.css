@@ -74,3 +74,23 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .status-block .t { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6pt; color: var(--navy); letter-spacing: 0.08em; text-transform: uppercase; }
 .status-block .s { font-weight: 600; font-size: 9pt; margin: 1pt 0 2pt; }
 .status-block .b { font-size: 7.6pt; }
+
+/* Appendix A: value provenance. Rows are forced to a single line (fixed layout + clipping) so a page
+   holds a known number of them and the overflow check never has to reject the appendix. */
+.muted { color: var(--mute); }
+.prov-legend { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8pt; margin: 6pt 0 9pt; }
+.prov-count .kpi-m { font-size: 12pt; }
+.prov-count .lab { margin-top: 1pt; }
+.prov-dot { display: inline-block; width: 4pt; height: 4pt; border-radius: 50%; margin-right: 3pt; vertical-align: middle; background: var(--mute); }
+.prov-extracted { background: var(--green); } .prov-computed { background: var(--navy); } .prov-manual { background: #1d4ed8; }
+.prov-ai_draft { background: #6b21a8; } .prov-missing { background: var(--red); } .prov-ocr { background: #9a6700; }
+span.prov-ocr { display: inline-block; background: #fff4e0; color: #7a5200; border: 0.5pt solid #d8a200; border-radius: 2pt; padding: 0 2.5pt; font-family: "JetBrains Mono", Menlo, monospace; font-size: 5.4pt; letter-spacing: 0.06em; margin-right: 3pt; }
+.tbl.prov { font-size: 7pt; line-height: 1.25; }
+.tbl.prov th { font-size: 5.6pt; padding: 2pt 4pt; }
+.tbl.prov td { padding: 1.7pt 4pt; }
+.tbl.prov .group td { font-family: "JetBrains Mono", Menlo, monospace; font-size: 5.6pt; color: var(--navy); padding-top: 4pt; border-bottom: none; letter-spacing: 0.06em; }
+.sheet-lede { font-size: 7.5pt; margin: 0 0 5pt; }
+.prov-key { display: flex; flex-wrap: wrap; gap: 3pt 12pt; font-size: 5.6pt; color: var(--mute); letter-spacing: 0.04em; text-transform: uppercase; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 3pt 0; margin-bottom: 6pt; }
+.prov-key .prov-dot { width: 3.5pt; height: 3.5pt; margin-right: 3pt; }
+.tbl.fixed { table-layout: fixed; }
+.tbl .clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }

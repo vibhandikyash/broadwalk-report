@@ -8,6 +8,7 @@ import re
 from ..readers.document import CODE_RE, Sheet, norm, to_date, to_number
 
 PERIOD_RE = re.compile(r"period\s*=\s*([A-Za-z]{3,9}\s+\d{4})\s*-\s*([A-Za-z]{3,9}\s+\d{4})", re.I)
+ISO_PERIOD_RE = re.compile(r"(?:reporting\s+)?period\s*(?:=|:)\s*(\d{4}-\d{2}-\d{2})\s+(?:through|to|-)+\s*(\d{4}-\d{2}-\d{2})", re.I)
 AS_OF_RE = re.compile(r"as\s*of\s*=?\s*(\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2})", re.I)
 PROPERTY_RE = re.compile(r"^(?P<name>[^()]+?)\s*\((?P<ref>[A-Za-z0-9]+)\)\s*$")
 PROPERTY_REF_RE = re.compile(r"property\s*=\s*(\S+)", re.I)
@@ -25,6 +26,11 @@ def _month(s: str) -> dt.date:
 
 def parse_period(text: str) -> dict | None:
     """'Period = Apr 2026-Jun 2026' -> {'start': '2026-04-01', 'end': '2026-06-30', 'label': ...}."""
+    iso = ISO_PERIOD_RE.search(text)
+    if iso:
+        start, end = to_date(iso.group(1)), to_date(iso.group(2))
+        if start and end:
+            return {"start": start.isoformat(), "end": end.isoformat(), "label": f"{iso.group(1)} - {iso.group(2)}"}
     m = PERIOD_RE.search(text)
     if not m:
         return None

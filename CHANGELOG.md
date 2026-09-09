@@ -4,6 +4,36 @@ All notable changes to the investor report generator, newest first. Every entry 
 history can be checked with `git log`. The whole build happened between 2026-09-05 and 2026-09-07; phases are the
 audit-and-fix cycles the project went through, not calendar releases.
 
+## Phase 6: value provenance (2026-09-09)
+
+Answering one question everywhere it is asked: where did this number come from?
+
+### Added
+
+- **Provenance module** (`backend/app/consolidate/provenance.py`): one answer per value, derived from the value
+  and `meta.sources` alone, so it works on a stored snapshot with no access to the database or the files. Origins
+  are extracted, OCR, calculated, entered by reviewer, AI draft and missing. A missing value names the report
+  that carries it and says whether that report was never uploaded, was read and had no such line, is prose the
+  reviewer writes, or is a calculation waiting on an input.
+- **Extraction method tracked end to end**: `extract.registry.part_provenance` records, per part, whether its
+  text was machine-readable or came back from Gemini vision OCR and on which pages; `Src.source()` resolves that
+  to the value's own page where the locator names one, and refuses to claim "native" when it cannot; `Source`
+  gained `doc_type`, `method` and `ocr_confidence`.
+- **A data-sources sheet after every report page**, covering just that page's figures — file, line and method,
+  or the reason a value is absent — so the explanation sits next to what it explains. A closing page counts the
+  values by origin and lists every source file with its recognised type and OCR status. Page footers now count to
+  the real total instead of a hard-coded ten, and the fixed pages are located by header tag rather than by
+  physical index (`pdf_checks.report_page_indices`).
+- **Provenance on the review screen**: a line under every field, a compact tag inside table cells, and a sidebar
+  panel counting origins and naming the files that needed OCR. `GET /report-data` carries `provenance` on every
+  field plus a project-level summary.
+
+### Fixed
+
+- Footer-marker checks (`scripts/check_pdf.py`, the validation harness, the PDF tests) matched `NN / TOTAL` as a
+  bare substring, so a figure such as `207 / 228 occupied` counted as the page-7 footer once the total reached 22.
+  They now match on digit boundaries. `--pages` became optional, since the appendix makes the total vary.
+
 ## Phase 5: documentation and first push (2026-09-07)
 
 - Added this changelog, `STATUS.md` (what is implemented, how it was verified, what is still wrong or missing) and

@@ -39,6 +39,11 @@ missing. Read it together with `CHANGELOG.md` (how the code got here) and `valid
 ### Review and correction
 
 - Every value shows a status chip (extracted, derived, edited, AI draft, missing, conflict) and a source button.
+- Under every field, a provenance line names where the value came from: the file and line it was extracted from,
+  an `OCR` mark and confidence where the page needed vision OCR, "calculated", "entered by reviewer", "AI draft",
+  or, for a value that is not there, the reason. Table cells carry the same thing as a compact tag with the
+  sentence as its tooltip. A sidebar panel counts the values by origin and lists the source files, marking the
+  ones that needed OCR.
 - Corrections are typed and atomic: a batch is validated, coerced, recomputed, validated again, serialised and
   rendered in memory before one persist; any failure returns 422 and stores nothing.
 - Rows can be added to the underwriting budget, comp set and rent-trend tables; rows can be deleted.
@@ -58,6 +63,10 @@ missing. Read it together with `CHANGELOG.md` (how the code got here) and `valid
 - Immutable versions: each snapshots the reviewed data at request time, keeps its own PDF, HTML, JSON snapshot
   and frozen images. Version numbers are unique under an immediate transaction.
 - Ten fixed pages at 720 x 404.88 pt with Source Serif 4 and JetBrains Mono embedded, no Type 3 fonts.
+- A data-sources sheet after each of those pages, covering that page's figures only: the file and line each came
+  from, an `OCR` mark and confidence where the text was recovered from a scanned page, and the reason behind every
+  em dash. A closing page counts the values by origin and lists every source file. The sheets paginate themselves,
+  so the total page count varies with the data while the ten fixed pages do not.
 - Every page is measured in Chromium before printing; an overflowing page fails the version with page, section
   and amount instead of clipping.
 - Versions generated with outstanding items are drafts: DRAFT marker on the cover and every footer, `-draft.pdf`
@@ -138,7 +147,8 @@ These are defects or weaknesses in what exists, as opposed to features that were
 
 ## 4. Known limitations (by design or out of scope)
 
-- No OCR: image-only PDFs are isolated with `needs_ocr`.
+- Gemini vision OCR is optional: scanned pages require an API key and network access, and recovered text is
+  marked for human review; without the key, image-only PDFs are isolated with `needs_ocr`.
 - Only the four supported export families are extracted. An unrelated accounting schema needs a new extractor
   or mapping; `pl_mapping.toml` and `capex_mapping.toml` cover label variations, not new layouts.
 - No loan-document extractor: financing terms beyond principal, monthly interest and reserve balance are manual.
@@ -173,7 +183,7 @@ These are defects or weaknesses in what exists, as opposed to features that were
 ## 7. What would raise the score
 
 1. A measured legend and a raster-diff check per page against a golden image, to close the SVG-clipping class.
-2. OCR behind the reader interface, so scanned PDFs join the workflow.
+2. A side-by-side OCR source viewer with page-image bounding boxes.
 3. A loan-document extractor for the financing page.
 4. A recorded live-provider run in CI with a replay fixture, so prose quality is at least regression-tested.
 5. Continuation pages with renumbered footers for long tables.

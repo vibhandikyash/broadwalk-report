@@ -19,9 +19,40 @@
 </div>
 {% endmacro %}
 {% macro footer(section, n) %}
-<div class="ftr mono"><span>{{ name|upper }} · {{ q }} · {{ section|upper }}{% if draft_gaps %} · <span class="draft">DRAFT ({{ draft_gaps }} outstanding)</span>{% endif %}</span><span>{{ '%02d' % n }} / 10</span></div>
+<div class="ftr mono"><span>{{ name|upper }} · {{ q }} · {{ section|upper }}{% if draft_gaps %} · <span class="draft">DRAFT ({{ draft_gaps }} outstanding)</span>{% endif %}</span><span>{{ '%02d' % n }} / {{ '%02d' % total_pages }}</span></div>
 {% endmacro %}
 {% macro vcls(x) %}{{ 'neg' if (x or 0) < 0 else 'pos' }}{% endmacro %}
+{# The data-sources sheet(s) for the page just printed: every value on it, where it was read from, and
+   why any dash is a dash. 'SOURCE PROVENANCE' in the tag is how a checker tells these from the fixed pages. #}
+{% macro sheets(n, title) %}
+{% for sheet in prov_sheets.get(n, []) %}
+<section class="page">
+{{ header('Data Sources · ' ~ title, 'SOURCE PROVENANCE' ~ (' ' ~ sheet.index ~ ' OF ' ~ sheet.count if sheet.count > 1 else '')) }}
+<p class="sheet-lede">Where every figure on page {{ pno[n] }} came from. Anything printed there as {{ NONE }} was in none of the files supplied for this period; the reason is given below.</p>
+<div class="prov-key mono">
+  {% for key, label in prov_origins %}<span><span class="prov-dot prov-{{ key }}"></span>{{ label }}</span>{% endfor %}
+</div>
+<table class="tbl prov fixed">
+  <thead><tr><th style="width:24%">Value on page {{ pno[n] }}</th><th class="r" style="width:17%">As printed</th><th style="width:13%">How we got it</th><th style="width:46%">Source, or why it is absent</th></tr></thead>
+  <tbody>
+  {% for item in sheet['items'] %}
+  {% if item.kind == 'head' %}
+  <tr class="group"><td colspan="4">{{ item.label|upper }}</td></tr>
+  {% else %}
+  <tr>
+    <td class="clip">{{ item.label }}</td>
+    <td class="clip r">{{ item.value }}</td>
+    <td class="clip"><span class="prov-dot prov-{{ item.origin }}"></span>{% if item.origin == 'ocr' %}<span class="prov-ocr">OCR</span>{% else %}{{ item.method }}{% endif %}</td>
+    <td class="clip {{ 'muted' if item.origin == 'missing' }}">{{ item.detail }}</td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+{{ footer('Data Sources · ' ~ title, sheet.page) }}
+</section>
+{% endfor %}
+{% endmacro %}
 
 {# ---------- 1 COVER ---------- #}
 <section class="page cover">
@@ -42,6 +73,7 @@
     <div class="prepared mono small">PREPARED BY<br><strong>{{ v('property.fields.prepared_by')|text }}</strong><br>Period ending {{ v('property.fields.period_end')|date_long }}</div>
   </div>
 </section>
+{{ sheets(1, 'Cover') }}
 
 {# ---------- 2 PROPERTY DESCRIPTION ---------- #}
 <section class="page">
@@ -77,8 +109,9 @@
     {% if v('in_place_rent.fields.narrative') %}<p class="note">{{ v('in_place_rent.fields.narrative') }}</p>{% endif %}
   </div>
 </div>
-{{ footer('Property Description', 2) }}
+{{ footer('Property Description', pno[2]) }}
 </section>
+{{ sheets(2, 'Property Description') }}
 
 {# ---------- 3 PROPERTY SUMMARY & BUSINESS PLAN ---------- #}
 <section class="page">
@@ -116,8 +149,9 @@
     {% if v('rent_trend.fields.caption') %}<p class="note">{{ v('rent_trend.fields.caption') }}</p>{% endif %}
   </div>
 </div>
-{{ footer('Property Summary', 3) }}
+{{ footer('Property Summary', pno[3]) }}
 </section>
+{{ sheets(3, 'Property Summary & Business Plan') }}
 
 {# ---------- 4 FINANCING ---------- #}
 <section class="page">
@@ -157,8 +191,9 @@
     {% if v('financing.fields.narrative') %}<p class="note">{{ v('financing.fields.narrative') }}</p>{% endif %}
   </div>
 </div>
-{{ footer('Financing', 4) }}
+{{ footer('Financing', pno[4]) }}
 </section>
+{{ sheets(4, 'Financing Overview') }}
 
 {# ---------- 5 COMMENTARY ---------- #}
 <section class="page">
@@ -187,8 +222,9 @@
     </div>
   </div>
 </div>
-{{ footer('Financial & Capital Commentary', 5) }}
+{{ footer('Financial & Capital Commentary', pno[5]) }}
 </section>
+{{ sheets(5, 'Financial & Capital Commentary') }}
 
 {# ---------- 6 FINANCIAL PERFORMANCE ---------- #}
 <section class="page">
@@ -210,8 +246,9 @@
   {% endfor %}
   </tbody>
 </table>
-{{ footer('Financial Performance', 6) }}
+{{ footer('Financial Performance', pno[6]) }}
 </section>
+{{ sheets(6, 'Financial Performance') }}
 
 {# ---------- 7 CAPITAL PROJECTS ---------- #}
 <section class="page">
@@ -226,8 +263,9 @@
   </tbody>
 </table>
 {% if v('capex.fields.narrative') and capex_rows|length <= 16 %}<p class="note">{{ v('capex.fields.narrative') }}</p>{% endif %}
-{{ footer('Capital Projects', 7) }}
+{{ footer('Capital Projects', pno[7]) }}
 </section>
+{{ sheets(7, 'Capital Projects') }}
 
 {# ---------- 8 SUBMARKET ---------- #}
 <section class="page">
@@ -252,8 +290,9 @@
   <div><div class="col-h"><span>Concessions</span></div><div class="col-body">{{ v('submarket.fields.concession_narrative')|text }}</div></div>
 </div>
 <div class="small" style="margin-top:6pt">{{ v('submarket.fields.footnote')|text }} Subject leased % is physical occupancy per the Yardi rent roll.</div>
-{{ footer('Submarket Comparison', 8) }}
+{{ footer('Submarket Comparison', pno[8]) }}
 </section>
+{{ sheets(8, 'Submarket Comparison') }}
 
 {# ---------- 9 OCCUPANCY & LEASING ---------- #}
 <section class="page">
@@ -281,8 +320,9 @@
   {% endfor %}
 </div>
 <div class="small mono" style="margin-top:6pt">{{ v('occupancy.fields.lto_period_note')|text|upper }}</div>
-{{ footer('Occupancy & Leasing', 9) }}
+{{ footer('Occupancy & Leasing', pno[9]) }}
 </section>
+{{ sheets(9, 'Occupancy & Leasing') }}
 
 {# ---------- 10 STATUS UPDATE & GOALS ---------- #}
 <section class="page">
@@ -307,7 +347,41 @@
     {% endfor %}
   </div>
 </div>
-{{ footer('Status Update & Goals', 10) }}
+{{ footer('Status Update & Goals', pno[10]) }}
 </section>
+{{ sheets(10, 'Status Update & Goals') }}
+
+{# ---------- CLOSING: THE SOURCE FILES BEHIND THE WHOLE REPORT ---------- #}
+{% if provenance %}
+<section class="page">
+{{ header('Source Files & Extraction Method', 'SOURCE PROVENANCE SUMMARY') }}
+<p class="body">Every figure in this report is traced to the file and line it was read from, on the data-sources
+sheet that follows its page. This page lists the files behind all of them. Figures printed as {{ NONE }} were in
+none of the files supplied for this period; the reason is stated against each one. Values marked
+<span class="prov-ocr">OCR</span> were recovered from a scanned page by vision OCR rather than read from
+machine-readable text, and warrant a closer look.</p>
+<div class="prov-legend">
+  {% for key, label in prov_origins %}
+  <div class="prov-count"><div class="kpi-m">{{ prov_counts.get(key, 0) }}</div><div class="lab mono"><span class="prov-dot prov-{{ key }}"></span>{{ label }}</div></div>
+  {% endfor %}
+</div>
+<div class="col-h"><span>Source files consolidated into this report</span><span class="v">{{ prov_files|length }} file{{ 's' if prov_files|length != 1 }}</span></div>
+<table class="tbl prov">
+  <thead><tr><th style="width:32%">File</th><th style="width:44%">Recognised as</th><th style="width:24%">Text extraction</th></tr></thead>
+  <tbody>
+  {% for f in prov_files %}
+  <tr>
+    <td>{{ f.filename }}</td>
+    <td>{{ f.doc_labels|join('; ') }}</td>
+    <td>{% if f.method in ('ocr', 'mixed') %}<span class="prov-ocr">OCR</span> vision OCR{% if f.ocr_pages %} on page{{ 's' if f.ocr_pages|length != 1 }} {{ f.ocr_pages|join(', ') }}{% endif %}{% if f.ocr_confidence is not none %} · {{ f.ocr_confidence|pct(0) }} confidence{% endif %}{% else %}Machine-readable text{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="3" class="muted">No source file was consolidated into this report.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{{ footer('Source Files & Extraction Method', total_pages) }}
+</section>
+{% endif %}
 </body>
 </html>

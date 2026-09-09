@@ -2,11 +2,25 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 REPO_DIR = BACKEND_DIR.parent
+
+
+def _value(raw: str) -> str:
+    """The value part of a .env line, without the trailing comment people copy from .env.example.
+
+    'auto   # auto | api | off' -> 'auto'. A '#' that is not preceded by whitespace belongs to the
+    value (an API key may contain one), and a quoted value keeps everything inside the quotes.
+    """
+    val = raw.strip()
+    if val[:1] in ("'", '"'):
+        end = val.find(val[0], 1)
+        return val[1:end] if end > 0 else val[1:]
+    return re.split(r"\s+#", val, maxsplit=1)[0].strip()
 
 
 def _load_dotenv() -> None:
@@ -19,7 +33,7 @@ def _load_dotenv() -> None:
             if not line or line.startswith("#") or "=" not in line:
                 continue
             key, val = line.split("=", 1)
-            os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+            os.environ.setdefault(key.strip(), _value(val))
         break
 
 
@@ -39,6 +53,11 @@ class Settings:
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY") or None
     anthropic_model: str | None = os.getenv("ANTHROPIC_MODEL") or None
     narrative_provider: str = os.getenv("NARRATIVE_PROVIDER", "auto").strip().lower()
+    gemini_api_key: str | None = os.getenv("GEMINI_API_KEY") or None
+    gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
+    ocr_dpi: int = int(os.getenv("OCR_DPI", "200"))
+    ocr_timeout_seconds: int = int(os.getenv("OCR_TIMEOUT_SECONDS", "60"))
+    ocr_min_text_chars: int = int(os.getenv("OCR_MIN_TEXT_CHARS", "20"))
     config_dir: Path = BACKEND_DIR / "config"
 
     @property
@@ -66,6 +85,10 @@ class Settings:
     @property
     def llm_enabled(self) -> bool:
         return self.llm_provider is not None
+
+    @property
+    def ocr_enabled(self) -> bool:
+        return bool(self.gemini_api_key)
 
 
 settings = Settings()
