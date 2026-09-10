@@ -11,7 +11,7 @@ import { FieldChange, FieldEditorComponent } from './field-editor.component';
       <div class="row between"><h3>{{ t().title }}</h3>
         @if (t().editable_rows) { <button type="button" class="link" (click)="addRow.emit(t().path)" [attr.aria-label]="'Add row to ' + t().title">+ add row</button> }
       </div>
-      <div class="scroll">
+      <div class="scroll table-surface">
       <table class="grid cells">
         <caption class="sr-only">{{ t().title }}</caption>
         <thead><tr><th scope="col">Row</th>@for (c of t().columns; track c.key) { <th scope="col">{{ c.label }}</th> }<th scope="col"><span class="sr-only">Actions</span></th></tr></thead>

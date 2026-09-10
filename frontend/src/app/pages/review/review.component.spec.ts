@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ApiService } from '../../core/api.service';
+import { ShellStore } from '../../core/shell.store';
 import { backendDown, detail, detail422, uiData, uiField } from '../../testing/fixtures';
 import { routeStub } from '../../testing/fixtures';
 import { FieldEditorComponent } from './field-editor.component';
@@ -49,14 +50,14 @@ describe('ReviewComponent', () => {
     c.onChange({ path: 'property.fields.units', value: 341 });
     fixture.detectChanges();
     expect(c.pending().size).toBe(2);
-    expect(fixture.nativeElement.querySelector('.project-action button').textContent).toContain('Save (2)');
-    expect(fixture.nativeElement.querySelector('.tabs button[disabled]')!.textContent).toContain('Report');  // guarded while edits are unsaved
+    expect(fixture.nativeElement.querySelector('.toolbar button:last-of-type').textContent).toContain('Save · 2');
+    expect(TestBed.inject(ShellStore).blocked()).toBe(true);  // the header holds the Report tab
     c.save();
     fixture.detectChanges();
     expect(patch).toHaveBeenCalledWith('p1', { changes: [{ path: 'property.fields.units', value: 341 }, { path: 'financing.fields.lender', value: 'Fannie Mae' }] });
     expect(c.pending().size).toBe(0);
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain('Saved 2 changes');
-    expect(fixture.nativeElement.querySelector('.tabs a[href$="/report"]')!.textContent).toContain('Report');  // reachable again once saved
+    expect(TestBed.inject(ShellStore).blocked()).toBe(false);  // reachable again once saved
   });
 
   it('keeps the edits and focuses the message when the backend rejects them', async () => {
@@ -187,18 +188,26 @@ describe('ReviewComponent', () => {
     expect(items[0].querySelector('.prov-tag.prov-ocr')).toBeNull();
   });
 
-  it('offers a forward step to the report, held back while edits are unsaved', () => {
+  it('lifts the header’s hold when the review screen goes away with edits pending', () => {
     const fixture = setup({});
-    const el: HTMLElement = fixture.nativeElement;
-    const cta = () => el.querySelector('.project-action a.btn, .project-action button[disabled][title]') as HTMLElement;
-    expect(cta().tagName).toBe('A');  // nothing pending: the next step is a live link
-    expect(cta().textContent).toContain('Continue to report');
-    expect(cta().getAttribute('href')).toContain('/report');
+    const shell = TestBed.inject(ShellStore);
+    fixture.componentInstance.onChange({ path: 'property.fields.units', value: 340 });
+    expect(shell.blocked()).toBe(true);
+    fixture.destroy();  // the pending edits are gone, so the Report tab must not stay held
+    expect(shell.blocked()).toBe(false);
+  });
+
+  it('tells the header to hold the report while edits are unsaved', () => {
+    const fixture = setup({});
+    const shell = TestBed.inject(ShellStore);
+    const save = () => fixture.nativeElement.querySelector('.toolbar button:last-of-type') as HTMLButtonElement;
+    expect(shell.blocked()).toBe(false);
+    expect(save().disabled).toBe(true);
+    expect(save().textContent).toContain('Saved');
     fixture.componentInstance.onChange({ path: 'property.fields.units', value: 340 });
     fixture.detectChanges();
-    expect(cta().tagName).toBe('BUTTON');  // unsaved edits: held, with the reason on the control
-    expect((cta() as HTMLButtonElement).disabled).toBe(true);
-    expect(cta().getAttribute('title')).toContain('Save or discard');
+    expect(shell.blocked()).toBe(true);  // the Report tab is held until this is saved or discarded
+    expect(save().disabled).toBe(false);
   });
 
   it('keeps the section list free of diagnostics and puts them behind inspector tabs', () => {
@@ -210,7 +219,7 @@ describe('ReviewComponent', () => {
       expect(nav.querySelector(cls)).toBeNull();  // navigation only; diagnostics live in the inspector
     }
     const tabs = Array.from(el.querySelectorAll('.inspector-tabs button') as NodeListOf<HTMLButtonElement>);
-    expect(tabs.map((b) => b.textContent!.replace(/\d+/g, '').trim())).toEqual(['Page', 'Outstanding', 'Issues', 'Sources', 'Corrections']);
+    expect(tabs.map((b) => b.textContent!.replace(/[·\d]/g, '').trim())).toEqual(['Page', 'Outstanding', 'Issues', 'Sources', 'Corrections']);
     expect(tabs[1].textContent).toContain('2');   // outstanding count on the tab
     expect(tabs[2].textContent).toContain('2');   // issue count on the tab
     expect(el.querySelector('.page-view')).not.toBeNull();  // Page is the tab you land on

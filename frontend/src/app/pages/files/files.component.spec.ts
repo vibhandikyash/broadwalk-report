@@ -28,7 +28,6 @@ describe('FilesComponent', () => {
     expect(el.textContent).toContain('so it is not used');
     expect(el.querySelector('select[aria-label="Document type for odd.xlsx"]')).not.toBeNull();
     expect(el.querySelector('[role="status"]')!.textContent).toContain('3 need attention');
-    expect(el.querySelector('.tabs a[href$="/review"]')!.textContent).toContain('Review data');
     const cta = el.querySelector('.project-action a.btn') as HTMLAnchorElement;  // the first-run next step
     expect(cta.textContent).toContain('Continue to review');
     expect(cta.getAttribute('href')).toContain('/review');
@@ -39,10 +38,9 @@ describe('FilesComponent', () => {
     await tick();  // ngModel applies [disabled] asynchronously
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    const laterTabs = Array.from(el.querySelectorAll('.tabs button') as NodeListOf<HTMLButtonElement>);
-    expect(laterTabs.map((b) => b.textContent!.trim())).toEqual(['Review data', 'Report']);
-    expect(laterTabs.every((b) => b.disabled)).toBe(true);  // nothing to review until the files are processed
-    expect(el.querySelector('.tabs a')).toBeNull();
+    const cta = el.querySelector('.project-action button') as HTMLButtonElement;
+    expect(cta.disabled).toBe(true);  // nothing to review until the files are processed
+    expect(cta.title).toContain('once the files have been processed');
     expect(el.querySelector('[role="status"]')!.textContent).toContain('1 of 2 files processing');
     expect((el.querySelector('button[aria-label="Reprocess fin.xlsx"]') as HTMLButtonElement).disabled).toBe(true);
     expect((el.querySelector('select[aria-label="Document type for fin.xlsx"]') as HTMLSelectElement).disabled).toBe(true);

@@ -6,7 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription, interval, switchMap } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AssetKind, DocTypeOption, FileExtraction, ProjectDetail, ProjectFile, errorText } from '../../core/models';
-import { ProjectNavComponent } from '../../shared/project-nav.component';
+import { ShellStore } from '../../core/shell.store';
 import { StatusChipComponent } from '../../shared/status-chip.component';
 
 const ACTIVE = new Set(['queued', 'processing']);
@@ -14,76 +14,90 @@ const ACTIVE = new Set(['queued', 'processing']);
 @Component({
   selector: 'app-files',
   standalone: true,
-  imports: [FormsModule, RouterLink, JsonPipe, DecimalPipe, StatusChipComponent, ProjectNavComponent],
+  imports: [FormsModule, RouterLink, JsonPipe, DecimalPipe, StatusChipComponent],
   template: `
     @if (project(); as p) {
-      <app-project-nav [project]="p" current="files">
-        @if (p.report_built) {
-          <a class="btn" [routerLink]="['/projects', p.id, 'review']">Continue to review →</a>
-        } @else {
-          <button type="button" disabled title="Available once the files have been processed">Continue to review →</button>
-        }
-      </app-project-nav>
       <div class="workbench two-pane">
       <section class="pane pane-main" aria-label="Source files">
+      <div class="row page-head">
+        <h1>Source files</h1>
+        <span class="muted small">{{ p.files.length }} file{{ p.files.length === 1 ? '' : 's' }}{{ processed(p) }}</span>
+        <span class="spacer"></span>
+        <div class="project-action">
+          @if (p.report_built) {
+            <a class="btn" [routerLink]="['/projects', p.id, 'review']">Continue to review →</a>
+          } @else {
+            <button type="button" disabled title="Available once the files have been processed">Continue to review →</button>
+          }
+        </div>
+      </div>
       <label class="dropzone" [class.drag]="dragging()" tabindex="0" (keydown.enter)="picker.click()"
              (keydown.space)="$event.preventDefault(); picker.click()"
              (dragover)="$event.preventDefault(); dragging.set(true)" (dragleave)="dragging.set(false)" (drop)="onDrop($event)">
         <input #picker type="file" multiple accept=".xlsx,.xlsm,.pdf" (change)="onPick($event)" class="sr-only" aria-label="Choose source files" />
-        <strong>Drop files here or click to choose</strong>
-        <span class="muted small">Yardi, HelloData, CoStar and Slate exports (.xlsx, .pdf). Any names, any order.</span>
+        <strong>Drop quarterly exports here — .xlsx, .xlsm, .pdf</strong>
+        <span class="muted small">any filenames, any order · or click to browse</span>
       </label>
-      <p class="status small" role="status" aria-live="polite">{{ status() }}</p>
       @if (error()) { <p class="err" role="alert" tabindex="-1" #alert>{{ error() }}</p> }
-      <div class="scroll">
-      <table class="grid">
+      <div class="scroll table-surface">
+      <table class="grid files-grid">
         <caption class="sr-only">Uploaded files and their processing status</caption>
-        <thead><tr><th scope="col">File</th><th scope="col">Status</th><th scope="col">Detected as</th><th scope="col">Type override</th><th scope="col">Use</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+        <thead><tr><th scope="col">File</th><th scope="col">Status</th><th scope="col">Detected type</th><th scope="col">Override</th><th scope="col">Incl.</th><th scope="col">Actions</th></tr></thead>
         <tbody>
           @for (f of p.files; track f.id) {
-            <tr [class.muted]="f.ignored">
-              <td>{{ f.original_filename }}<div class="small muted">{{ (f.size / 1024) | number: '1.0-0' }} KB</div>
-                @if (f.error) { <div class="small" [class.err]="f.status !== 'unrecognized'" [class.warn]="f.status === 'unrecognized'">{{ f.error }}</div> }</td>
+            <tr [class.ignored]="f.ignored">
+              <td><div class="fname mono" [title]="f.original_filename">{{ f.original_filename }}</div>
+                <div class="small muted">{{ (f.size / 1024) | number: '1.0-0' }} KB</div>
+                @if (f.error) { <div class="small" [class.err]="f.status !== 'unrecognized'" [class.warn]="f.status === 'unrecognized'">▲ {{ f.error }}</div> }</td>
               <td><app-status-chip [status]="f.status" /></td>
               <td>
                 @for (part of f.parts; track part.locator) {
-                  <div class="small"><code>{{ part.locator }}</code> → <strong>{{ label(part.doc_type) }}</strong>
-                    @if (part.doc_type !== 'unknown') { <span class="muted">({{ part.confidence * 100 | number: '1.0-0' }}%)</span> }
-                    @for (w of part.warnings; track w) { <div class="warn">{{ w }}</div> }
+                  <div class="small"><strong>{{ label(part.doc_type) }}</strong>
+                    @if (part.doc_type !== 'unknown') { <span class="muted tabular">{{ part.confidence * 100 | number: '1.0-0' }}%</span> }
+                    <div class="muted mono">{{ part.locator }}</div>
+                    @for (w of part.warnings; track w) { <div class="warn">▲ {{ w }}</div> }
                   </div>
-                }
+                } @empty { <span class="muted">—</span> }
               </td>
               <td>
                 @if (f.parts.length <= 1 && f.status !== 'unsupported') {
                   <select [ngModel]="f.doc_type_override ?? ''" (ngModelChange)="override(f, $event)" [attr.aria-label]="'Document type for ' + f.original_filename" [disabled]="active(f)">
-                    <option value="">auto-detect</option>
+                    <option value="">auto</option>
                     @for (t of docTypes(); track t.key) { <option [value]="t.key">{{ t.label }}</option> }
                   </select>
                 } @else { <span class="muted small">per-sheet (auto)</span> }
               </td>
-              <td><label class="small"><input type="checkbox" [checked]="!f.ignored" (change)="toggleIgnore(f)" [attr.aria-label]="'Use ' + f.original_filename" /> include</label></td>
-              <td class="r nowrap">
-                <button type="button" class="link" (click)="reprocess(f)" [disabled]="f.status === 'unsupported' || active(f)" [attr.aria-label]="'Reprocess ' + f.original_filename">Reprocess</button>
-                <button type="button" class="link" (click)="showExtraction(f)" [attr.aria-label]="'Show extracted data for ' + f.original_filename">Data</button>
-                <button type="button" class="link danger" (click)="remove(f)" [disabled]="active(f)" [attr.aria-label]="'Remove ' + f.original_filename">Remove</button>
+              <td><input type="checkbox" [checked]="!f.ignored" (change)="toggleIgnore(f)" [attr.aria-label]="'Use ' + f.original_filename" /></td>
+              <td>
+                <div class="actions">
+                  <button type="button" class="secondary btn-icon small" (click)="reprocess(f)" [disabled]="f.status === 'unsupported' || active(f)" title="Reprocess" [attr.aria-label]="'Reprocess ' + f.original_filename">↻</button>
+                  <button type="button" class="secondary btn-icon small" (click)="showExtraction(f)" title="View raw payload" [attr.aria-label]="'Show extracted data for ' + f.original_filename">&#123; &#125;</button>
+                  <button type="button" class="secondary btn-icon small" (click)="remove(f)" [disabled]="active(f)" title="Remove" [attr.aria-label]="'Remove ' + f.original_filename">✕</button>
+                </div>
               </td>
             </tr>
           } @empty { <tr><td colspan="6" class="muted">No files yet.</td></tr> }
         </tbody>
       </table>
+      <p class="status small" role="status" aria-live="polite">{{ status() }}</p>
       </div>
       </section>
       <aside class="pane pane-side" aria-label="Report images and extracted data">
-      <section class="panel assets" aria-labelledby="assets-h">
-        <h2 id="assets-h" class="small">Report images <span class="muted">(optional: cover photo and logo, png / jpg / webp)</span></h2>
+      <section class="card assets" aria-labelledby="assets-h">
+        <h2 id="assets-h" class="card-kicker">Report imagery</h2>
         @for (kind of kinds; track kind) {
-          <div class="row">
-            <label class="small">{{ kind === 'cover' ? 'Cover / property photo' : 'Logo' }}
-              <input type="file" accept=".png,.jpg,.jpeg,.webp" (change)="onAsset(kind, $event)" [attr.aria-label]="'Choose ' + (kind === 'cover' ? 'cover photo' : 'logo')" /></label>
+          <div class="asset">
+            <div class="small muted">{{ kind === 'cover' ? 'Cover photo' : 'Sponsor logo' }}</div>
             @if (p.assets[kind]) {
               <img [src]="api.assetUrl(p.id, kind) + '&v=' + assetVersion()" [alt]="'Current ' + kind" class="thumb" />
-              <button type="button" class="link danger" (click)="removeAsset(kind)">Remove {{ kind }}</button>
+            } @else {
+              <div class="asset-empty">Drop {{ kind === 'cover' ? 'a photo' : 'a logo' }} (.png, .jpg, .webp)</div>
             }
+            <div class="row">
+              <label class="btn secondary small">{{ p.assets[kind] ? 'Replace' : 'Choose' }}
+                <input type="file" accept=".png,.jpg,.jpeg,.webp" class="sr-only" (change)="onAsset(kind, $event)" [attr.aria-label]="'Choose ' + (kind === 'cover' ? 'cover photo' : 'logo')" /></label>
+              @if (p.assets[kind]) { <button type="button" class="link danger small" (click)="removeAsset(kind)">Remove {{ kind }}</button> }
+            </div>
           </div>
         }
       </section>
@@ -99,6 +113,7 @@ export class FilesComponent {
   api = inject(ApiService);
   private route = inject(ActivatedRoute);
   private destroy = inject(DestroyRef);
+  private shell = inject(ShellStore);
   private pid = this.route.snapshot.paramMap.get('id')!;
   private poll: Subscription | null = null;
   picker = viewChild.required<ElementRef<HTMLInputElement>>('picker');
@@ -119,9 +134,14 @@ export class FilesComponent {
 
   label(key: string): string { return this.docTypes().find((t) => t.key === key)?.label ?? key; }
   active(f: ProjectFile): boolean { return ACTIVE.has(f.status); }
+  /** The trailing half of the count line: how many of the files are through processing. */
+  processed(p: ProjectDetail): string {
+    const done = p.files.filter((f) => !ACTIVE.has(f.status)).length;
+    return p.files.length ? ` · ${done} processed` : '';
+  }
 
   load(): void {
-    this.api.getProject(this.pid).subscribe({ next: (p) => { this.project.set(p); this.announce(p); this.syncPolling(p); }, error: (e) => this.fail(errorText(e)) });
+    this.api.getProject(this.pid).subscribe({ next: (p) => { this.project.set(p); this.shell.setProject(p); this.announce(p); this.syncPolling(p); }, error: (e) => this.fail(errorText(e)) });
   }
 
   private announce(p: ProjectDetail): void {
@@ -136,7 +156,7 @@ export class FilesComponent {
     const active = p.files.some((f) => ACTIVE.has(f.status));
     if (active && !this.poll) {
       this.poll = interval(2000).pipe(switchMap(() => this.api.getProject(this.pid)), takeUntilDestroyed(this.destroy))
-        .subscribe((np) => { this.project.set(np); this.announce(np); if (!np.files.some((f) => ACTIVE.has(f.status))) { this.poll?.unsubscribe(); this.poll = null; } });
+        .subscribe((np) => { this.project.set(np); this.shell.setProject(np); this.announce(np); if (!np.files.some((f) => ACTIVE.has(f.status))) { this.poll?.unsubscribe(); this.poll = null; } });
     }
   }
 

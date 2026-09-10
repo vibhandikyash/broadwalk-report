@@ -18,8 +18,9 @@ describe('ProjectsComponent', () => {
   it('lists projects and links to their files page', () => {
     const fixture = setup({ listProjects: () => of([{ id: 'a1', name: 'Boardwalk', created_at: '', updated_at: '2026-09-05T10:00:00', file_count: 3 }]) });
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('tbody a')!.textContent).toBe('Boardwalk');
-    expect(el.querySelector('tbody a')!.getAttribute('href')).toBe('/projects/a1/files');
+    const link = el.querySelector('.project-card-link')!;
+    expect(link.querySelector('.card-title')!.textContent).toBe('Boardwalk');
+    expect(link.getAttribute('href')).toBe('/projects/a1/files');
     expect(el.querySelector('button[aria-label="Delete Boardwalk"]')).not.toBeNull();
   });
 
