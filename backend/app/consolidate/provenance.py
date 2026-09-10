@@ -18,6 +18,8 @@ from dataclasses import dataclass
 
 from ..classify.classifier import DOC_TYPE_LABELS, DocType
 from ..models import Field, ReportData
+from ..report.formatters import FILTERS
+from .calc import KPI_SOURCES
 
 ORIGIN_LABELS = {
     "extracted": "Extracted",
@@ -150,6 +152,182 @@ def _missing_reason(path: str, field: Field, data: ReportData) -> str:
     return f"{note} {availability}" if note else availability
 
 
+# ---------- what a calculated value was calculated from ----------
+# Derived cells in a table take their inputs from siblings in the same row: (operator, input columns).
+# A variance follows the report's convention, favourable-positive, so the operator depends on whether
+# the row is an expense; recompute() reads the same row_meta flag.
+CELL_INPUTS: dict[str, tuple[str, tuple[str, ...]]] = {
+    "ptd_var": ("variance", ("ptd_actual", "ptd_budget")),
+    "ytd_var": ("variance", ("ytd_actual", "ytd_budget")),
+    "ptd_var_pct": ("variance_pct", ("ptd_var", "ptd_budget")),
+    "ytd_var_pct": ("variance_pct", ("ytd_var", "ytd_budget")),
+    "variance": ("minus", ("current_rent", "prior_rent")),
+    "variance_pct": ("over", ("variance", "prior_rent")),
+    "pct_spent": ("over", ("spent_to_date", "original_budget")),
+    "concession": ("minus", ("asking_rent", "effective_rent")),
+    "concession_pct": ("over", ("concession", "asking_rent")),
+    "lto": ("minus", ("avg_current", "avg_prior")),
+    "lto_pct": ("over", ("lto", "avg_prior")),
+}
+# Scalar derived fields, as (operator, input paths).
+FIELD_INPUTS: dict[str, tuple[str, tuple[str, ...]]] = {
+    "property.fields.density": ("over", ("property.fields.units", "property.fields.site_acres")),
+    "capital.fields.price_per_unit": ("over", ("capital.fields.purchase_price", "property.fields.units")),
+    "financing.fields.implied_rate": ("annualised", ("financing.fields.interest_monthly", "financing.fields.loan_amount")),
+    "financing.fields.replacement_reserve_annual": ("times12", ("financing.fields.replacement_reserve_monthly",)),
+    "occupancy.fields.change_bps": ("bps", ("occupancy.fields.current_pct", "occupancy.fields.prior_pct")),
+}
+# How a table's totals row is arrived at, keyed by table path then column.
+TOTAL_INPUTS: dict[str, dict[str, str]] = {
+    "in_place_rent.tables.by_floor_plan": {
+        "units": "sum of the floor-plan rows", "current_rent": "floor-plan rents weighted by units",
+        "prior_rent": "prior floor-plan rents weighted by units"},
+    "underwriting.tables.budget": {"original_budget": "sum of the rows", "spent_to_date": "sum of the rows"},
+    "capex.tables.lines": {c: "sum of the capital lines" for c in
+                           ("ptd_actual", "ptd_budget", "ptd_var", "ytd_actual", "ytd_budget", "ytd_var", "annual_budget")},
+    "submarket.tables.comps": {"units": "average of the comparables", "vintage": "average of the comparables"},
+    "occupancy.tables.new_leases": {"count": "sum of the floor-plan rows", "avg_prior": "weighted by lease count",
+                                    "avg_current": "weighted by lease count"},
+    "occupancy.tables.renewals": {"count": "sum of the floor-plan rows", "avg_prior": "weighted by lease count",
+                                  "avg_current": "weighted by lease count"},
+}
+# Derived values that are worded rather than calculated: labels taken from the reporting period, and
+# captions phrased from a figure elsewhere on the page.
+DERIVED_PROSE: dict[str, str] = {
+    "property.fields.quarter_label": "the reporting period's quarter",
+    "property.fields.period_label": "the reporting period, from its first and last month",
+    "property.fields.period_end": "the last day of the reporting period",
+    "property.fields.prior_quarter_label": "the quarter before the reporting period",
+    "in_place_rent.fields.prior_quarter_label": "the quarter before the reporting period",
+    "financials.fields.period_label": "the reporting period, from its first and last month",
+    "financials.fields.ytd_label": "January to the last month of the reporting period",
+    "status.fields.next_quarter_label": "the quarter after the reporting period",
+    "submarket.fields.data_quarter": "the reporting period's quarter",
+    "capital.fields.contributions_note": "worded from the quarter's equity contributions",
+    "capital.fields.distributions_note": "worded from the distributions to date",
+    "submarket.fields.pipeline_note": "worded from the units under construction and their share of inventory",
+    "submarket.fields.footnote": "states how many comparables the averages cover and how each was averaged",
+    "submarket.fields.source_note": "a fixed attribution line for the submarket data",
+    "occupancy.fields.new_lease_count": "sum of the new-lease counts by floor plan",
+    "occupancy.fields.renewal_count": "sum of the renewal counts by floor plan",
+    "occupancy.fields.new_lease_lto_pct": "the new-lease trade-out total, over the average prior rent",
+    "occupancy.fields.renewal_lto_pct": "the renewal trade-out total, over the average prior rent",
+}
+# Comp-set averages state their own method in the page-8 footnote, which recompute writes.
+COMP_AVERAGE = ("submarket.tables.comps.totals.leased_pct", "submarket.tables.comps.totals.asking_rent",
+                "submarket.tables.comps.totals.effective_rent")
+
+OPERATORS = {
+    "minus": "{n0} {v0}{s0} − {n1} {v1}{s1}",
+    "over": "{n0} {v0}{s0} ÷ {n1} {v1}{s1}",
+    "variance": "{n0} {v0}{s0} − {n1} {v1}{s1}",
+    "variance_expense": "{n1} {v1}{s1} − {n0} {v0}{s0}, the favourable-positive convention for an expense",
+    "variance_pct": "{n0} {v0}{s0} ÷ {n1} {v1}{s1}",
+    "annualised": "{n0} {v0}{s0} × 12 ÷ {n1} {v1}{s1}",
+    "times12": "{n0} {v0}{s0} × 12",
+    "bps": "({n0} {v0}{s0} − {n1} {v1}{s1}) × 10,000",
+}
+
+
+def _shown(field: Field | None) -> str:
+    """An input's value as the report prints it, so the arithmetic can be followed by eye."""
+    if field is None or field.effective in (None, ""):
+        return "—"
+    kind = field.kind
+    if kind == "money":
+        return FILTERS["money"](field.effective)
+    if kind == "percent":
+        return FILTERS["pct"](field.effective, 2)
+    if kind == "integer":
+        return FILTERS["integer"](field.effective)
+    if kind == "number":
+        return FILTERS["num"](field.effective, 2)
+    return FILTERS["text"](field.effective)
+
+
+def where_from(field: Field | None) -> str | None:
+    """Where one input came from, short enough to sit inside a formula."""
+    if field is None or field.effective in (None, ""):
+        return None
+    if field.override is not None:
+        return "entered by reviewer"
+    if field.status == "derived":
+        return "calculated"
+    if field.status == "ai_draft":
+        return "AI-written"
+    src = field.source
+    if src is None or not src.filename:
+        return None
+    where = " · ".join(x for x in (src.filename, _clip(src.locator, 60)) if x)
+    return f"{where}, recovered by OCR" if src.method in ("ocr", "mixed") else where
+
+
+def _formula(op: str, paths: tuple[str, ...], data: ReportData) -> str | None:
+    fields = [data.field(p) for p in paths]
+    if any(f is None for f in fields):
+        return None
+    slots: dict[str, str] = {}
+    for i, f in enumerate(fields):
+        origin = where_from(f)
+        slots[f"n{i}"], slots[f"v{i}"] = (f.label if f else ""), _shown(f)
+        slots[f"s{i}"] = f" [{origin}]" if origin else ""
+    return OPERATORS[op].format(**slots)
+
+
+def _location(path: str, data: ReportData) -> str:
+    """Where a value sits, in the words the report uses: 'Financial Performance: NOI, Var $'."""
+    parts = path.split(".")
+    section = data.sections.get(parts[0])
+    where = section.title if section else parts[0]
+    field = data.field(path)
+    column = field.label if field else parts[-1]
+    if len(parts) >= 6 and parts[3] == "rows":
+        table = data.table(f"{parts[0]}.tables.{parts[2]}")
+        row = table.row_meta.get(parts[4], {}).get("label", parts[4]) if table else parts[4]
+        return f"{where}: {row}, {column}"
+    if len(parts) >= 5 and parts[3] == "totals":
+        return f"{where}: total {column}"
+    return f"{where}: {column}"
+
+
+def calculated_from(path: str, field: Field, data: ReportData) -> str | None:
+    """The inputs behind a calculated value, named and valued. None when the source is not modelled."""
+    parts = path.split(".")
+    if path in DERIVED_PROSE:
+        return DERIVED_PROSE[path]
+    if path in COMP_AVERAGE:
+        return _sentence(str(data.value("submarket.fields.footnote") or "average of the comparables that carry a value"))
+    if path in FIELD_INPUTS:
+        op, inputs = FIELD_INPUTS[path]
+        return _formula(op, inputs, data)
+    if parts[0] == "commentary" and parts[1] == "fields" and parts[2] in KPI_SOURCES:
+        src = KPI_SOURCES[parts[2]]
+        return f"the same figure as {_location(src, data)} ({_shown(data.field(src))})"
+    if len(parts) >= 6 and parts[1] == "tables" and parts[3] == "rows":
+        column = parts[5]
+        entry = CELL_INPUTS.get(column)
+        if not entry:
+            return None
+        op, columns = entry
+        table = data.table(f"{parts[0]}.tables.{parts[2]}")
+        if table is None:
+            return None
+        if op == "variance" and table.row_meta.get(parts[4], {}).get("expense"):
+            op = "variance_expense"
+        return _formula(op, tuple(f"{parts[0]}.tables.{parts[2]}.rows.{parts[4]}.{c}" for c in columns), data)
+    if len(parts) >= 5 and parts[1] == "tables" and parts[3] == "totals":
+        if field.kind == "text":
+            return "the caption on the totals row"
+        described = TOTAL_INPUTS.get(f"{parts[0]}.tables.{parts[2]}", {}).get(parts[4])
+        if described:
+            return described
+        entry = CELL_INPUTS.get(parts[4])
+        if entry:
+            op, columns = entry
+            return _formula(op, tuple(f"{parts[0]}.tables.{parts[2]}.totals.{c}" for c in columns), data)
+    return None
+
+
 @dataclass
 class FieldProvenance:
     """Why a field holds the value it holds, in the words shown to a reviewer and to the client."""
@@ -190,8 +368,9 @@ def describe(path: str, field: Field, data: ReportData) -> FieldProvenance:
         return FieldProvenance("ai_draft", ORIGIN_LABELS["ai_draft"],
                                "Drafted by AI from this report's own extracted figures; pending reviewer approval")
     if status == "derived":
-        return FieldProvenance("computed", ORIGIN_LABELS["computed"],
-                               field.note or "Calculated by the system from other values in this report")
+        formula = calculated_from(path, field, data)
+        detail = f"Calculated: {formula}" if formula else (field.note or "Calculated by the system from other values in this report")
+        return FieldProvenance("computed", ORIGIN_LABELS["computed"], detail)
     src = field.source
     if src is None or not src.filename:
         return FieldProvenance("extracted", ORIGIN_LABELS["extracted"],
@@ -199,6 +378,8 @@ def describe(path: str, field: Field, data: ReportData) -> FieldProvenance:
     ocr = src.method in ("ocr", "mixed")
     origin = "ocr" if ocr else "extracted"
     where = " · ".join(x for x in (src.filename, _clip(src.locator, 90)) if x)
+    if src.text:
+        where = f'{where} — "{_clip(src.text, 120)}"'
     if src.method == "ocr":
         how = "text recovered by Gemini vision OCR"
     elif src.method == "mixed":

@@ -42,7 +42,7 @@ def test_each_page_is_followed_by_its_own_data_sources_sheet(tmp_path):
     import pdfplumber
 
     html, pdf = tmp_path / "prov.html", tmp_path / "prov.pdf"
-    html.write_text(render_html(_data(), {"name": "P"}), encoding="utf-8")
+    html.write_text(render_html(_data(), {"name": "P"}, provenance_appendix=True), encoding="utf-8")
     assert check_layout(html) == []  # the sheets paginate themselves, so nothing is clipped
     render_pdf(html, pdf)
     with pdfplumber.open(pdf) as doc:
@@ -59,7 +59,14 @@ def test_each_page_is_followed_by_its_own_data_sources_sheet(tmp_path):
     for i in sheet:
         assert i > 0 and any(b < i for b in body)
     assert "Data Sources · Financial Performance" in pages[body[5] + 1]
-    assert "Source Files & Extraction Method" in pages[-1]  # the closing summary of every file used
+    assert "Source Files & Extraction Method" in pages[-2]  # the closing summary of every file used
+    # the last sheet defines the markers and states the arithmetic conventions the figures were produced under
+    assert "How to Read These Working Papers" in pages[-1]
+    assert "Half away from zero" in pages[-1] and "prior-period value" in pages[-1]
+    # the sheets announce themselves as working papers, so a reader cannot mistake them for the report
+    for i in sheet:
+        assert "NOT PART OF THE REPORT" in pages[i].upper()  # the badge and footer, uppercased by the stylesheet
+    assert "Annotated copy" in pages[0] and "issued version carries the figures alone" in pages[0]
 
 
 @needs_chromium
@@ -114,3 +121,16 @@ def test_crafted_names_render_inert_in_the_html():
     html = render_html(data, {"name": "P"})
     assert "<img src=x" not in html and "<svg onload" not in html and "<script>" not in html
     assert "&lt;img src=x" in html and "&lt;script&gt;" in html
+
+
+@needs_chromium
+def test_long_source_explanations_still_fit_their_sheets(tmp_path):
+    """Wrapped rows are budgeted, not counted: unusually wordy sources must not overflow a sheet."""
+    data = _data()
+    # a long note on every missing field, which the sheet prints as the reason it is absent
+    for path, field in data.iter_fields():
+        if field.effective in (None, "") and field.status == "missing":
+            field.note = "The supplied export was read in full and no line matched this value; " * 4
+    html = tmp_path / "wordy.html"
+    html.write_text(render_html(data, {"name": "P"}, provenance_appendix=True), encoding="utf-8")
+    assert check_layout(html) == []

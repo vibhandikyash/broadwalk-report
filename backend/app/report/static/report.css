@@ -60,6 +60,8 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .callout { border-left: 3px solid var(--navy); padding: 4pt 8pt; background: var(--wash); font-size: 8.5pt; margin-bottom: 8pt; }
 .col-h { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6.5pt; color: var(--navy); letter-spacing: 0.08em; text-transform: uppercase; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 3pt; margin-bottom: 4pt; }
 .col-h .v { color: var(--ink); }
+/* A second column heading under a table of its own needs air; the first one after a lede does not. */
+.tbl + .col-h { margin-top: 10pt; }
 .col-body { font-size: 7.6pt; }
 .col-body h4 { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6pt; color: var(--mute); margin: 6pt 0 2pt; letter-spacing: 0.06em; text-transform: uppercase; }
 .col-body p { margin: 0 0 4pt; }
@@ -94,3 +96,23 @@ span.prov-ocr { display: inline-block; background: #fff4e0; color: #7a5200; bord
 .prov-key .prov-dot { width: 3.5pt; height: 3.5pt; margin-right: 3pt; }
 .tbl.fixed { table-layout: fixed; }
 .tbl .clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
+/* The value and its explanation wrap in full: a source that is cut off explains nothing. */
+.tbl .wrap { white-space: normal; overflow-wrap: anywhere; max-width: 0; vertical-align: top; }
+
+/* Working papers. These sheets explain the report; they are not part of it, so they deliberately look
+   like something clipped behind it: a tinted ground, a ruled edge, and a header that says as much. */
+.page.annex { background: #f3f1ec; border-left: 4pt solid var(--navy); padding-left: calc(0.45in - 4pt); }
+.annex-hdr { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--line); padding-bottom: 5pt; margin-bottom: 9pt; }
+.annex-hdr h1 { font-size: 15pt; font-weight: 600; }
+.annex-hdr-r { text-align: right; font-size: 6.5pt; color: var(--mute); }
+.annex-hdr-r .tag { display: block; margin-top: 2pt; color: var(--navy); }
+.annex-mark {
+  display: inline-block; font-size: 5.6pt; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #7a5200; background: #fdf3e0; border: 0.5pt solid #d8a200; border-radius: 2pt;
+  padding: 1pt 5pt; margin-bottom: 3pt;
+}
+.page.annex .tbl.prov td, .page.annex .tbl.prov th { background: transparent; }
+.annotated-note {
+  border-left: 2pt solid var(--navy); background: rgba(255, 255, 255, 0.55); padding: 4pt 7pt;
+  margin: -4pt 0 10pt; font-size: 7pt; color: var(--ink);
+}

@@ -120,7 +120,7 @@ def test_sheets_are_numbered_after_the_page_they_explain():
     assert [s["page"] for s in sheets[2]] == [3, 4]  # two sheets follow page 2
     assert printed[3] == 5 and printed[4] == 6     # page 3 is pushed down by them
     assert [s["page"] for s in sheets[4]] == [7, 8, 9] and sheets[4][0]["count"] == 3
-    assert printed[10] == 15 and total == 16       # + the closing source-file summary
+    assert printed[10] == 15 and total == 17       # + the closing source-file summary and the method sheet
     assert sheets[1] == [] and sheets[5] == []
 
 

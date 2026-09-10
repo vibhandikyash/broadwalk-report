@@ -26,8 +26,11 @@
    why any dash is a dash. 'SOURCE PROVENANCE' in the tag is how a checker tells these from the fixed pages. #}
 {% macro sheets(n, title) %}
 {% for sheet in prov_sheets.get(n, []) %}
-<section class="page">
-{{ header('Data Sources · ' ~ title, 'SOURCE PROVENANCE' ~ (' ' ~ sheet.index ~ ' OF ' ~ sheet.count if sheet.count > 1 else '')) }}
+<section class="page annex">
+<div class="annex-hdr">
+  <div><span class="annex-mark mono">Not part of the report</span><h1>Data Sources · {{ title }}</h1></div>
+  <div class="annex-hdr-r mono">{{ head|upper }}<span class="tag">SOURCE PROVENANCE{{ ' ' ~ sheet.index ~ ' OF ' ~ sheet.count if sheet.count > 1 }}</span></div>
+</div>
 <p class="sheet-lede">Where every figure on page {{ pno[n] }} came from. Anything printed there as {{ NONE }} was in none of the files supplied for this period; the reason is given below.</p>
 <div class="prov-key mono">
   {% for key, label in prov_origins %}<span><span class="prov-dot prov-{{ key }}"></span>{{ label }}</span>{% endfor %}
@@ -40,16 +43,16 @@
   <tr class="group"><td colspan="4">{{ item.label|upper }}</td></tr>
   {% else %}
   <tr>
-    <td class="clip">{{ item.label }}</td>
+    <td class="wrap">{{ item.label }}</td>
     <td class="clip r">{{ item.value }}</td>
     <td class="clip"><span class="prov-dot prov-{{ item.origin }}"></span>{% if item.origin == 'ocr' %}<span class="prov-ocr">OCR</span>{% else %}{{ item.method }}{% endif %}</td>
-    <td class="clip {{ 'muted' if item.origin == 'missing' }}">{{ item.detail }}</td>
+    <td class="wrap {{ 'muted' if item.origin == 'missing' }}">{{ item.detail }}</td>
   </tr>
   {% endif %}
   {% endfor %}
   </tbody>
 </table>
-{{ footer('Data Sources · ' ~ title, sheet.page) }}
+{{ footer('Working paper · not part of the report', sheet.page) }}
 </section>
 {% endfor %}
 {% endmacro %}
@@ -61,6 +64,7 @@
     <div class="mono small">{{ q }} · LP QUARTERLY REPORT · CONFIDENTIAL</div>
     <div class="badge mono">{{ q }}<span>QUARTERLY INVESTOR REPORT</span></div>
     {% if draft_gaps %}<div class="mono small draft">DRAFT · {{ draft_gaps }} item{{ 's' if draft_gaps != 1 }} outstanding on the review screen</div>{% endif %}
+    {% if provenance %}<div class="annotated-note small">Annotated copy. Interleaved working papers show where each figure came from; they are not part of the report and the issued version carries the figures alone.</div>{% endif %}
     <h1 class="cover-title">{{ name }}</h1>
     <h2 class="cover-sub">{{ v('property.fields.city_state')|text }}</h2>
     <p class="lede">{{ v('property.fields.units')|integer }}-unit multifamily community. Quarterly performance review for the period ending {{ v('property.fields.period_end')|date_long }}.</p>
@@ -353,8 +357,11 @@
 
 {# ---------- CLOSING: THE SOURCE FILES BEHIND THE WHOLE REPORT ---------- #}
 {% if provenance %}
-<section class="page">
-{{ header('Source Files & Extraction Method', 'SOURCE PROVENANCE SUMMARY') }}
+<section class="page annex">
+<div class="annex-hdr">
+  <div><span class="annex-mark mono">Not part of the report</span><h1>Source Files &amp; Extraction Method</h1></div>
+  <div class="annex-hdr-r mono">{{ head|upper }}<span class="tag">SOURCE PROVENANCE SUMMARY</span></div>
+</div>
 <p class="body">Every figure in this report is traced to the file and line it was read from, on the data-sources
 sheet that follows its page. This page lists the files behind all of them. Figures printed as {{ NONE }} were in
 none of the files supplied for this period; the reason is stated against each one. Values marked
@@ -380,7 +387,39 @@ machine-readable text, and warrant a closer look.</p>
   {% endfor %}
   </tbody>
 </table>
-{{ footer('Source Files & Extraction Method', total_pages) }}
+{{ footer('Working paper · not part of the report', total_pages - 1) }}
+</section>
+
+{# ---------- CLOSING: HOW THE FIGURES WERE READ AND CALCULATED ---------- #}
+<section class="page annex">
+<div class="annex-hdr">
+  <div><span class="annex-mark mono">Not part of the report</span><h1>How to Read These Working Papers</h1></div>
+  <div class="annex-hdr-r mono">{{ head|upper }}<span class="tag">SOURCE PROVENANCE METHOD</span></div>
+</div>
+<p class="body">Each data-sources sheet states, for every figure on the page before it, how that figure was obtained.
+This page defines the six markers it uses and the arithmetic conventions applied throughout the report.</p>
+<div class="col-h"><span>How we got it</span><span class="v">The six markers used on every data-sources sheet</span></div>
+<table class="tbl prov">
+  <tbody>
+  <tr><td style="width:24%"><span class="prov-dot prov-extracted"></span>Extracted</td><td>Read directly from a supplied file. The sheet names the file, the worksheet or page, the row, and quotes the source line it was read from.</td></tr>
+  <tr><td><span class="prov-dot prov-ocr"></span>Extracted by OCR</td><td>The page carried no machine-readable text, so it was transcribed from an image by vision OCR before being read. Transcription confidence is stated. These warrant a closer look than the rest.</td></tr>
+  <tr><td><span class="prov-dot prov-computed"></span>Calculated</td><td>Derived from other figures in this report. The sheet gives the formula in full, with each input value and the file and row it came from.</td></tr>
+  <tr><td><span class="prov-dot prov-manual"></span>Entered by reviewer</td><td>Typed on the review screen, either because no file carried it or because the extracted value was corrected.</td></tr>
+  <tr><td><span class="prov-dot prov-ai_draft"></span>AI-written</td><td>Narrative prose drafted from the figures above it, for a reviewer to check. No number is ever produced this way.</td></tr>
+  <tr><td><span class="prov-dot prov-missing"></span>Not found</td><td>In none of the files supplied for this period. The sheet names the document that would ordinarily carry it. Nothing is estimated or inferred to fill the gap.</td></tr>
+  </tbody>
+</table>
+<div class="col-h"><span>Calculation conventions</span><span class="v">Applied to every calculated figure</span></div>
+<table class="tbl prov">
+  <tbody>
+  <tr><td style="width:24%">Precision</td><td>Every calculation runs at full precision on the extracted values and is rounded once, for display only. An intermediate result is never rounded and fed into the next step.</td></tr>
+  <tr><td>Rounding</td><td>Half away from zero: 1,424.5 prints as 1,425 and {{ MINUS }}162.5 as {{ MINUS }}163. This is the convention of financial statements and of Excel&rsquo;s ROUND, rather than the half-to-even default of most programming languages.</td></tr>
+  <tr><td>Percentage change</td><td>Divided by the prior-period value, never by the current one.</td></tr>
+  <tr><td>Variance</td><td>Actual less budget. On expense lines the sign is inverted so that a favourable result reads positive; the data-sources sheet says so against each line it applies to.</td></tr>
+  <tr><td>Reading a difference</td><td>Because operands are rounded for display only, a printed difference can differ by one unit from subtracting the two printed figures. Where they differ, the printed difference is the more accurate of the two.</td></tr>
+  </tbody>
+</table>
+{{ footer('Working paper · not part of the report', total_pages) }}
 </section>
 {% endif %}
 </body>

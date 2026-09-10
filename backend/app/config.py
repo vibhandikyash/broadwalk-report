@@ -23,6 +23,11 @@ def _value(raw: str) -> str:
     return re.split(r"\s+#", val, maxsplit=1)[0].strip()
 
 
+def _flag(name: str, default: bool = False) -> bool:
+    raw = os.getenv(name)
+    return default if raw is None or not raw.strip() else _value(raw).lower() in ("1", "true", "yes", "on")
+
+
 def _load_dotenv() -> None:
     """Minimal .env loader: KEY=VALUE lines, existing env vars win."""
     for candidate in (Path.cwd() / ".env", BACKEND_DIR.parent / ".env", BACKEND_DIR / ".env"):
@@ -58,6 +63,10 @@ class Settings:
     ocr_dpi: int = int(os.getenv("OCR_DPI", "200"))
     ocr_timeout_seconds: int = int(os.getenv("OCR_TIMEOUT_SECONDS", "60"))
     ocr_min_text_chars: int = int(os.getenv("OCR_MIN_TEXT_CHARS", "20"))
+    # Annexes the generated PDF with the data-source sheets: where every value came from, whether OCR
+    # was needed, and why a dash is a dash. Off by default because the delivered report carries values
+    # only; turn it on to show a reviewer or a client how the figures were arrived at.
+    report_provenance: bool = _flag("REPORT_PROVENANCE", False)
     config_dir: Path = BACKEND_DIR / "config"
 
     @property

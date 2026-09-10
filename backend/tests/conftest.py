@@ -6,3 +6,6 @@ os.environ["APP_WORKERS"] = "2"
 # Empty values deliberately override the developer's local .env during tests.
 os.environ["ANTHROPIC_API_KEY"] = ""
 os.environ["GEMINI_API_KEY"] = ""
+# The annotated copy is what the suite exercises, whatever the developer has set locally. Tests that
+# care about the plain deliverable pass provenance_appendix=False explicitly.
+os.environ["REPORT_PROVENANCE"] = "true"

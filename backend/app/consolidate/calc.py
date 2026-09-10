@@ -77,6 +77,30 @@ def month_label(ym: str) -> str:
     return f"{calendar.month_abbr[int(m)]} {y}"
 
 
+FIN = "financials.tables.lines.rows"
+CAPEX_TOTALS = "capex.tables.lines.totals"
+# Page 5's headline figures are copies of lines on pages 6 and 7. Naming the source once means the
+# calculation and the provenance sheet that explains it cannot drift apart.
+KPI_SOURCES: dict[str, str] = {
+    "revenue_actual": f"{FIN}.total_revenue.ptd_actual", "revenue_budget": f"{FIN}.total_revenue.ptd_budget",
+    "revenue_var": f"{FIN}.total_revenue.ptd_var", "revenue_var_pct": f"{FIN}.total_revenue.ptd_var_pct",
+    "gpr_var_pct": f"{FIN}.gpr.ptd_var_pct", "gain_to_lease_actual": f"{FIN}.gain_loss_to_lease.ptd_actual",
+    "gain_to_lease_budget": f"{FIN}.gain_loss_to_lease.ptd_budget", "gain_to_lease_var_pct": f"{FIN}.gain_loss_to_lease.ptd_var_pct",
+    "concessions_var": f"{FIN}.concessions.ptd_var", "opex_actual": f"{FIN}.total_opex.ptd_actual",
+    "opex_budget": f"{FIN}.total_opex.ptd_budget", "opex_var": f"{FIN}.total_opex.ptd_var", "opex_var_pct": f"{FIN}.total_opex.ptd_var_pct",
+    "insurance_var": f"{FIN}.insurance.ptd_var", "utilities_var": f"{FIN}.utilities.ptd_var",
+    "noi_actual": f"{FIN}.noi.ptd_actual", "noi_budget": f"{FIN}.noi.ptd_budget", "noi_var": f"{FIN}.noi.ptd_var",
+    "noi_var_pct": f"{FIN}.noi.ptd_var_pct", "debt_service_actual": f"{FIN}.debt_service.ptd_actual",
+    "ncf_actual": f"{FIN}.net_cash_flow.ptd_actual", "ncf_budget": f"{FIN}.net_cash_flow.ptd_budget",
+    "ncf_var": f"{FIN}.net_cash_flow.ptd_var", "ncf_var_pct": f"{FIN}.net_cash_flow.ptd_var_pct",
+    "noi_ytd_var_pct": f"{FIN}.noi.ytd_var_pct",
+    **{k: f"{CAPEX_TOTALS}.{c}" for k, c in (
+        ("capex_actual", "ptd_actual"), ("capex_budget", "ptd_budget"), ("capex_var", "ptd_var"),
+        ("capex_ytd_actual", "ytd_actual"), ("capex_ytd_budget", "ytd_budget"), ("capex_ytd_var", "ytd_var"),
+        ("capex_annual_budget", "annual_budget"))},
+}
+
+
 def _row_val(row: dict, key: str):
     f = row.get(key)
     return None if f is None else f.effective
@@ -175,23 +199,6 @@ def recompute(d: ReportData) -> None:  # noqa: C901 - one long, explicit pass ov
     t = d.table("financials.tables.lines")
     if t:
         _recompute_variances(t)
-    fin = "financials.tables.lines.rows"
-    kpis = {
-        "revenue_actual": f"{fin}.total_revenue.ptd_actual", "revenue_budget": f"{fin}.total_revenue.ptd_budget",
-        "revenue_var": f"{fin}.total_revenue.ptd_var", "revenue_var_pct": f"{fin}.total_revenue.ptd_var_pct",
-        "gpr_var_pct": f"{fin}.gpr.ptd_var_pct", "gain_to_lease_actual": f"{fin}.gain_loss_to_lease.ptd_actual",
-        "gain_to_lease_budget": f"{fin}.gain_loss_to_lease.ptd_budget", "gain_to_lease_var_pct": f"{fin}.gain_loss_to_lease.ptd_var_pct",
-        "concessions_var": f"{fin}.concessions.ptd_var", "opex_actual": f"{fin}.total_opex.ptd_actual",
-        "opex_budget": f"{fin}.total_opex.ptd_budget", "opex_var": f"{fin}.total_opex.ptd_var", "opex_var_pct": f"{fin}.total_opex.ptd_var_pct",
-        "insurance_var": f"{fin}.insurance.ptd_var", "utilities_var": f"{fin}.utilities.ptd_var",
-        "noi_actual": f"{fin}.noi.ptd_actual", "noi_budget": f"{fin}.noi.ptd_budget", "noi_var": f"{fin}.noi.ptd_var",
-        "noi_var_pct": f"{fin}.noi.ptd_var_pct", "debt_service_actual": f"{fin}.debt_service.ptd_actual",
-        "ncf_actual": f"{fin}.net_cash_flow.ptd_actual", "ncf_budget": f"{fin}.net_cash_flow.ptd_budget",
-        "ncf_var": f"{fin}.net_cash_flow.ptd_var", "ncf_var_pct": f"{fin}.net_cash_flow.ptd_var_pct",
-        "noi_ytd_var_pct": f"{fin}.noi.ytd_var_pct",
-    }
-    for key, path in kpis.items():
-        setv(f"commentary.fields.{key}", v(path))
 
     # capex
     t = d.table("capex.tables.lines")
@@ -199,11 +206,10 @@ def recompute(d: ReportData) -> None:  # noqa: C901 - one long, explicit pass ov
         _recompute_variances(t)
         for ck in ("ptd_actual", "ptd_budget", "ptd_var", "ytd_actual", "ytd_budget", "ytd_var", "annual_budget"):
             _set_total(t, ck, sum_or_none(_row_val(r, ck) for r in t.rows.values()))
-        cap = "capex.tables.lines.totals"
-        for key, col in (("capex_actual", "ptd_actual"), ("capex_budget", "ptd_budget"), ("capex_var", "ptd_var"),
-                         ("capex_ytd_actual", "ytd_actual"), ("capex_ytd_budget", "ytd_budget"), ("capex_ytd_var", "ytd_var"),
-                         ("capex_annual_budget", "annual_budget")):
-            setv(f"commentary.fields.{key}", v(f"{cap}.{col}"))
+
+    # page 5 mirrors lines from pages 6 and 7, so it is filled once both are final
+    for key, path in KPI_SOURCES.items():
+        setv(f"commentary.fields.{key}", v(path))
 
     # submarket
     uc, ucp = v("submarket.fields.under_construction"), v("submarket.fields.uc_pct")
