@@ -140,7 +140,7 @@ def test_full_workflow_in_the_browser(tmp_path):
         units.fill("338")
         save()
         # stored corrections are listed and can be reset individually
-        page.locator("details.corrections summary").click()
+        page.locator(".inspector-tabs button", has_text="Corrections").click()
         expect(page.locator(".corrections li code", has_text="financing.fields.lender").or_(page.locator(".corrections li code").first)).to_be_visible()
         n_before = page.locator(".corrections li code").count()
         assert n_before >= 3

@@ -206,7 +206,9 @@ def _sources_used(sel: Selection) -> list[dict]:
 # ---------- sections ----------
 def _property(ctx: Ctx, data: ReportData) -> Section:
     sel, p = ctx.sel, ctx.period
-    s = Section(key="property", title="Property", page=1)
+    # Page 2 prints these facts; the cover repeats a handful of them. Naming page 2 keeps the review
+    # screen, the completeness requirements and the live preview pointing at the same page.
+    s = Section(key="property", title="Property", page=2)
     f = s.fields
     rr = _at_or_before(sel.rent_rolls, p.end)
     sch = _at_or_before(sel.schedules, p.end)

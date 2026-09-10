@@ -2,7 +2,12 @@ export type FileStatus = 'queued' | 'processing' | 'processed' | 'failed' | 'uns
 export type Stage = 'upload' | 'processing' | 'review' | 'generated';
 export type AssetKind = 'cover' | 'logo';
 
-export interface Project { id: string; name: string; created_at: string; updated_at: string; file_count?: number; }
+/** A project as the index lists it: where it has got to and what is waiting, without a per-project read. */
+export interface Project {
+  id: string; name: string; created_at: string; updated_at: string; file_count?: number;
+  files_attention?: number; stage?: Stage; report_built?: boolean;
+  latest_version?: number | null; latest_gap_count?: number | null;
+}
 export interface Part { doc_type: string; confidence: number; locator: string; warnings: string[]; }
 export interface ProjectFile {
   id: string; project_id: string; original_filename: string; ext: string; size: number; status: FileStatus;
@@ -47,7 +52,9 @@ export interface UiField {
 export interface UiColumn { key: string; label: string; kind: Kind; derived: boolean; }
 export interface UiRow { key: string; label: string; manual: boolean; subject: boolean; cells: UiField[]; }
 export interface UiTable { path: string; key: string; title: string; columns: UiColumn[]; rows: UiRow[]; totals: UiField[]; editable_rows: boolean; }
-export interface UiSection { key: string; title: string; page: number; fields: UiField[]; tables: UiTable[]; }
+/** `preview_page` is the sheet of the live preview this section prints on; the interleaved
+ *  data-sources sheets mean it is not the same number as `page`. */
+export interface UiSection { key: string; title: string; page: number; preview_page: number; fields: UiField[]; tables: UiTable[]; }
 export interface Issue { path: string | null; severity: 'error' | 'warning' | 'info'; message: string; }
 export interface Gap { path: string; label: string; page: number; group: string; reason: string; }
 export interface GapGroup { key: string; label: string; page: number; complete: boolean; gap_count: number; }
@@ -61,6 +68,7 @@ export interface ProvenanceSummary { counts: Record<Origin, number>; files: Prov
 export interface ReportDataUi {
   built_at: string | null; summary: Summary; issues: Issue[]; sections: UiSection[]; meta: Record<string, unknown>;
   narrative_status: string | null; narrative_error: string | null; provenance?: ProvenanceSummary;
+  preview_total_pages?: number;
 }
 export interface Change { path: string; value: unknown; }
 export interface PatchBody { changes?: Change[]; add_rows?: { table: string; key?: string; values: Record<string, unknown> }[]; delete_rows?: { table: string; key: string }[]; }

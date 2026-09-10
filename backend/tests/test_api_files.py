@@ -46,3 +46,24 @@ def test_upload_rejects_oversize(tmp_path, monkeypatch):
         p = client.post("/api/projects", json={"name": "P"}).json()
         r = client.post(f"/api/projects/{p['id']}/files", files=[("files", ("big.xlsx", b"x" * 10, "application/octet-stream"))])
         assert r.status_code == 413
+
+
+def test_project_index_reports_stage_and_what_is_waiting(tmp_path):
+    """The index answers 'where has each project got to' from one query, without reading each project."""
+    from app.api.projects import project_summary
+
+    with TestClient(app) as client:
+        empty = client.post("/api/projects", json={"name": "Empty"}).json()["id"]
+        rows = {p["id"]: p for p in client.get("/api/projects").json()}
+        assert rows[empty]["stage"] == "upload" and rows[empty]["file_count"] == 0
+        assert rows[empty]["latest_version"] is None and rows[empty]["report_built"] is False
+
+    # the stage rules, driven straight off the counts the query returns
+    base = {"id": "p", "name": "N", "created_at": "", "updated_at": ""}
+    stage = lambda **kw: project_summary({**base, **kw})["stage"]  # noqa: E731
+    assert stage(file_count=0) == "upload"
+    assert stage(file_count=3, files_active=1) == "processing"
+    assert stage(file_count=3, files_active=0, built_at=None) == "processing"
+    assert stage(file_count=3, files_active=0, built_at="t") == "review"
+    assert stage(file_count=3, files_active=0, built_at="t", latest_version=2) == "generated"
+    assert project_summary({**base, "file_count": 3, "files_attention": 2})["files_attention"] == 2

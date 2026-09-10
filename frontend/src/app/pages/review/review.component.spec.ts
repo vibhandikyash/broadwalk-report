@@ -8,9 +8,18 @@ import { FieldEditorComponent } from './field-editor.component';
 import { ReviewComponent } from './review.component';
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
+/** Click one of the inspector's tabs by its visible name. */
+const inspector = (el: HTMLElement, name: string) => {
+  const tab = Array.from(el.querySelectorAll('.inspector-tabs button') as NodeListOf<HTMLButtonElement>)
+    .find((b) => b.textContent!.includes(name));
+  if (!tab) throw new Error(`no inspector tab named ${name}`);
+  tab.click();
+  return tab;
+};
 
 function setup(api: Partial<Record<keyof ApiService, unknown>>) {
-  const base = { getProject: () => of(detail()), health: () => of({ ok: true, llm_enabled: false, llm_provider: null, pdf_renderer: true, workers: 3 }), reportData: () => of(uiData()) };
+  const base = { getProject: () => of(detail()), health: () => of({ ok: true, llm_enabled: false, llm_provider: null, pdf_renderer: true, workers: 3 }),
+                 reportData: () => of(uiData()), previewUrl: () => '/api/projects/p1/report/preview?t=1' };
   TestBed.configureTestingModule({ providers: [provideRouter([]), routeStub(), { provide: ApiService, useValue: { ...base, ...api } }] });
   const fixture = TestBed.createComponent(ReviewComponent);
   fixture.detectChanges();
@@ -40,14 +49,14 @@ describe('ReviewComponent', () => {
     c.onChange({ path: 'property.fields.units', value: 341 });
     fixture.detectChanges();
     expect(c.pending().size).toBe(2);
-    expect(fixture.nativeElement.querySelector('.toolbar button:not(.secondary)').textContent).toContain('Save (2)');
-    expect(fixture.nativeElement.querySelector('nav button[disabled]')).not.toBeNull();  // Report link is guarded while edits are unsaved
+    expect(fixture.nativeElement.querySelector('.project-action button').textContent).toContain('Save (2)');
+    expect(fixture.nativeElement.querySelector('.tabs button[disabled]')!.textContent).toContain('Report');  // guarded while edits are unsaved
     c.save();
     fixture.detectChanges();
     expect(patch).toHaveBeenCalledWith('p1', { changes: [{ path: 'property.fields.units', value: 341 }, { path: 'financing.fields.lender', value: 'Fannie Mae' }] });
     expect(c.pending().size).toBe(0);
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain('Saved 2 changes');
-    expect(fixture.nativeElement.querySelector('nav a.btn:not(.secondary)')!.textContent).toContain('Report');
+    expect(fixture.nativeElement.querySelector('.tabs a[href$="/report"]')!.textContent).toContain('Report');  // reachable again once saved
   });
 
   it('keeps the edits and focuses the message when the backend rejects them', async () => {
@@ -102,7 +111,9 @@ describe('ReviewComponent', () => {
 
   it('jumps from an issue to its section and moves focus to the heading', async () => {
     const fixture = setup({});
-    const buttons = fixture.nativeElement.querySelectorAll('details.issues button.issue') as NodeListOf<HTMLButtonElement>;
+    inspector(fixture.nativeElement, 'Issues');
+    fixture.detectChanges();
+    const buttons = fixture.nativeElement.querySelectorAll('.issues button.issue') as NodeListOf<HTMLButtonElement>;
     expect(buttons.length).toBe(2);
     expect(buttons[1].disabled).toBe(true);  // no path to jump to
     buttons[0].click();
@@ -115,9 +126,7 @@ describe('ReviewComponent', () => {
   it('lists stored corrections and resets one through the recovery endpoint', () => {
     const reset = vi.fn(() => of({ fields: {} }));
     const fixture = setup({ overrides: () => of({ fields: { 'property.fields.units': 'lots' }, rows: { 'underwriting.tables.budget': { 'manual-1': {} } }, deleted_rows: { 'submarket.tables.comps': ['westchase'] }, ai_drafts: { 'capex.fields.narrative': 'x' } }), resetOverrides: reset });
-    const details = fixture.nativeElement.querySelector('details.corrections') as HTMLDetailsElement;
-    details.open = true;
-    details.dispatchEvent(new Event('toggle'));
+    inspector(fixture.nativeElement, 'Corrections');
     fixture.detectChanges();
     const items = Array.from(fixture.nativeElement.querySelectorAll('.corrections li code') as NodeListOf<HTMLElement>).map((c) => c.textContent);
     expect(items).toEqual(['property.fields.units', 'underwriting.tables.budget.rows.manual-1', 'submarket.tables.comps.deleted', 'capex.fields.narrative']);
@@ -128,9 +137,10 @@ describe('ReviewComponent', () => {
   it('lists completeness gaps by page and jumps to the section of a gap', async () => {
     const fixture = setup({});
     const el: HTMLElement = fixture.nativeElement;
-    const panel = el.querySelector('details.completeness') as HTMLDetailsElement;
-    expect(panel.open).toBe(true);
-    expect(panel.querySelector('summary')!.textContent).toContain('2 items outstanding');
+    inspector(el, 'Outstanding');
+    fixture.detectChanges();
+    const panel = el.querySelector('.completeness') as HTMLElement;
+    expect(panel.querySelector('.pane-title')!.textContent).toContain('2 items outstanding');
     const buttons = panel.querySelectorAll('button.issue') as NodeListOf<HTMLButtonElement>;
     expect(buttons.length).toBe(2);
     expect(buttons[0].textContent).toContain('p4');
@@ -164,7 +174,9 @@ describe('ReviewComponent', () => {
 
   it('summarises the origins and names the files that needed OCR', () => {
     const fixture = setup({});
-    const panel = fixture.nativeElement.querySelector('details.prov-panel') as HTMLElement;
+    inspector(fixture.nativeElement, 'Sources');
+    fixture.detectChanges();
+    const panel = fixture.nativeElement.querySelector('.prov-panel') as HTMLElement;
     expect(panel.querySelector('.counts')!.textContent).toContain('via OCR');
     const items = panel.querySelectorAll('li');
     expect(items.length).toBe(2);
@@ -173,6 +185,40 @@ describe('ReviewComponent', () => {
     expect(items[1].textContent).toContain('on page 1');
     expect(items[1].textContent).toContain('94% confidence');
     expect(items[0].querySelector('.prov-tag.prov-ocr')).toBeNull();
+  });
+
+  it('offers a forward step to the report, held back while edits are unsaved', () => {
+    const fixture = setup({});
+    const el: HTMLElement = fixture.nativeElement;
+    const cta = () => el.querySelector('.project-action a.btn, .project-action button[disabled][title]') as HTMLElement;
+    expect(cta().tagName).toBe('A');  // nothing pending: the next step is a live link
+    expect(cta().textContent).toContain('Continue to report');
+    expect(cta().getAttribute('href')).toContain('/report');
+    fixture.componentInstance.onChange({ path: 'property.fields.units', value: 340 });
+    fixture.detectChanges();
+    expect(cta().tagName).toBe('BUTTON');  // unsaved edits: held, with the reason on the control
+    expect((cta() as HTMLButtonElement).disabled).toBe(true);
+    expect(cta().getAttribute('title')).toContain('Save or discard');
+  });
+
+  it('keeps the section list free of diagnostics and puts them behind inspector tabs', () => {
+    const fixture = setup({});
+    const el: HTMLElement = fixture.nativeElement;
+    const nav = el.querySelector('.pane-nav')!;
+    expect(nav.querySelectorAll('.section-link').length).toBe(5);
+    for (const cls of ['.completeness', '.issues', '.corrections', '.prov-panel']) {
+      expect(nav.querySelector(cls)).toBeNull();  // navigation only; diagnostics live in the inspector
+    }
+    const tabs = Array.from(el.querySelectorAll('.inspector-tabs button') as NodeListOf<HTMLButtonElement>);
+    expect(tabs.map((b) => b.textContent!.replace(/\d+/g, '').trim())).toEqual(['Page', 'Outstanding', 'Issues', 'Sources', 'Corrections']);
+    expect(tabs[1].textContent).toContain('2');   // outstanding count on the tab
+    expect(tabs[2].textContent).toContain('2');   // issue count on the tab
+    expect(el.querySelector('.page-view')).not.toBeNull();  // Page is the tab you land on
+    inspector(el, 'Issues');
+    fixture.detectChanges();
+    expect(el.querySelector('.page-view')).toBeNull();
+    expect(el.querySelector('.issues button.issue')).not.toBeNull();
+    expect(el.querySelector('.inspector-tabs button.current')!.textContent).toContain('Issues');
   });
 
   it('explains an unreachable backend', () => {

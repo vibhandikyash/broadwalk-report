@@ -61,9 +61,29 @@ def create_project(body: ProjectIn) -> dict:
     return db.create_project(body.name.strip())
 
 
+def project_summary(row: dict) -> dict:
+    """A project as the index shows it: where it has got to, and what is waiting.
+
+    The stage follows the same rules as _stage above, from the counts the list query already returns,
+    so the index costs one query rather than a full read per project.
+    """
+    built = bool(row.get("built_at"))
+    version = row.get("latest_version")
+    if not row.get("file_count"):
+        stage = "upload"
+    elif row.get("files_active") or not built:
+        stage = "processing"
+    else:
+        stage = "generated" if version else "review"
+    return {"id": row["id"], "name": row["name"], "created_at": row["created_at"], "updated_at": row["updated_at"],
+            "file_count": row.get("file_count") or 0, "files_attention": row.get("files_attention") or 0,
+            "stage": stage, "report_built": built, "latest_version": version,
+            "latest_gap_count": row.get("latest_gap_count")}
+
+
 @router.get("/projects")
 def list_projects() -> list[dict]:
-    return db.list_projects()
+    return [project_summary(r) for r in db.list_projects()]
 
 
 @router.get("/projects/{pid}")

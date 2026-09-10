@@ -5,25 +5,22 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { interval, switchMap, takeWhile } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { Completeness, ProjectDetail, Report, ReportDataUi, errorText } from '../../core/models';
+import { ProjectNavComponent } from '../../shared/project-nav.component';
 import { StatusChipComponent } from '../../shared/status-chip.component';
-import { StepperComponent } from '../../shared/stepper.component';
 
 const BUSY = new Set(['queued', 'rendering']);
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [RouterLink, StepperComponent, StatusChipComponent],
+  imports: [ProjectNavComponent, StatusChipComponent],
   template: `
     @if (project(); as p) {
-      <app-stepper [stage]="p.stage" />
-      <div class="row between">
-        <h1>{{ p.name }} <span class="muted">· report</span></h1>
-        <nav class="row" aria-label="Project pages">
-          <a [routerLink]="['/projects', p.id, 'review']" class="btn secondary">← Review</a>
-          <button type="button" (click)="generate()" [disabled]="generating()">{{ generating() ? 'Rendering…' : (completeness()?.complete === false ? 'Generate draft PDF' : 'Generate PDF') }}</button>
-        </nav>
-      </div>
+      <app-project-nav [project]="p" current="report" [gaps]="completeness() ? completeness()!.gap_count : null">
+        <button type="button" (click)="generate()" [disabled]="generating()">{{ generating() ? 'Rendering…' : (completeness()?.complete === false ? 'Generate draft PDF' : 'Generate PDF') }}</button>
+      </app-project-nav>
+      <div class="workbench two-pane">
+      <section class="pane pane-main" aria-label="Report preview">
       @if (completeness(); as c) {
         <p class="small completeness-line" [class.warn]="!c.complete" [class.ok]="c.complete">
           @if (c.complete) { <span class="chip chip-done">complete</span> Every item a finished investor report needs has been reviewed. }
@@ -37,10 +34,10 @@ const BUSY = new Set(['queued', 'rendering']);
       }
       <p class="status small" role="status" aria-live="polite">{{ status() }}</p>
       @if (error()) { <p class="err" role="alert" tabindex="-1" #alert>{{ error() }}</p> }
-      <div class="report-layout">
-        <div class="preview"><iframe [src]="previewUrl()" title="Report preview" sandbox=""></iframe></div>
-        <aside class="versions" aria-labelledby="versions-h">
-          <h3 id="versions-h">Versions</h3>
+      <div class="preview"><iframe [src]="previewUrl()" title="Report preview" sandbox=""></iframe></div>
+      </section>
+        <aside class="pane pane-side versions" aria-labelledby="versions-h">
+          <div class="pane-head"><h2 class="pane-title" id="versions-h">Versions</h2></div>
           <ul class="plain">
           @for (r of reports(); track r.id) {
             <li class="version">

@@ -18,7 +18,7 @@ import { Health } from './core/models';
         <span class="err small" role="alert">Backend not reachable on /api. Start it (see README) and reload.</span>
       }
     </header>
-    <main id="main" class="container" tabindex="-1"><router-outlet /></main>`,
+    <main id="main" class="app-main" tabindex="-1"><router-outlet /></main>`,
 })
 export class AppComponent {
   private api = inject(ApiService);

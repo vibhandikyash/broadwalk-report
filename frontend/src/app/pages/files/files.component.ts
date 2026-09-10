@@ -6,30 +6,26 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription, interval, switchMap } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AssetKind, DocTypeOption, FileExtraction, ProjectDetail, ProjectFile, errorText } from '../../core/models';
+import { ProjectNavComponent } from '../../shared/project-nav.component';
 import { StatusChipComponent } from '../../shared/status-chip.component';
-import { StepperComponent } from '../../shared/stepper.component';
 
 const ACTIVE = new Set(['queued', 'processing']);
 
 @Component({
   selector: 'app-files',
   standalone: true,
-  imports: [FormsModule, RouterLink, JsonPipe, DecimalPipe, StatusChipComponent, StepperComponent],
+  imports: [FormsModule, RouterLink, JsonPipe, DecimalPipe, StatusChipComponent, ProjectNavComponent],
   template: `
     @if (project(); as p) {
-      <app-stepper [stage]="p.stage" />
-      <div class="row between">
-        <h1>{{ p.name }} <span class="muted">· source files</span></h1>
-        <nav class="row" aria-label="Project pages">
-          @if (p.report_built) {
-            <a [routerLink]="['/projects', p.id, 'review']" class="btn">Review data →</a>
-            <a [routerLink]="['/projects', p.id, 'report']" class="btn secondary">Report</a>
-          } @else {
-            <button type="button" class="btn" disabled title="Available once the files have been processed">Review data →</button>
-            <button type="button" class="btn secondary" disabled title="Available once the files have been processed">Report</button>
-          }
-        </nav>
-      </div>
+      <app-project-nav [project]="p" current="files">
+        @if (p.report_built) {
+          <a class="btn" [routerLink]="['/projects', p.id, 'review']">Continue to review →</a>
+        } @else {
+          <button type="button" disabled title="Available once the files have been processed">Continue to review →</button>
+        }
+      </app-project-nav>
+      <div class="workbench two-pane">
+      <section class="pane pane-main" aria-label="Source files">
       <label class="dropzone" [class.drag]="dragging()" tabindex="0" (keydown.enter)="picker.click()"
              (keydown.space)="$event.preventDefault(); picker.click()"
              (dragover)="$event.preventDefault(); dragging.set(true)" (dragleave)="dragging.set(false)" (drop)="onDrop($event)">
@@ -76,10 +72,8 @@ const ACTIVE = new Set(['queued', 'processing']);
         </tbody>
       </table>
       </div>
-      @if (extraction(); as ex) {
-        <details open class="panel"><summary>Extracted payload <button type="button" class="link" (click)="extraction.set(null)">close</button></summary>
-          <pre class="small">{{ ex | json }}</pre></details>
-      }
+      </section>
+      <aside class="pane pane-side" aria-label="Report images and extracted data">
       <section class="panel assets" aria-labelledby="assets-h">
         <h2 id="assets-h" class="small">Report images <span class="muted">(optional: cover photo and logo, png / jpg / webp)</span></h2>
         @for (kind of kinds; track kind) {
@@ -93,6 +87,12 @@ const ACTIVE = new Set(['queued', 'processing']);
           </div>
         }
       </section>
+      @if (extraction(); as ex) {
+        <details open class="panel"><summary>Extracted payload <button type="button" class="link" (click)="extraction.set(null)">close</button></summary>
+          <pre class="small">{{ ex | json }}</pre></details>
+      }
+      </aside>
+      </div>
     } @else if (error()) { <p class="err" role="alert" tabindex="-1" #alert>{{ error() }}</p> } @else { <p class="muted">Loading…</p> }`,
 })
 export class FilesComponent {

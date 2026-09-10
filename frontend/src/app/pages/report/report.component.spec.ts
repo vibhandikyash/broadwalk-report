@@ -36,7 +36,7 @@ describe('ReportComponent', () => {
       fixture.componentInstance.generate();
       fixture.detectChanges();
       expect(fixture.componentInstance.generating()).toBe(true);
-      expect(fixture.nativeElement.querySelector('nav button').textContent).toContain('Rendering');
+      expect(fixture.nativeElement.querySelector('.project-action button').textContent).toContain('Rendering');
       vi.advanceTimersByTime(1600);
       fixture.detectChanges();
       expect(fixture.componentInstance.generating()).toBe(true);
@@ -77,7 +77,7 @@ describe('ReportComponent', () => {
   it('shows the completeness state, labels the button and marks draft versions', () => {
     const fixture = setup({ getProject: () => of(detail({ reports: [report({ complete: false, gap_count: 7 }), report({ id: 'r2', version: 2, complete: true, gap_count: 0 })] })) });
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('nav button')!.textContent).toContain('Generate draft PDF');
+    expect(el.querySelector('.project-action button')!.textContent).toContain('Generate draft PDF');
     expect(el.querySelector('.completeness-line')!.textContent).toContain('2 items outstanding');
     const chips = Array.from(el.querySelectorAll('.version .chip') as NodeListOf<HTMLElement>).map((c) => c.textContent!.trim());
     expect(chips).toContain('draft · 7 outstanding');

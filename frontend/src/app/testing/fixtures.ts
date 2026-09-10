@@ -54,10 +54,10 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
   });
   const noi = uiField({ path: 'commentary.fields.noi_actual', key: 'noi_actual', label: 'NOI actual', kind: 'money', value: 550, effective: 550, status: 'derived', readonly: true, source: null, provenance: provenance({ origin: 'computed', label: 'Calculated', detail: 'Calculated by the system from other values in this report', filename: null, locator: null, doc_type: null, doc_label: null, quote: null }) });
   const sections: UiSection[] = [
-    { key: 'property', title: 'Property', page: 1, fields: [units], tables: [] },
-    { key: 'capital', title: 'Capital Summary', page: 3, fields: [price], tables: [] },
+    { key: 'property', title: 'Property', page: 2, preview_page: 2, fields: [units], tables: [] },
+    { key: 'capital', title: 'Capital Summary', page: 3, preview_page: 5, fields: [price], tables: [] },
     {
-      key: 'underwriting', title: 'Original Underwriting Budget', page: 3, fields: [], tables: [{
+      key: 'underwriting', title: 'Original Underwriting Budget', page: 3, preview_page: 5, fields: [], tables: [{
         path: 'underwriting.tables.budget', key: 'budget', title: 'Original underwriting budget', editable_rows: true,
         columns: [{ key: 'category', label: 'Category', kind: 'text', derived: false }, { key: 'original_budget', label: 'Original budget', kind: 'money', derived: false }, { key: 'pct_spent', label: '% spent', kind: 'percent', derived: true }],
         rows: [{ key: 'manual-1', label: 'Roofs', manual: true, subject: false, cells: [
@@ -68,8 +68,8 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
         totals: [uiField({ path: 'underwriting.tables.budget.totals.original_budget', key: 'original_budget', label: 'Original budget', kind: 'money', value: 75000, effective: 75000, status: 'derived', readonly: true })],
       }],
     },
-    { key: 'financing', title: 'Financing', page: 4, fields: [lender], tables: [] },
-    { key: 'commentary', title: 'Commentary', page: 5, fields: [noi], tables: [] },
+    { key: 'financing', title: 'Financing', page: 4, preview_page: 8, fields: [lender], tables: [] },
+    { key: 'commentary', title: 'Commentary', page: 5, preview_page: 11, fields: [noi], tables: [] },
   ];
   return {
     built_at: '2026-09-05T00:00:00',
@@ -80,7 +80,7 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
       groups: [{ key: 'financing', label: 'Financing terms', page: 4, complete: false, gap_count: 1 }, { key: 'status', label: 'Status update', page: 10, complete: false, gap_count: 1 }],
     } },
     issues: [{ path: 'financing.fields.lender', severity: 'warning', message: 'Missing: Lender' }, { path: null, severity: 'info', message: 'notes.docx: unsupported' }],
-    sections, meta: {}, narrative_status: null, narrative_error: null,
+    sections, meta: {}, narrative_status: null, narrative_error: null, preview_total_pages: 29,
     provenance: { counts: { extracted: 2, ocr: 1, computed: 2, manual: 2, ai_draft: 0, missing: 1 }, files: [
       { filename: 'rr.xlsx', doc_labels: ['Yardi Rent Roll summary (occupancy)'], method: 'native', ocr_pages: [], ocr_confidence: null },
       { filename: 'scan.pdf', doc_labels: ['Slate capital calls'], method: 'ocr', ocr_pages: [1], ocr_confidence: 0.94 },

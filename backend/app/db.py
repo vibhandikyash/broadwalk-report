@@ -144,11 +144,24 @@ def get_project(pid: str) -> dict | None:
         return _decode(con.execute("SELECT * FROM projects WHERE id = ?", (pid,)).fetchone())
 
 
+ATTENTION_STATUSES = ("failed", "unsupported", "unrecognized", "needs_ocr")
+
+
 def list_projects() -> list[dict]:
+    """Every project with the counts the index needs, as one query rather than a read per project."""
+    attention = ", ".join("?" * len(ATTENTION_STATUSES))
     with connect() as con:
         rows = con.execute(
-            "SELECT p.*, (SELECT COUNT(*) FROM files f WHERE f.project_id = p.id) AS file_count "
-            "FROM projects p ORDER BY created_at DESC, rowid DESC"
+            "SELECT p.*, "
+            " (SELECT COUNT(*) FROM files f WHERE f.project_id = p.id) AS file_count, "
+            " (SELECT COUNT(*) FROM files f WHERE f.project_id = p.id AND f.status IN ('queued','processing')) AS files_active, "
+            f" (SELECT COUNT(*) FROM files f WHERE f.project_id = p.id AND f.status IN ({attention})) AS files_attention, "
+            " (SELECT rd.built_at FROM report_data rd WHERE rd.project_id = p.id) AS built_at, "
+            " (SELECT MAX(r.version) FROM reports r WHERE r.project_id = p.id AND r.status = 'done') AS latest_version, "
+            " (SELECT r.gap_count FROM reports r WHERE r.project_id = p.id AND r.status = 'done' "
+            "  ORDER BY r.version DESC LIMIT 1) AS latest_gap_count "
+            "FROM projects p ORDER BY created_at DESC, rowid DESC",
+            ATTENTION_STATUSES,
         ).fetchall()
     return [_decode(r) for r in rows]  # type: ignore[misc]
 

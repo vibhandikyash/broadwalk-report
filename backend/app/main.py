@@ -7,11 +7,12 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from . import db
 from .api import files, projects, report, report_data
 from .config import settings
-from .report.render import chromium_available
+from .report.render import REPORT_DIR, chromium_available
 from .workers.jobs import recover_stuck_files
 from .workers.pool import pool
 
@@ -31,6 +32,9 @@ app = FastAPI(title="Investor Report Generator", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=list(settings.cors_origins), allow_methods=["*"], allow_headers=["*"])
 for r in (projects.router, files.router, report_data.router, report.router):
     app.include_router(r, prefix="/api")
+# The report's typefaces, served to the app so the screen and the PDF share one set of files rather
+# than the repository carrying a second copy under the frontend.
+app.mount("/api/fonts", StaticFiles(directory=REPORT_DIR / "static" / "fonts"), name="fonts")
 
 
 @app.get("/api/health")
