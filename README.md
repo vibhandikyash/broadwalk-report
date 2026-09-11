@@ -1,571 +1,234 @@
 # Investor Report Generator
 
-Turns a folder of property source files (Yardi, HelloData, CoStar and Slate exports) into a ten-page quarterly LP
-investor report. Upload the files, review every extracted value with the file, sheet and row it came from, correct
-what is wrong or missing, let the optional AI draft the narrative paragraphs from the reviewed numbers, generate
-an immutable PDF version, edit, regenerate.
+A locally runnable application that turns property source files into a structured, reviewable quarterly investor report. A user creates a project, uploads Excel and PDF files, reviews the extracted data and its source, corrects missing or inaccurate values, and generates a downloadable PDF report.
 
-Local-first by design: a FastAPI backend with SQLite, an Angular 21 frontend, and Playwright's Chromium for the
-PDF. Nothing leaves the machine unless you enable AI drafting or Gemini vision OCR with your own key.
-
-Status: feature-complete for the brief, verified on the supplied Boardwalk dataset and on four independent
-property packages. See `STATUS.md` for what is implemented and what is still weak, `CHANGELOG.md` for the
-history, and `validation/real_world/ASSESSMENT.md` for the scored verdict (90/100) with its evidence.
-
-## Contents
-
-1. [What it produces](#what-it-produces)
-2. [How it works](#how-it-works)
-3. [Repository layout](#repository-layout)
-4. [Prerequisites](#prerequisites)
-5. [Quick start](#quick-start)
-6. [Configuration](#configuration)
-7. [Using the application](#using-the-application)
-8. [Structural versus complete](#structural-versus-complete)
-9. [Supported source documents](#supported-source-documents)
-10. [API reference](#api-reference)
-11. [Data model](#data-model)
-12. [Where files are](#where-files-are)
-13. [Developer notes](#developer-notes)
-14. [Verification](#verification)
-15. [Real-world validation suite](#real-world-validation-suite)
-16. [Sample deliverable](#sample-deliverable)
-17. [Documentation index](#documentation-index)
-18. [Known limitations](#known-limitations)
-19. [Next steps](#next-steps)
-20. [Licences and data](#licences-and-data)
-
-## What it produces
-
-A 16:9 PDF (720 x 404.88 pt) whose ten fixed pages follow the structure of the client's reference report.
-Each of those pages is followed by its own data-sources sheet, and the last page lists every file used:
-
-| Page | Section | Main sources |
-|---:|---|---|
-| 1 | Cover: property, location, units, vintage, acquisition, purchase price, preparer, cover photo | rent roll, balance sheet, CoStar, reviewer |
-| 2 | Property Description: facts, in-place rent by unit type with quarter-over-quarter change | market rent schedule, rent roll, reviewer |
-| 3 | Property Summary and Business Plan: capital summary, underwriting budget, rent-trend chart | balance sheet, Slate, rent chart workbook, reviewer |
-| 4 | Financing Overview: loan terms, phases, prepayment, reserves | balance sheet, reviewer |
-| 5 | Financial and Capital Commentary: takeaway, revenue, expenses, NOI, outlooks | derived from page 6 and 7, AI draft or reviewer |
-| 6 | Financial Performance: quarter and year-to-date actual versus budget | Yardi budget comparison |
-| 7 | Capital Projects: line items, quarter and year-to-date, annual budget | Yardi budget comparison (capital section) |
-| 8 | Submarket Comparison: vacancy, asking rent, construction, comp set table | CoStar, HelloData listings and comps |
-| 9 | Occupancy and Leasing: occupancy, new leases and renewals by floor plan | rent roll, lease trade-out |
-| 10 | Status Update and next-quarter Goals | reviewer |
-
-**Data-sources sheets** show a reader how the report was produced. One or more follow each page above and cover
-only that page's figures, so the explanation sits next to what it explains: extracted values carry the file and
-the line, values marked `OCR` were transcribed from a scanned page, calculated values say so, and each value the
-page prints as an em dash states why it is absent — the report that carries it was never uploaded, the file was
-read but has no such line, or a calculation is waiting on an input. A closing **Source Files & Extraction
-Method** page counts the values by origin and lists every file with its recognised type and whether its text was
-machine-readable or recovered by vision OCR.
-
-The sheets grow with the data, so the total page count varies; the ten fixed pages never change, and they are
-still pages 1 to 10 of the report even though they are no longer consecutive in the PDF. Code that has to tell
-them apart looks for `SOURCE PROVENANCE` in a page's header (see `pdf_checks.report_page_indices`).
-`render_html(..., provenance_appendix=False)` omits the sheets entirely.
-
-Every version is an immutable snapshot with its PDF, HTML and JSON data. A version generated while required items
-are still missing is a **draft**, marked on every page and named `...-draft.pdf`.
-
-## How it works
-
-```
-Upload → readers (xlsx/pdf → Document) → classifier (content signatures → DocType per sheet/PDF)
-      → extractors (DocType → typed JSON payload with row/page provenance)
-      → select (choose between overlapping sources, check they describe one property, rank Slate exports by date)
-      → builder (consolidate into ReportData: sections of Fields and Tables, alternatives on disagreement)
-      → calc.recompute (derived values) → validate (missing / conflict / reconciliation / date checks)
-      → completeness (structural versus complete, gaps by page)
-      → review UI (corrections validated and stored as overrides, applied on every read)
-      → narratives (optional drafts from the structured values, with a basis hash)
-      → version snapshot → Jinja HTML template → layout check → Chromium PDF
-```
-
-Four rules hold everywhere:
-
-- **Provenance.** Every extracted value keeps the file, sheet or page, and row it came from, and shows it in the UI.
-- **Nothing invented.** Values that no source contains stay visibly missing and editable. The AI drafts only from
-  reviewed numbers and never writes property events, lender actions or goals.
-- **Corrections are separate from extraction.** Reviewer edits are stored as overrides and applied on every read,
-  so the original extraction is never lost and any correction can be reset.
-- **Versions are immutable.** Generation snapshots the reviewed data at that moment; later edits and image
-  replacements never change an existing version.
-
-## Repository layout
-
-```
-backend/
-  app/
-    readers/        xlsx and pdf readers producing a common Document
-    classify/       content-signature classifier and DocType
-    extract/        one extractor per document type, all with provenance
-    consolidate/    select, builder, calc, validate, corrections, completeness, mapping
-    report/         Jinja template, CSS, embedded fonts, SVG chart, formatters, Chromium renderer
-    services/       narrative drafting (api, agent-sdk, mock)
-    workers/        thread pool and job coordination
-    api/            FastAPI routers (projects, files, report-data, report) and serialisation
-    db.py           SQLite schema, migrations and access
-    config.py       settings from the environment and .env
-  config/           pl_mapping.toml and capex_mapping.toml (label patterns, editable without code)
-  tests/            pytest suite (unit, API, reliability, corrections, render, dataset, scenarios, browser)
-  requirements*.txt / requirements.lock
-frontend/
-  src/app/
-    core/           API service and models
-    pages/          projects, files, review (field and table editors), report
-    shared/         stepper, status chip
-    testing/        fixtures for the specs
-  vitest.config.mts, proxy configuration, package.json
-validation/real_world/
-  scenarios/        four independent property packages with expected.json oracles
-  harness.py, pdf_checks.py, run_validation.py, build_riverbend.py
-  results/          generated evidence: PDFs, snapshots, completeness, page images, assessment
-  README.md, ASSESSMENT.md
-scripts/            run.sh (setup, start, reset-data), check.sh (every check), check_pdf.py
-deliverables/       the Boardwalk 2Q26 sample report, its reviewed-data snapshot and a note on how it was produced
-docs/               implementation plan, design documents and task plans
-CHANGELOG.md, STATUS.md, CLAUDE_CODE_HANDOFF.md, .env.example
-```
+The supplied Boardwalk files are treated as an example dataset rather than a fixed template. Extraction is based on document content, labels, and table structure instead of exact filenames, file order, cell coordinates, or known values.
 
 ## Prerequisites
 
-- Python 3.12 or newer (3.13 tested).
-- Node.js 22.12 or newer and npm 10 or newer (22.16 with npm 10.9 tested; with nvm: `nvm use 22`). Node 18 is
-  too old for Angular 21.
-- Chromium for PDF rendering, installed once by Playwright during setup (about 150 MB).
-- No required cloud services. AI narrative drafting and Gemini vision OCR are optional; OCR sends only scanned
-  or low-text PDF pages when a Gemini API key is configured.
+- Python 3.12 or newer
+- [uv](https://docs.astral.sh/uv/) for the Python environment and dependencies
+- Node.js 22.12 or newer
+- npm 10 or newer
+- Chromium installed through Playwright for PDF generation
 
-## Quick start
+The application runs locally. External APIs are optional and are used only for narrative drafting or OCR of PDF pages without usable text.
 
-```bash
-scripts/run.sh setup        # venv, locked Python deps, Chromium, npm ci, .env from .env.example
-scripts/run.sh start        # backend on http://localhost:8000 and the Angular app on http://localhost:4200
-scripts/run.sh reset-data   # wipes ONLY runtime data (uploads, database, generated reports); code and dependencies stay
+## Backend setup
+
+From the repository root:
+
+```powershell
+Set-Location backend
+uv venv
+uv pip install -r requirements.lock
+uv run playwright install chromium
+Copy-Item ..\.env.example ..\.env
+uv run uvicorn app.main:app --reload --port 8000
 ```
 
-Open http://localhost:4200. `GET http://localhost:8000/api/health` reports whether the PDF renderer and an AI
-provider are available. If port 8000 is taken on your machine, set `BACKEND_PORT` in `.env` before starting;
-both the backend and the Angular proxy read it.
+The backend is available at `http://localhost:8000`.
 
-### Backend, step by step
+Configuration is read from environment variables and from `.env` at the repository root. The provided `.env.example` contains the available settings. Do not commit API credentials.
 
-```bash
-cd backend
-python3 -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
-pip install -r requirements.lock                        # the tested, pinned set; requirements*.txt hold the ranges
-python -m playwright install chromium                   # one-time, needed for PDF output
-python -m pip check
-cp ../.env.example ../.env                              # edit if you want another data folder, port or workers
-uvicorn app.main:app --reload --port 8000
-```
+## Frontend setup
 
-`requirements.txt` holds the runtime ranges, `requirements-dev.txt` adds pytest, httpx and pip-audit,
-`requirements-llm.txt` adds the optional drafting providers. `requirements.lock` pins all of them plus the PDF
-checking tools (pypdfium2, pdfplumber, Pillow) used by the scripts and the validation suite.
+In another terminal, from the repository root:
 
-### Frontend, step by step
-
-```bash
-cd frontend
+```powershell
+Set-Location frontend
 npm ci
-npm start                    # Angular dev server on http://localhost:4200, proxies /api to the backend port
+npm start
 ```
 
-## Configuration
+The Angular application is available at `http://localhost:4200` and proxies `/api` requests to the backend port.
 
-Environment variables, read from the process environment first and then from `.env` at the repository root:
+## External APIs
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `APP_DATA_DIR` | `backend/data` | SQLite database, uploaded files, generated reports. A relative path is taken from the repository root whichever directory the backend is started from; absolute paths work too |
-| `APP_WORKERS` | `3` | Parallel file-processing threads |
-| `APP_MAX_UPLOAD_MB` | `50` | Per-file upload limit |
-| `APP_CORS_ORIGINS` | `http://localhost:4200` | Allowed browser origins |
-| `BACKEND_PORT` | `8000` | Port the backend listens on and the Angular dev proxy forwards `/api` to |
-| `NARRATIVE_PROVIDER` | `auto` | `api` (Anthropic SDK with an API key), `agent-sdk` (Claude Agent SDK on the local Claude Code login), `mock` (deterministic drafts built only from the structured figures; for tests and offline demonstrations), `off`. `auto` picks `api` when a key is set, else `agent-sdk` when that package is installed, else nothing |
-| `ANTHROPIC_API_KEY` | unset | Enables the `api` provider |
-| `ANTHROPIC_MODEL` | unset | Model override. `api` defaults to `claude-opus-5`; `agent-sdk` defaults to the Claude Code CLI's configured model |
-| `GEMINI_API_KEY` | unset | Enables page-level Gemini vision OCR for scanned or low-text PDF pages |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model used for vision OCR |
-| `OCR_DPI` | `200` | Resolution used to render each affected PDF page before OCR |
-| `OCR_TIMEOUT_SECONDS` | `60` | Timeout for each Gemini page request |
-| `OCR_MIN_TEXT_CHARS` | `20` | Minimum alphanumeric characters for a page to be treated as having usable local text |
+External services are not required for the core local workflow.
 
-### External services
-
-| Service | Purpose | Variable | Credentials |
+| Service | Purpose | Environment variables | Credentials |
 |---|---|---|---|
-| Anthropic Claude API (`api` provider) | Drafts narrative paragraphs from the structured, reviewed numbers. Optional; the app is fully functional without it. | `ANTHROPIC_API_KEY` | Your own key in `.env`. |
-| Claude Agent SDK (`agent-sdk` provider) | Same drafting through the bundled Claude Code CLI, using whatever that CLI is logged in with. Meant for a developer's own machine; per Anthropic's terms a distributed product must use the API-key provider. | none (`pip install -r backend/requirements-llm.txt`, then log in with `claude`) | The CLI's own credentials; the app stores nothing. One call per narrative field, no tools, no settings or CLAUDE.md loaded. |
-| Google Gemini API | Transcribes scanned or low-text PDF pages one page at a time before normal classification and extraction. Optional. | `GEMINI_API_KEY` | Your own key in `.env`; affected page images leave the machine and OCR results are cached under the uploaded file's project folder. |
+| Anthropic API | Optionally drafts narrative fields from structured report data | `NARRATIVE_PROVIDER=api`, `ANTHROPIC_API_KEY`, optional `ANTHROPIC_MODEL` | Add an Anthropic API key to the local `.env` file |
+| Claude Agent SDK | Optionally drafts narrative fields using a local Claude Code login | `NARRATIVE_PROVIDER=agent-sdk` | Install the optional dependencies and authenticate through Claude Code |
+| Google Gemini API | Optionally performs vision OCR on scanned or low-text PDF pages | `GEMINI_API_KEY`, optional `GEMINI_MODEL`, `OCR_DPI`, `OCR_TIMEOUT_SECONDS`, `OCR_MIN_TEXT_CHARS` | Add a Gemini API key to the local `.env` file |
 
-Nothing else leaves the machine. Playwright's Chromium is downloaded once at setup time.
+When Gemini OCR is enabled, only PDF pages without enough machine-readable text are sent to the service. Without it, an image-only PDF is marked as needing OCR and remains available for review.
 
-## Using the application
+## Application usage
 
-1. **Create a report.** Projects page, enter a name, Create.
-2. **Upload source files.** Files page, drop or pick `.xlsx` / `.xlsm` / `.pdf` files (any names, any order; the
-   drop zone is keyboard operable). Every file gets a status: `queued`, `processing`, `processed`, `failed`
-   (corrupt or unreadable), `unsupported` (file type), `not recognised` (readable but no known report inside; not
-   used until you set its type), `needs OCR` (image-only PDF when Gemini OCR is unavailable or fails). One bad file never blocks the others, and a
-   project with nothing usable still reaches the review screen with the problems listed. Optional report images
-   (cover photo, logo) are uploaded on the same page and embedded in the PDF.
-3. **Review extracted data.** Review page. Left: report sections in page order with a count of items needing
-   attention. Every value shows a status chip (extracted, derived, edited, AI draft, missing, conflict) and a
-   "source" button naming the file, sheet or page, and row it came from. "Needs attention" filters to missing and
-   conflicting values. Issues are listed per section; selecting one jumps to its section.
-4. **Correct data.** Type into any editable field or table cell and Save. Every batch is validated before
-   anything is stored: unknown paths, calculated fields, wrong types (text in a number, a percent above 100%, a
-   malformed date, negative unit counts) are refused with a message and nothing from that batch is saved.
-   Percentages are entered as percents and stored as fractions. Derived values recompute immediately. Conflicts
-   show the alternatives; pick one. The underwriting budget, comp set and rent-trend tables accept new rows.
-   "Reset" restores the extracted value; "Stored corrections" lists every saved correction and can reset any of
-   them, or everything.
-5. **Draft narratives (optional).** With a provider configured, "Draft narratives" fills the empty narrative
-   fields from the section's reviewed numbers. Drafts carry the `AI draft` status, remember the figures they were
-   written from, and are flagged when those figures change. Reviewer text is never overwritten.
-6. **Check completeness.** The Review page's "Report completeness" panel and `GET /projects/{id}/completeness`
-   list every item a finished investor report still needs, page by page. Each item jumps to its section.
-7. **Generate the report.** Report page shows a live HTML preview. Generate PDF snapshots the reviewed data at
-   that moment and renders it; versions are immutable, each with a downloadable PDF and its data snapshot. A
-   version generated while items are outstanding is a draft (see below). If a page would overflow its fixed box,
-   the version fails with the page, section and amount instead of producing a clipped PDF.
-8. **Regenerate.** Edit on the Review page and press Generate again. Uploads are not reprocessed; earlier
-   versions do not change.
+1. Open the Angular application and create a report project.
+2. Upload the `.xlsx`, `.xlsm`, and `.pdf` source files associated with the project.
+3. Wait while each file is processed. The Files screen shows its upload and processing status and any error.
+4. Open the Review screen to inspect extracted fields and tables. Missing, conflicting, and questionable values are identified, and available source information includes the filename and a worksheet, row, page, section, or source-text locator.
+5. Correct inaccurate values or enter missing information, then save the changes.
+6. Generate the report from the reviewed structured data.
+7. Download the generated PDF from the Report screen.
+8. To revise a report, edit the structured data and generate another version without uploading or processing the source files again.
 
-Setting a file's document type manually: if a file was not recognised, pick its type in the Files page dropdown
-and it is re-processed (refused with a message while the file is still processing). "Include" unticked excludes
-a file from the report data without deleting it, useful when two exports overlap (for example two HelloData comp
-sets) or when a file turns out to describe another property.
+By default, application data is stored under `backend/data`:
 
-## Structural versus complete
-
-Two different statements, kept apart on purpose:
-
-- **Structural**: files were ingested, every supported value was extracted, and a ten-page PDF renders without
-  overflow. This always works, whatever is missing, so a reviewer can preview a partly reviewed report at any time.
-- **Complete**: every value and table a finished investor report needs has been reviewed and populated. One
-  specification, `backend/app/consolidate/completeness.py`, decides this; the review screen, the API, the version
-  record and the draft marker all read from it.
-
-Requirements by page: property identity and facts (2), current and prior in-place rent (2), capital summary and
-business plan (3), at least one underwriting row (3), the rent trend (3), financing terms and commentary (4), the
-core financial lines with no reconciliation warning (6), capital projects (7), submarket KPIs and a usable comp
-set (8), current and prior occupancy plus leasing rows or a reviewed no-activity statement (9), at least one
-status item and one goal (10), and the narratives on pages 2, 5, 7, 8 and 9.
-
-A genuine zero (a Slate export stating no calls, or a reviewer entering 0) satisfies a requirement; an empty
-value does not. An empty leasing table counts as "no activity" only when the reviewer fills the no-activity
-statement on the Occupancy section; otherwise it is missing. Reviewer text, extracted values and AI drafts all
-count as populated; the number of drafts still awaiting review is reported separately. Missing values that the
-specification requires are warnings on the review screen (naming their page); other missing values are
-informational.
-
-The fields that no supported export contains, and therefore always need a reviewer: acquisition date (when no
-CoStar sale record is supplied), submarket and market names (when no CoStar PDF is supplied), building class,
-site acres, hold period, description, business plan summary, the underwriting rows and their period note, the
-loan terms other than principal, monthly interest and reserve balance, the outlook and financing commentary,
-the rent-trend caption, status items and goals, and the no-activity statement when leasing tables are empty.
-
-A version generated while gaps remain is a **draft**: DRAFT with the outstanding count on the cover and in
-every footer, a `...-draft.pdf` download name, `complete: false` and `gap_count` in the API and the versions
-list. Complete versions carry no marker.
-
-## Supported source documents
-
-Recognised by content, never by filename or sheet name:
-
-| Document type | Recognised by (content signature) | Feeds |
-|---|---|---|
-| Yardi Budget Comparison | "Budget Comparison" with PTD/YTD actual, % var and annual columns | pages 5, 6, 7 |
-| Yardi Balance Sheet | "Balance Sheet" with beginning, net change, total assets and current period columns | pages 1, 3, 4 |
-| Yardi Rent Roll summary | "Rent Roll" with a "Summary Groups" block (% unit occupancy, occupied units, future residents) | pages 1, 2, 8, 9 |
-| Yardi Market Rent Schedule | "Market Rent Schedule" with unit type, occupied units, average resident rent and sq ft | page 2 |
-| Yardi Lease Trade-Out | resident name and lease rent columns with renewal and move-in sections | page 9; the page 3 trend when no rent chart workbook exists |
-| HelloData listings export | Property Name, Asking Rent, Effective Rent and Leased Date columns per unit | page 8; the page 3 trend when no rent chart workbook exists |
-| HelloData comp summary | a "Rent Comps" sheet with Yr Built, # units and leased %, or the one-page "Rents by unit type" PDF | page 8 |
-| CoStar submarket Excel | period rows with vacancy rate, market asking rent, inventory and under-construction units | page 8 |
-| CoStar submarket PDF | a CoStar "Submarket Report" with key indicators and sale comparables | pages 1, 2, 8 |
-| Rent chart workbook | gross PSF, effective PSF and lease count by month for the subject and the comp set | page 3 |
-| Slate capital calls | a "New capital call" statement, or its "no capital calls yet" form; exports are ranked by print date | page 3 |
-| Slate distributions | a "New distribution" statement, or its "no distributions yet" form; exports are ranked by print date | page 3 |
-| Generic operating and balance tables | Account/description columns with semantic actual, budget or current-balance headers, including shifted headers | pages 3, 4, 5, 6 |
-| Date-keyed rent and occupancy tables | As-of, unit, rent and occupied/vacant header aliases; multiple dates in one sheet become separate snapshots | pages 1, 2, 9 |
-| Combined lease activity | Lease ID, property, event type, dates and rent columns; overlapping exports are deduplicated by lease ID | pages 3, 9 |
-| Capital project and underwriting tables | Capital category with quarter/YTD values, or program/category with original budget and spent-to-date values | pages 3, 7 |
-| Management memorandum | Explicit property facts, acquisition, approved hold and operating goals from searchable or OCR-recovered text | pages 1, 2, 3, 10 |
-| Loan servicing summary | Explicit principal, rate, dates, payment and reserve terms | pages 3, 4 |
-| Investor cash activity statement | Explicit reporting period, capital calls and distributions; unknown activity remains missing | page 3 |
-
-Anything else that reads is `not recognised` (and can be typed by hand); scanned and low-text PDF pages are
-transcribed by Gemini when configured, otherwise an image-only PDF is `needs OCR`; other file types are `unsupported`.
-
-## API reference
-
-All routes are under `/api`. Responses are JSON unless noted.
-
-| Method and path | Purpose |
+| Data | Location |
 |---|---|
-| `GET /health` | Renderer and AI-provider availability |
-| `GET /projects`, `POST /projects` | List projects, create one |
-| `GET /projects/{pid}`, `DELETE /projects/{pid}` | Project with its files, stage and summary; delete everything under it |
-| `GET /doc-types` | The document types a reviewer can assign by hand |
-| `POST /projects/{pid}/files` | Upload one or more files; every record is saved before any job starts |
-| `GET /projects/{pid}/files` | File list with statuses and errors |
-| `PATCH /projects/{pid}/files/{fid}` | Set the document type or the include flag |
-| `POST /projects/{pid}/files/{fid}/reprocess` | Re-run extraction for one file |
-| `GET /projects/{pid}/files/{fid}/extraction` | The raw extraction payload of one file, with provenance |
-| `DELETE /projects/{pid}/files/{fid}` | Remove a file and its extraction |
-| `PUT`, `GET`, `DELETE /projects/{pid}/assets/{kind}` | Cover photo or logo (`cover`, `logo`) |
-| `GET /projects/{pid}/report-data` | The effective report data: sections, fields, tables, issues, summary and completeness |
-| `PATCH /projects/{pid}/report-data` | A batch of corrections, row additions and deletions; 422 with nothing stored on any error |
-| `GET /projects/{pid}/report-data/overrides` | The stored corrections |
-| `POST /projects/{pid}/report-data/overrides/reset` | Remove some or all stored corrections without loading the report |
-| `POST /projects/{pid}/report-data/rebuild` | Re-consolidate from the stored extractions |
-| `POST /projects/{pid}/narratives` | Draft the empty or stale narrative fields with the configured provider |
-| `GET /projects/{pid}/completeness` | Gaps by page, gap count, complete flag, drafts pending |
-| `GET /projects/{pid}/report/preview` | The HTML preview (strict Content-Security-Policy) |
-| `POST /projects/{pid}/reports` | Generate a version (202 Accepted; the job snapshots, checks layout and renders) |
-| `GET /projects/{pid}/reports`, `GET /projects/{pid}/reports/{rid}` | Versions with `complete`, `gap_count`, status and error |
-| `GET /projects/{pid}/reports/{rid}/download` | The PDF (`-draft` suffix in the name when gaps remained) |
-| `GET /projects/{pid}/reports/{rid}/snapshot` | The immutable reviewed-data snapshot of that version |
+| SQLite database | `backend/data/app.db` |
+| Uploaded files | `backend/data/projects/<project-id>/uploads/` |
+| Project assets | `backend/data/projects/<project-id>/assets/` |
+| Generated PDF, HTML, and JSON snapshots | `backend/data/projects/<project-id>/reports/` |
 
-## Data model
+`APP_DATA_DIR` can be used to select another local data directory.
 
-- **ReportData** holds twelve sections in page order: `property`, `in_place_rent`, `capital`, `underwriting`,
-  `rent_trend`, `financing`, `financials`, `commentary`, `capex`, `submarket`, `occupancy`, `status`. A section
-  has fields and tables; a table has rows, columns and totals.
-- **Paths** address every value: `section.fields.name`, `section.tables.table.rows.row.column`,
-  `section.tables.table.totals.column`. Corrections, issues, gaps and drafts all use them.
-- **Field** carries a kind (money, number, percent, date, text, longtext, integer), the extracted value with its
-  source, alternatives when sources disagree, an override when a reviewer corrected it, and a status chip derived
-  from those.
-- **Overrides** are stored per project as `{fields, rows, deleted_rows, ai_drafts}` and applied on every read.
-  Drafts are `{text, basis}` where `basis` is a hash of the figures the draft was written from.
-- **Versions** store the snapshot of the effective data, the PDF path, `complete` and `gap_count`.
-- **SQLite tables**: `projects`, `files` (status, type, include flag, extraction payload), `report_data`
-  (consolidated data and overrides), `reports` (versions). WAL mode, JSON columns, migrations on start.
+## Standard and verbose reports
 
-## Where files are
+The `REPORT_PROVENANCE` environment parameter controls whether previews and newly generated report versions include verbose source-provenance pages.
 
-| What | Where (`APP_DATA_DIR` defaults to `backend/data`) |
-|---|---|
-| Database | `APP_DATA_DIR/app.db` |
-| Uploaded source files | `APP_DATA_DIR/projects/<project id>/uploads/` |
-| Cover photo and logo | `APP_DATA_DIR/projects/<project id>/assets/` |
-| Report versions | `APP_DATA_DIR/projects/<project id>/reports/report-v<N>.pdf`, `.html`, `.json` (the snapshot), plus the images frozen for that version |
-| Sample deliverable | `deliverables/` |
+For the standard client report, set the repository-root `.env` file to:
 
-`scripts/run.sh reset-data` removes only `projects/` and `app.db` (plus its journal files) inside
-`APP_DATA_DIR`. It refuses the filesystem root, your home folder, the repository and any folder that holds neither
-`app.db` nor `projects/`.
-
-## Developer notes
-
-### Job coordination
-
-Files are processed by an in-process thread pool; each file is an isolated job. Every terminal transition
-(processed, failed, unsupported, not recognised, needs OCR, excluded, deleted) calls one project-level completion
-check, which consolidates once no file is queued or processing. The check is idempotent and serialised per
-project, so it is also called after an upload batch and on a project read, and jobs left mid-flight by a restart
-(files, report versions, narrative drafting) are re-queued at startup.
-
-### Extraction strategy
-
-- Every document is located by **content**: a Yardi Budget Comparison is a sheet whose header says "Budget
-  Comparison" with Actual/Budget columns; a rent roll is a sheet with a "Summary Groups" block; HelloData
-  listings are a sheet with Property Name / Asking Rent / Effective Rent columns, and so on
-  (`classify/classifier.py`).
-- Inside a document, values are located by **header and label text**. Multi-row headers are joined; Yardi's
-  leading-space indentation tracks section hierarchy so capital lines can be told apart from operating lines.
-  Column order does not matter and optional columns may be absent.
-- The financial table maps canonical rows (Gross Potential Rent, Payroll, NOI and so on) to source lines through
-  regex patterns in `backend/config/pl_mapping.toml`; capital-project regrouping lives in `capex_mapping.toml`.
-  Both are editable without touching code.
-- Values that appear in more than one file (unit count, year built, submarket vacancy, purchase price, Slate
-  totals of the same date) are compared; a material difference becomes a `conflict` with the alternatives
-  attached, for the reviewer to settle.
-
-### Generalisation strategy
-
-- Nothing keys on filenames, sheet names, cell coordinates, unit-type codes or GL account numbers.
-- Multiple candidate sources for the same section are ranked deterministically (the Budget Comparison with YTD
-  columns over a monthly one; the listings export that contains the subject property over one that does not;
-  the most recent Slate export by its print date). The alternatives are listed as issues and the user can
-  exclude a file to switch.
-- Sources that name a different property (from a Yardi title such as "Lakeside Villas (99001)") are set aside
-  with an error instead of being merged; names read heuristically from a text column only raise a warning.
-- Missing files degrade gracefully: the section's fields become `missing` and editable; the rest of the report
-  still generates.
-- Percentages are normalised to fractions however the source expresses them (91.71, 0.9171 or "91.71%"); dates
-  are parsed from several formats; extra sheets and pages that match nothing are ignored and reported.
-- PDF pages without a usable text layer are rendered at 200 DPI and sent individually to Gemini vision OCR when
-  configured. The returned text re-enters the normal classifier/extractor pipeline; page provenance, confidence,
-  warnings and a local content-addressed cache make the external fallback visible and repeatable.
-- Comparable properties: the listings export defines the comp set; the HelloData comp sheet defines it only when
-  there is no listings export; the one-page comp PDF defines it only when it is the only source and otherwise
-  enriches matching rows. Cells with no source stay empty and editable, averages use available values only, and
-  the footnote states per column whether the average is unit-weighted or simple.
-
-### Corrections, snapshots and safety
-
-- A correction batch is resolved against the current data (path must exist, target must not be calculated),
-  coerced to the field's kind with semantic rules (occupancy in 0-1, counts and prices non-negative, four-digit
-  years, text length limits), applied to an in-memory copy, recomputed, validated, serialised and rendered to
-  HTML, and only then persisted in one statement. Any failure returns 422 and stores nothing.
-- Stored corrections that no longer fit (a hand-edited database, an older build) are ignored on read with an
-  issue, so the review screen and generation keep working; the reset endpoint removes them without loading the
-  effective data.
-- Report versions snapshot the reviewed data at request time; version numbers are allocated inside an immediate
-  transaction and are unique.
-- Before printing, every page is measured in Chromium; if content overflows the fixed page box the version fails
-  with page, section, amount and a hint. Each page's footer sits in normal flow at the end of its content, so a
-  clipped page would also lose its "NN / 10" marker in the PDF text.
-- Chart text is XML-escaped and all other report content goes through Jinja autoescaping; the preview is served
-  with a strict Content-Security-Policy and shown in a sandboxed iframe.
-
-### Narratives
-
-- The provider is resolved from settings at call time: `api`, `agent-sdk`, `mock` or none.
-- The payload for each narrative field is the section's structured values, rounded the way the report prints
-  them. Drafting only fills fields that are empty or flagged stale.
-- Each draft is stored as `{text, basis}`; `basis` is a hash of the payload. When a later correction changes one
-  of the figures, the effective data flags the draft as out of date with a warning, and the next run replaces it.
-- The mock provider writes a deterministic paragraph that names the figures it used, so tests can assert that no
-  number outside the payload appears.
-
-### PDF rendering
-
-- Jinja template `backend/app/report/templates/report.html` with `static/report.css`; Source Serif 4 and
-  JetBrains Mono are embedded from `static/fonts/`. Font synthesis is disabled so Chromium never emits Type 3
-  glyph outlines.
-- The rent-trend chart is a dependency-free SVG (`report/chart.py`); its legend wraps onto extra rows when the
-  series names are long, and each extra row grows the canvas rather than covering the axis.
-- The data-sources sheets are built in `render.py` (`appendix_items` groups rows by printed page, `paginate`
-  splits them into sheets, `number_pages` interleaves and numbers everything). Each row is forced to one line by
-  a fixed table layout, so a sheet holds a known number of them and the overflow check never has to reject it.
-- `scripts/check_pdf.py <pdf> --expect "<text>"` verifies page size, embedded fonts, the absence of Type 3 fonts,
-  the end-of-page footer markers and expected text, and rasterises every page with PDFium to confirm that every
-  extracted word draws. Pass `--pages N` to also assert an exact page count.
-
-### Accessibility
-
-Interactive controls are real buttons and links with accessible names, the workflow stepper marks the current
-step with `aria-current`, status changes (uploads, processing, saves, drafting, generation) are announced through
-live regions, errors are alerts that receive focus, the file drop zone is keyboard operable with a visible focus
-ring, tables carry captions and row headers, and the layout reflows to a single column below 820 px (also
-checked at 375 px in the browser test).
-
-### Frontend
-
-Angular 21 (zoneless, signals, standalone components, lazy routes), vitest 4 with jsdom 28 for the specs. The
-dev server proxies `/api` to `BACKEND_PORT`. Note for this checkout: a path containing `)` breaks vitest's
-default glob, which `vitest.config.mts` escapes; and npm 10.9 cannot add new dependencies here (use
-`npx npm@11 install <pkg>`), while `npm ci` works.
-
-## Verification
-
-```bash
-TEST_DATASET_DIR="/path/to/SOURCE FILES" scripts/check.sh            # everything below except the browser test
-TEST_DATASET_DIR="/path/to/SOURCE FILES" UI_E2E_URL=http://localhost:4200 scripts/check.sh --e2e   # also the browser test
-# TEST_DATASET_DIR must be the folder that holds only the source files; a check that cannot run is named as skipped in the last line
-
-# or individually
-cd backend && pytest                                                        # unit, API, reliability, corrections, render, scenario tests
-TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_dataset.py -v    # the supplied files plus the mutated copy
-pytest tests/test_real_world_scenarios.py -v                               # four independent property packages
-python ../validation/real_world/run_validation.py                          # the same scenarios with preserved evidence and the assessment matrix
-python -m pip_audit -r requirements.lock                                    # Python dependency vulnerabilities
-cd ../frontend && npx ng test --watch=false && npx ng build && npm audit --audit-level=high
-cd ../backend && UI_E2E_URL=http://localhost:4200 TEST_DATASET_DIR="/path/to/SOURCE FILES" pytest tests/test_ui_e2e.py -v
-LLM_LIVE=1 pytest tests/test_narrative.py -v                               # optional: one real drafting call on the configured provider
-python ../scripts/check_pdf.py ../deliverables/boardwalk-2q26-investor-report.pdf --expect "Fannie Mae"
+```env
+REPORT_PROVENANCE=false
 ```
 
-What the suites cover:
+This is the default. The generated PDF contains the ten report pages and does not include the additional working papers.
 
-| Suite | Covers |
-|---|---|
-| Backend unit and API (`backend/tests`) | readers, classifier, every extractor, selection and mapping, builder, calculations, validation, completeness, comps, corrections, database, workers, reliability (100 mixed upload batches, concurrency, restart), narrative providers and staleness, HTML and PDF rendering, scripts, all API routers |
-| Dataset (`test_dataset.py`, opt-in) | totals on the supplied Boardwalk files and on a mutated copy: random names, renamed sheets, inserted rows and columns, reordered and dropped columns, extra sheets, alternate date and percent spellings, a duplicated export, an unrelated property's rent roll, an image-only PDF |
-| Scenarios (`test_real_world_scenarios.py`) | the four validation packages through the public API, including reversed upload order |
-| Browser (`test_ui_e2e.py`, opt-in) | create, upload with an unsupported and a corrupt file, corrections, a refused invalid edit, manual rows, images, drafts, generation, download, version immutability, narrow layout |
-| Frontend specs | API service, projects, files, review, report, stepper, including failed-backend states |
+For a verbose report, set:
 
-Totals at commit `c580797`: backend 146 passed and 4 skipped (opt-in live checks), dataset 2, frontend 35,
-browser 1, validation runner 4 of 4, sample PDF check OK, pip-audit and npm audit clean. Tests that need
-Chromium skip themselves when it is not installed.
+```env
+REPORT_PROVENANCE=true
+```
 
-## Real-world validation suite
+Restart the backend after changing the parameter. A verbose report includes interleaved data-source pages and closing source summaries that explain:
 
-`validation/real_world/` proves the application on properties that have nothing to do with the Boardwalk. Each
-scenario is a source package plus an `expected.json` written by hand, never copied from application output.
+- Whether each value was extracted, calculated, entered by a reviewer, produced through OCR, or not found.
+- The source filename and available worksheet, row, page, section, or source-text locator.
+- The inputs used for calculated values.
+- Why a value is displayed as unavailable.
+- Which uploaded files were used and how their text was obtained.
 
-| Scenario | Classification | What it exercises |
-|---|---|---|
-| Riverbend Station 4Q25 | complete | Every export family across three workbooks with unfamiliar names and shuffled sheets, two Slate PDFs, a photo and logo, 90 pre-correction values, refused invalid corrections, a reset, four underwriting rows and one manual comparable, twelve mock drafts, image freezing across versions, snapshot immutability, every page's headings and content |
-| Harbor Point 3Q26 | structural | Complete operational data in one opaque workbook plus two Slate PDFs; 40 exact gaps stay open by design |
-| Pine Ridge 4Q26 | structural | Sparse package with no balance sheet, Slate or rent-comp rents; 42 gaps; comps keep units, vintage and leased % |
-| Lakeside Commons 1Q27 | structural | A stale duplicate export, a rent roll for another property, an image-only PDF, no leasing report; 43 gaps |
+These verbose pages are working papers for verification and demonstration. They are not part of the formal investor report and are omitted from the standard client version. The parameter changes report presentation only; it does not change extraction, calculations, validation, corrections, or stored report data.
 
-The runner writes, per scenario, the PDF, the snapshot, `completeness.json`, `result.json` and one PNG per
-page, plus `summary.json` and a generated `assessment.md` with a per-page provenance matrix (extracted, derived,
-corrected, drafted, missing intentionally, missing unexpectedly, conflicts). `ASSESSMENT.md` is the human
-verdict. See `validation/real_world/README.md` for regeneration and the evidence layout.
+## Architecture
 
-## Sample deliverable
+```text
+Angular interface
+    -> FastAPI API
+    -> file readers
+    -> content classification
+    -> document-specific extraction
+    -> structured ReportData model
+    -> selection, calculation, and validation
+    -> human review and stored corrections
+    -> versioned HTML and PDF report generation
+```
 
-`deliverables/boardwalk-2q26-investor-report.pdf` is the Boardwalk 2Q26 report generated from all 17 supplied
-source files, and `boardwalk-2q26-reviewed-data.json` is the exact snapshot it was rendered from, including every
-extracted value with its source, every reviewer correction and the AI drafts. `deliverables/README.md` records
-how it was produced, which values a reviewer entered by hand from the client's example, which conflicts were
-settled and which commit rendered it.
+The Angular frontend manages project creation, uploads, processing status, review, corrections, and report downloads. The FastAPI backend stores project state in SQLite and runs file processing and report generation through an in-process worker pool.
 
-## Documentation index
+Excel workbooks and PDFs are converted into a common document representation. The classifier identifies relevant worksheets or PDFs from their content. Document-specific extractors convert recognized material into typed payloads with source locators. The consolidation layer selects appropriate sources, checks property identity and reporting periods, and builds the report's fields and tables. Deterministic Python code performs calculations and validation.
 
-| Document | What it is |
-|---|---|
-| `README.md` | This file |
-| `CHANGELOG.md` | Every change, by phase and commit |
-| `STATUS.md` | What is implemented, verification totals, known flaws, limitations, environment quirks |
-| `validation/real_world/ASSESSMENT.md` | The scored verdict (90/100) with its evidence and limitations |
-| `validation/real_world/README.md` | The validation suite: classifications, scenarios, regeneration, evidence layout |
-| `deliverables/README.md` | How the Boardwalk sample was produced |
-| `docs/superpowers/specs/2026-09-05-production-readiness-remediation-design.md` | Design of the completeness specification, comparable rules, narratives and the validation suite |
-| `docs/superpowers/plans/2026-09-05-production-readiness-remediation.md` | The traced task plan for that design |
-| `docs/superpowers/specs/2026-09-05-real-world-generalization-validation-design.md` and its plan | The earlier validation design |
-| `docs/implementation-plan.md` | The original build plan (historical) |
-| `CLAUDE_CODE_HANDOFF.md` | The first audit brief, 72/100 at `f17c999` (historical; everything in it has been done or superseded) |
+Reviewer corrections are stored separately from extracted values and reapplied when report data is loaded. Generating a report creates an immutable snapshot, allowing another version to be generated after later corrections without altering earlier versions.
+
+## Extraction strategy
+
+Extraction is driven by the information required by the report.
+
+- Excel files are read with `openpyxl`; PDFs are read with `pdfplumber`.
+- PDF pages without usable text can be processed with optional Gemini vision OCR.
+- Files are classified from content signatures rather than filenames or upload order.
+- Individual extractors locate information using document headings, column labels, row labels, and section structure.
+- Financial and capital rows are mapped to canonical report rows through configurable patterns in `backend/config/pl_mapping.toml` and `backend/config/capex_mapping.toml`.
+- Values are normalized into typed fields such as money, numbers, percentages, dates, integers, and text.
+- Calculated values, totals, variances, ratios, and weighted averages are produced by Python rather than inferred by an AI model.
+- When multiple sources provide materially different values, the alternatives are retained as a conflict for human review.
+- Information that cannot be found remains missing and editable; the application does not silently invent it.
+
+The structured `ReportData` representation separates source files from the final report. Each field can retain its extracted value, type, status, source, conflicting alternatives, and reviewer override. This structure allows users to inspect and correct data and regenerate reports without manipulating the original documents.
+
+## Generalization strategy
+
+The application does not depend on exact filenames, sheet names, file ordering, cell coordinates, property names, unit-type codes, account numbers, or values from the Boardwalk dataset.
+
+It supports variation by:
+
+- Classifying documents from combinations of headings and expected semantic columns.
+- Searching for headers and labels when rows or columns move.
+- Joining multi-row headers and tolerating reordered or absent optional columns.
+- Normalizing common date, percentage, currency, and accounting-number formats.
+- Processing each file independently so one corrupt or unsupported file does not fail the project.
+- Ranking overlapping sources deterministically and allowing a user to exclude an unsuitable file.
+- Separating files that appear to describe a different property instead of silently combining them.
+- Leaving unavailable information visibly missing so a reviewer can supply it.
+- Allowing a reviewer to assign a document type when readable material is not classified automatically.
+
+The implemented extractors support Yardi budget comparisons, balance sheets, rent rolls, market rent schedules and lease trade-out reports; HelloData listings and comp summaries; CoStar submarket spreadsheets and PDFs; rent-trend workbooks; Slate capital calls and distributions; management memoranda; loan summaries; capital-project registers; and underwriting plans.
+
+## Included testing data
+
+The `testing_data` directory contains four test packages. Each package includes its source documents and the PDF generated by this application.
+
+### Original source files
+
+`testing_data/original_source_files` contains the Boardwalk 2Q26 source package originally supplied for the project. It includes the Yardi, HelloData, CoStar, Slate, rent-trend, occupancy, leasing, and supporting files used during development.
+
+`original_source_files_report_with_verbose.pdf` is the report generated from that original package.
+
+### Renamed baseline
+
+`testing_data/01_renamed_baseline` contains a generated variation of the Boardwalk package in which the source files use opaque names such as `packet_24504_09.xlsx`. The underlying business case remains the Boardwalk 2Q26 report.
+
+This package tests that classification and extraction depend on document content rather than the original filenames, filename numbering, or upload order. It also retains realistic workbooks containing relevant and irrelevant sheets.
+
+`01_renamed_baseline_report_with_verbose.pdf` is the report generated from this package.
+
+### New property and layouts
+
+`testing_data/02_new_property_and_layouts` is a synthetic package for Juniper Grove Apartments, a 120-unit property with a reporting period ending September 30, 2027.
+
+It uses new property values, generic filenames, different worksheet names, and consolidated workbooks containing several document types. For example, one workbook contains operating results, capital-project spending, balances, and an approved plan, while other files contain leasing, rent, occupancy, market, comparable-property, cash-activity, management, and loan information.
+
+This package tests whether the system can recognize the same business concepts when they appear for a different property and in layouts that differ from the original Boardwalk files.
+
+`02_new_property_and_layouts_report_with_verbose.pdf` is the report generated from this package.
+
+### Missing data, conflicts, and scanned content
+
+`testing_data/03_missing_conflicts_and_scan` is a synthetic package for Cedar Quay Apartments, an 84-unit property with a reporting period ending March 31, 2028.
+
+This package deliberately includes difficult conditions:
+
+- Missing source information that must remain visibly unavailable.
+- Multiple balance sheets and lease-activity exports that can overlap or disagree.
+- A document describing another property that must not be consolidated into Cedar Quay.
+- An irrelevant facilities notice that contains no report data.
+- A scanned management memorandum without a machine-readable text layer.
+- Separate operating, capital, market, comparable-property, occupancy, underwriting, cash-activity, and loan sources.
+
+It tests conflict handling, source selection, property isolation, irrelevant-file handling, missing-value behavior, and optional OCR recovery.
+
+`03_missing_conflicts_and_scan_report_with_verbose.pdf` is the report generated from this package.
+
+All four PDFs in `testing_data` were generated with `REPORT_PROVENANCE=true`. They therefore contain verbose working-paper pages explaining how values were extracted, derived, calculated, corrected, or left missing. Those explanatory pages are included to demonstrate and verify the application's processing; they are not part of the formal report produced when `REPORT_PROVENANCE=false`.
+
+## Error handling
+
+Every uploaded file has its own processing state. Unsupported formats, corrupt files, extraction failures, missing information, OCR failures, and report-generation failures are shown to the user. A failure in one file does not unnecessarily stop other files from being processed.
+
+Corrections are validated before they are stored. Derived fields cannot be overwritten directly, and invalid values are rejected. Before PDF generation, the renderer checks fixed report pages for overflow and reports the affected page instead of producing a clipped report.
 
 ## Known limitations
 
-The short list; `STATUS.md` has the full one with the flaws that were found and not yet fixed.
-
-- Unfamiliar prose and table schemas outside the supported semantic roles still require a new alias/mapping or
-  reviewer input; extracted management and loan facts are limited to explicit statements.
-- Gemini vision OCR requires an external API key and network access, and its transcription still requires human
-  review; without the key, image-only PDFs retain the `needs OCR` status.
-- Only the supported export families are extracted; an unrelated schema needs a new extractor or mapping.
-- Two same-period sources of identical completeness have no tie-breaker; the reviewer excludes one.
-- Tables that do not fit a page are refused rather than continued on an extra page.
-- Live AI providers are not exercised by the automated suite; the mock provider proves the workflow.
-- No authentication or multi-user support; single local user by design.
+- Extraction supports known report families and semantic layouts; substantially different document schemas may require a new classifier signature, extractor, or mapping.
+- Scanned PDFs require a Gemini API key for automatic OCR. OCR results may be uncertain and should be reviewed.
+- Some report information is not present in the supported exports and must be entered by a reviewer.
+- When equally suitable sources cover the same period, the application may require the reviewer to exclude one.
+- Tables that exceed the fixed report-page capacity are rejected instead of automatically continuing onto another page.
+- Optional live AI services are not exercised by the normal automated test suite.
+- The application is designed for a single local user and does not include authentication, multi-tenant security, production deployment infrastructure, billing, enterprise permissions, production-scale observability, or a production-scale database.
 
 ## Next steps
 
-1. Continuation pages for long tables, with renumbered footers.
-2. A measured chart legend and a per-page raster comparison against golden images.
-3. Per-sheet document type overrides for multi-sheet workbooks.
-4. A side-by-side source viewer on the review screen, including OCR page images and bounding boxes.
-5. A mapping editor in the UI for `pl_mapping.toml` and `capex_mapping.toml`.
-6. A recorded live-provider run with a replay fixture.
+With additional development time, the next improvements would be:
 
-## Licences and data
-
-The report embeds Source Serif 4 and JetBrains Mono under the SIL Open Font License; the licences are in
-`backend/app/report/static/fonts/`. The repository contains the Boardwalk sample report and its reviewed data,
-which describe a real property; keep the repository private unless that is intended. The raw source exports
-are not part of the repository; the dataset tests read them from `TEST_DATASET_DIR`.
+1. Add continuation pages for tables that exceed a fixed report page.
+2. Add per-worksheet document-type overrides for mixed workbooks.
+3. Add a side-by-side source viewer with PDF page images and OCR bounding boxes.
+4. Add a UI for maintaining financial and capital mapping rules.
+5. Expand extraction fixtures and validation against additional unseen document layouts.
+6. Add recorded validation of the optional live narrative and OCR providers.
