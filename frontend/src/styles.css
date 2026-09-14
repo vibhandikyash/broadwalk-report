@@ -603,6 +603,7 @@ button.gap .prov-mark { line-height: 1; }
 .field.attention { background: color-mix(in srgb, var(--color-accent) 5%, transparent); }
 .prov-mark { font-family: var(--mono); font-size: 13px; font-weight: 700; line-height: 22px; color: var(--color-neutral-600); }
 .prov-mark.prov-extracted { color: var(--p-ex); }
+.prov-mark.prov-inferred { color: #b45309; }
 .prov-mark.prov-ocr { color: var(--p-oc); }
 .prov-mark.prov-computed { color: var(--p-co); }
 .prov-mark.prov-manual { color: var(--p-mn); }
@@ -616,6 +617,7 @@ button.gap .prov-mark { line-height: 1; }
   margin-top: 3px; color: var(--color-neutral-600);
 }
 .field-tag.prov-extracted { color: var(--p-ex); }
+.field-tag.prov-inferred { color: #b45309; }
 .field-tag.prov-ocr { color: var(--p-oc); }
 .field-tag.prov-computed { color: var(--p-co); }
 .field-tag.prov-manual { color: var(--p-mn); }
@@ -704,6 +706,7 @@ button.gap .prov-mark { line-height: 1; }
 .prov-dot { flex: none; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-neutral-600); }
 .prov > .prov-dot { align-self: flex-start; margin-top: 6px; }  /* stay on the first line when the detail wraps */
 .prov-dot.prov-extracted { background: var(--p-ex); }
+.prov-dot.prov-inferred { background: #b45309; }
 .prov-dot.prov-ocr { background: var(--p-oc); }
 .prov-dot.prov-computed { background: var(--p-co); }
 .prov-dot.prov-manual { background: var(--p-mn); }
@@ -725,6 +728,7 @@ button.prov-toggle .prov .prov-detail { white-space: nowrap; overflow: hidden; t
   white-space: nowrap; cursor: help; text-transform: uppercase; font-weight: 700;
 }
 .prov-tag.prov-extracted { background: color-mix(in srgb, var(--p-ex) 15%, transparent); color: var(--p-ex); }
+.prov-tag.prov-inferred { background: color-mix(in srgb, #b45309 15%, transparent); color: #b45309; }
 .prov-tag.prov-ocr { background: color-mix(in srgb, var(--p-oc) 16%, transparent); color: var(--p-oc); }
 .prov-tag.prov-computed { background: color-mix(in srgb, var(--p-co) 15%, transparent); color: var(--p-co); }
 .prov-tag.prov-manual { background: color-mix(in srgb, var(--p-mn) 15%, transparent); color: var(--p-mn); }

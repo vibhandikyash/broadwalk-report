@@ -42,6 +42,28 @@ def slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", norm(s)).strip("-") or "row"
 
 
+def _supported_property_description(name: str | None, units: int | None, city_state: str | None,
+                                    year_built: int | None, acquired_date: str | None) -> str | None:
+    """Compose only factual property-description elements already used by the sample report."""
+    if not name:
+        return None
+    sentences = []
+    location = f" located in {city_state}" if city_state else ""
+    if units is not None:
+        sentences.append(f"{name} is a {int(round(units)):,}-unit multifamily community{location}.")
+    elif location:
+        sentences.append(f"{name} is a multifamily community{location}.")
+    details = []
+    if year_built is not None:
+        details.append(f"built in {year_built}")
+    acquired = _date(acquired_date)
+    if acquired:
+        details.append(f"acquired in {acquired.strftime('%B %Y')}")
+    if details:
+        sentences.append("The property was " + " and ".join(details) + ".")
+    return " ".join(sentences) or None
+
+
 def _date(s: str | None) -> dt.date | None:
     return dt.date.fromisoformat(s) if s else None
 
@@ -281,8 +303,15 @@ def _property(ctx: Ctx, data: ReportData) -> Section:
     f["density"] = D("Density (units per acre)", "number")
     hold = memo.data.get("hold_period_years") if memo else None
     f["hold_period_years"] = F("Hold period (years)", "integer", hold, memo.source("page 1", "approved hold") if hold else None)
-    f["description"] = F("Property description", "longtext", memo.data.get("property_description") if memo else None,
-                         memo.source("page 1") if memo else None)
+    memo_description = memo.data.get("property_description") if memo else None
+    supported_description = _supported_property_description(
+        name, units, f["city_state"].effective, yb, f["acquired_date"].effective)
+    f["description"] = F(
+        "Property description", "longtext", memo_description or supported_description,
+        memo.source("page 1") if memo_description else None,
+        note=None if memo_description else "Composed only from sourced property name, units, location, year built and acquisition date",
+        status="extracted" if memo_description else "derived" if supported_description else "missing",
+    )
     f["quarter_label"] = D("Quarter", "text")
     f["period_label"] = D("Period", "text")
     f["period_end"] = D("Period end", "date")
@@ -588,19 +617,24 @@ def _financing(ctx: Ctx, data: ReportData) -> Section:
         if matches:
             balance_candidates.append((matches[0]["values"].get("current"), source.source(f"row {matches[0]['row'] + 1}"), "balance sheet"))
     _conflict(ctx, f["loan_amount"], "financing.fields.loan_amount", "Loan principal", balance_candidates, tolerance=0)
-    interest, i_src, i_note = None, None, None
+    interest, i_src, i_note, interest_status = None, None, None, None
     acc = match_lines(lines, [r"accrued interest"])
     if acc and acc[0]["values"].get("current"):
-        interest, i_src, i_note = acc[0]["values"]["current"], bs.source(f"row {acc[0]['row'] + 1}", acc[0]["label"]), "Accrued interest at period end (one month of interest)"
+        interest, i_src, i_note, interest_status = (
+            acc[0]["values"]["current"],
+            bs.source(f"row {acc[0]['row'] + 1}", acc[0]["label"]),
+            "Inferred monthly IO payment from accrued interest at period end",
+            "inferred",
+        )
     elif sel.budget:
         il = match_lines(sel.budget.data["lines"], [r"^total debt service", r"interest expense"], prefer_total=True)
         ptd = il[0]["values"].get("ptd_actual") if il else None
         if ptd is not None:
-            interest, i_src = ptd / p.months, sel.budget.source(f"row {il[0]['row'] + 1}", il[0]["label"])
+            interest, i_src, interest_status = ptd / p.months, sel.budget.source(f"row {il[0]['row'] + 1}", il[0]["label"]), "derived"
             i_note = f"PTD debt service / {p.months} months (approximate)"
     if loan_doc and loan_doc.data.get("interest_monthly") is not None:
-        interest, i_src, i_note = loan_doc.data["interest_monthly"], loan_doc.source("page 1"), "Loan servicing summary"
-    f["interest_monthly"] = F("Monthly interest (IO payment)", "money", interest, i_src, note=i_note)
+        interest, i_src, i_note, interest_status = loan_doc.data["interest_monthly"], loan_doc.source("page 1"), "Loan servicing summary", "extracted"
+    f["interest_monthly"] = F("Monthly interest (IO payment)", "money", interest, i_src, note=i_note, status=interest_status)
     f["implied_rate"] = D("Implied interest rate", "percent", note="interest_monthly x 12 / loan_amount")
     reserve = match_lines(lines, [r"capital improvements? escrow", r"replacement reserve", r"escrow / reserve"])
     f["reserve_balance"] = F("Replacement reserve balance", "money", reserve[0]["values"].get("current") if reserve else None,
@@ -878,8 +912,19 @@ def _comp_entries(sel: Selection) -> tuple[dict[str, dict], list[str]]:
     entries: dict[str, dict] = {}
     extras: list[str] = []
 
-    def find(name: str) -> dict | None:
-        return next((e for e in entries.values() if names_match(e["name"], name)), None)
+    def address_key(value: str | None) -> str:
+        street = (value or "").split(",", 1)[0]
+        return re.sub(r"[^a-z0-9]", "", norm(street))
+
+    def find(name: str, address: str | None = None) -> dict | None:
+        matched_name = next((e for e in entries.values() if names_match(e["name"], name)), None)
+        if matched_name:
+            return matched_name
+        target_address = address_key(address)
+        if not target_address:
+            return None
+        return next((e for e in entries.values()
+                     if address_key((e.get("listing") or {}).get("address")) == target_address), None)
 
     if sel.listings:
         for name, pr in sel.listings.data.get("properties", {}).items():
@@ -889,7 +934,7 @@ def _comp_entries(sel: Selection) -> tuple[dict[str, dict], list[str]]:
         for c in src.data.get("comps", []):
             if not c.get("name") or norm(c["name"]).startswith("comp average"):
                 continue
-            entry = find(c["name"])
+            entry = find(c["name"], c.get("address"))
             if entry is None:
                 if not defines:
                     if c["name"] not in extras:

@@ -397,11 +397,12 @@ machine-readable text, and warrant a closer look.</p>
   <div class="annex-hdr-r mono">{{ head|upper }}<span class="tag">SOURCE PROVENANCE METHOD</span></div>
 </div>
 <p class="body">Each data-sources sheet states, for every figure on the page before it, how that figure was obtained.
-This page defines the six markers it uses and the arithmetic conventions applied throughout the report.</p>
-<div class="col-h"><span>How we got it</span><span class="v">The six markers used on every data-sources sheet</span></div>
+This page defines the seven markers it uses and the arithmetic conventions applied throughout the report.</p>
+<div class="col-h"><span>How we got it</span><span class="v">The seven markers used on every data-sources sheet</span></div>
 <table class="tbl prov">
   <tbody>
   <tr><td style="width:24%"><span class="prov-dot prov-extracted"></span>Extracted</td><td>Read directly from a supplied file. The sheet names the file, the worksheet or page, the row, and quotes the source line it was read from.</td></tr>
+  <tr><td><span class="prov-dot prov-inferred"></span>Inferred</td><td>Interpreted from a source value whose original label differs from the report field. The source label and inference are shown for review.</td></tr>
   <tr><td><span class="prov-dot prov-ocr"></span>Extracted by OCR</td><td>The page carried no machine-readable text, so it was transcribed from an image by vision OCR before being read. Transcription confidence is stated. These warrant a closer look than the rest.</td></tr>
   <tr><td><span class="prov-dot prov-computed"></span>Calculated</td><td>Derived from other figures in this report. The sheet gives the formula in full, with each input value and the file and row it came from.</td></tr>
   <tr><td><span class="prov-dot prov-manual"></span>Entered by reviewer</td><td>Typed on the review screen, either because no file carried it or because the extracted value was corrected.</td></tr>

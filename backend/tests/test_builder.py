@@ -1,6 +1,7 @@
 # backend/tests/test_builder.py
 from app.classify.classifier import DocType
-from app.consolidate.builder import apply_overrides, build
+from app.consolidate.builder import _comp_entries, apply_overrides, build
+from app.consolidate.select import Selection, Src
 from app.extract.registry import run_extractor
 from tests.helpers import (BALANCE_ROWS, BUDGET_ROWS, CAPITAL_CALLS_TEXT, COMPS_ROWS, COSTAR_PDF_TEXT, COSTAR_ROWS,
                            DISTRIBUTIONS_TEXT, LISTINGS_ROWS, LTO_ROWS, RENT_CHART_ROWS, pdf_part, rent_roll_rows,
@@ -46,6 +47,11 @@ def test_build_end_to_end():
     assert v("property.fields.zip") == "33907" and v("property.fields.submarket") == "Western Lee County"
     assert v("property.fields.prepared_by") == "ZMR Capital" and v("property.fields.avg_unit_sf") == 760
     assert v("property.fields.quarter_label") == "2Q26" and data.field("property.fields.site_acres").status == "missing"
+    assert v("property.fields.description") == (
+        "The Boardwalk is a 338-unit multifamily community located in Fort Myers, FL. "
+        "The property was built in 1973 and acquired in July 2025."
+    )
+    assert data.field("property.fields.description").status == "derived"
     assert data.field("property.fields.name").source.filename == "rr-jun.xlsx"
     # capital
     pp = data.field("capital.fields.purchase_price")
@@ -55,6 +61,7 @@ def test_build_end_to_end():
     assert v("capital.fields.contributions_note") == "No capital called this quarter"
     # financing
     assert v("financing.fields.loan_amount") == 36519000 and v("financing.fields.interest_monthly") == 159161.98
+    assert data.field("financing.fields.interest_monthly").status == "inferred"
     assert abs(v("financing.fields.implied_rate") - 0.0523) < 1e-4 and v("financing.fields.borrower") == "The Boardwalk Owner, LLC"
     assert data.field("financing.fields.lender").status == "missing"
     # financials
@@ -109,6 +116,27 @@ def test_build_with_only_financials_flags_missing_but_does_not_fail():
     assert data.field("property.fields.units").status == "missing"
     assert any(n["severity"] == "error" and "Property name" in n["message"] for n in notes)
     assert data.table("submarket.tables.comps").rows == {} and data.table("in_place_rent.tables.by_floor_plan").rows == {}
+
+
+def test_comp_summary_metadata_matches_listing_by_street_address_when_names_differ():
+    listing = Src("listing", "listing.xlsx", DocType.HELLODATA_LISTINGS.value, "sheet 'Listings'", {
+        "properties": {"Fountains at Forestwood": {
+            "address": "1735 Brantley Road", "asking_n": 1, "asking_sum": 1500,
+        }},
+    })
+    summary = Src("summary", "summary.xlsx", DocType.HELLODATA_COMPS.value, "sheet 'Rent Comps'", {
+        "source": "sheet",
+        "comps": [{
+            "name": "39 Acres", "address": "1735 Brantley Road, Fort Myers, FL 33907",
+            "units": 397, "year_built": 1985, "row": 3,
+        }],
+    })
+
+    entries, extras = _comp_entries(Selection(listings=listing, comps=[summary]))
+
+    matched = entries["fountains-at-forestwood"]["summaries"][0][0]
+    assert matched["units"] == 397 and matched["year_built"] == 1985
+    assert extras == []
 
 
 def test_apply_overrides_fields_rows_deletions_and_ai_drafts():

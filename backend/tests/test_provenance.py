@@ -28,6 +28,14 @@ def test_workbook_values_are_native_and_name_their_file_and_line():
     assert "rr-jun.xlsx" in p.detail and "OCR" not in p.detail
 
 
+def test_accrued_interest_used_as_io_payment_is_marked_inferred():
+    data = _data()
+    p = _describe(data, "financing.fields.interest_monthly")
+    assert p.origin == "inferred" and p.label == "Inferred"
+    assert "Inferred monthly IO payment from accrued interest" in p.detail
+    assert "bs.xlsx" in p.detail and "Accrued Interest" in p.detail
+
+
 def test_ocr_pages_are_flagged_and_native_pages_in_the_same_file_are_not():
     """A file where only page 2 needed OCR: a value read from page 2 is flagged, one from page 1 is not."""
     part = pdf_part(CAPITAL_CALLS_TEXT, DocType.SLATE_CAPITAL_CALLS, file_id="fx", filename="scan.pdf")

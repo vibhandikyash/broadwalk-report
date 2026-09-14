@@ -37,8 +37,8 @@ export interface Source {
 }
 export interface Alternative { value: unknown; source: Source | null; note: string | null; }
 export type Kind = 'money' | 'number' | 'integer' | 'percent' | 'date' | 'text' | 'longtext';
-export type Status = 'extracted' | 'derived' | 'manual' | 'ai_draft' | 'missing' | 'conflict';
-export type Origin = 'extracted' | 'ocr' | 'computed' | 'manual' | 'ai_draft' | 'missing';
+export type Status = 'extracted' | 'inferred' | 'derived' | 'manual' | 'ai_draft' | 'missing' | 'conflict';
+export type Origin = 'extracted' | 'inferred' | 'ocr' | 'computed' | 'manual' | 'ai_draft' | 'missing';
 /** Where a value came from, or why it is absent. Produced by the backend so the review screen and the report agree. */
 export interface Provenance {
   origin: Origin; label: string; detail: string; filename: string | null; locator: string | null;

@@ -18,11 +18,12 @@ const INSPECTOR_TABS = [
 type InspectorTab = (typeof INSPECTOR_TABS)[number]['key'];
 /** Origins in the order the summary reads best; the backend supplies the counts. */
 const ORIGIN_LABELS = [
-  { key: 'extracted', label: 'extracted' }, { key: 'ocr', label: 'via OCR' }, { key: 'computed', label: 'calculated' },
+  { key: 'extracted', label: 'extracted' }, { key: 'inferred', label: 'inferred' }, { key: 'ocr', label: 'via OCR' }, { key: 'computed', label: 'calculated' },
   { key: 'manual', label: 'entered by you' }, { key: 'ai_draft', label: 'AI drafts' }, { key: 'missing', label: 'not found' },
 ];
 /** The marks the editor prints beside every value, taught once at the foot of the section list. */
 const LEGEND = [
+  { key: 'inferred', glyph: '~', label: 'inferred from a differently labelled source value' },
   { key: 'extracted', glyph: '●', label: 'extracted from a file' },
   { key: 'ocr', glyph: '◐', label: 'recovered by OCR' },
   { key: 'computed', glyph: 'ƒ', label: 'calculated' },

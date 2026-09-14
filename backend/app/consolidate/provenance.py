@@ -6,6 +6,7 @@ the report's provenance appendix both render exactly what this module returns.
 
 Origins:
   extracted  read from a source file whose text was machine-readable
+  inferred   interpreted from a differently labelled source value
   ocr        read from a source file page whose text had to be recovered by vision OCR
   computed   calculated by the system from other values (variances, weighted averages, totals)
   manual     typed by the reviewer on the review screen
@@ -23,6 +24,7 @@ from .calc import KPI_SOURCES
 
 ORIGIN_LABELS = {
     "extracted": "Extracted",
+    "inferred": "Inferred",
     "ocr": "Extracted by OCR",
     "computed": "Calculated",
     "manual": "Entered by reviewer",
@@ -371,6 +373,18 @@ def describe(path: str, field: Field, data: ReportData) -> FieldProvenance:
         formula = calculated_from(path, field, data)
         detail = f"Calculated: {formula}" if formula else (field.note or "Calculated by the system from other values in this report")
         return FieldProvenance("computed", ORIGIN_LABELS["computed"], detail)
+    if status == "inferred":
+        src = field.source
+        where = " · ".join(x for x in (src.filename, _clip(src.locator, 90)) if x) if src else "the uploaded files"
+        if src and src.text:
+            where = f'{where} — "{_clip(src.text, 120)}"'
+        detail = f"{field.note or 'Inferred from a source value with a different label'}: {where}"
+        return FieldProvenance("inferred", ORIGIN_LABELS["inferred"], detail,
+                               filename=src.filename if src else None, locator=src.locator if src else None,
+                               doc_type=src.doc_type if src else None,
+                               doc_label=_doc_label(src.doc_type) if src else None,
+                               quote=_clip(src.text, 120) if src else None,
+                               ocr_confidence=src.ocr_confidence if src else None)
     src = field.source
     if src is None or not src.filename:
         return FieldProvenance("extracted", ORIGIN_LABELS["extracted"],

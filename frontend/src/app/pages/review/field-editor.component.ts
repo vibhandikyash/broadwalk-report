@@ -8,6 +8,7 @@ let counter = 0;
 /** One mark per origin, so a glance down the left edge of the editor says where the page came from.
  *  A conflict is a status rather than an origin, and gets its own mark ahead of the origin's. */
 const MARKS: Record<string, string> = {
+  inferred: '~',
   extracted: '●', ocr: '◐', computed: 'ƒ', manual: '✎', ai_draft: '✱', missing: '○', conflict: '≠',
 };
 
@@ -95,7 +96,7 @@ export class FieldEditorComponent {
   });
   /** Compact table cells have no room for a sentence: a two-letter tag carries the origin, the full text is the tooltip. */
   tag(origin: string): string {
-    return { extracted: 'src', ocr: 'OCR', computed: 'calc', manual: 'you', ai_draft: 'ai', missing: 'none' }[origin] ?? origin;
+    return { extracted: 'src', inferred: 'infer', ocr: 'OCR', computed: 'calc', manual: 'you', ai_draft: 'ai', missing: 'none' }[origin] ?? origin;
   }
 
   edit(value: string): void { this.changed.emit({ path: this.f().path, value: value === '' ? null : value }); }

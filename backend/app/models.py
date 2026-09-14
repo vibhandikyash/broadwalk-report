@@ -10,7 +10,7 @@ from typing import Any, Iterator, Literal
 from pydantic import BaseModel, Field as PField
 
 Kind = Literal["money", "number", "integer", "percent", "date", "text", "longtext"]
-Status = Literal["extracted", "derived", "manual", "ai_draft", "missing", "conflict"]
+Status = Literal["extracted", "inferred", "derived", "manual", "ai_draft", "missing", "conflict"]
 # How the text a value was read from reached the extractor. 'mixed' means the file needed OCR on some
 # page but this value's page could not be pinned down, so it must be reviewed as if it were OCR.
 Method = Literal["native", "ocr", "mixed"]

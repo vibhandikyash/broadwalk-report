@@ -81,7 +81,7 @@ export function uiData(over: Partial<ReportDataUi> = {}): ReportDataUi {
     } },
     issues: [{ path: 'financing.fields.lender', severity: 'warning', message: 'Missing: Lender' }, { path: null, severity: 'info', message: 'notes.docx: unsupported' }],
     sections, meta: {}, narrative_status: null, narrative_error: null, preview_total_pages: 29,
-    provenance: { counts: { extracted: 2, ocr: 1, computed: 2, manual: 2, ai_draft: 0, missing: 1 }, files: [
+    provenance: { counts: { extracted: 2, inferred: 0, ocr: 1, computed: 2, manual: 2, ai_draft: 0, missing: 1 }, files: [
       { filename: 'rr.xlsx', doc_labels: ['Yardi Rent Roll summary (occupancy)'], method: 'native', ocr_pages: [], ocr_confidence: null },
       { filename: 'scan.pdf', doc_labels: ['Slate capital calls'], method: 'ocr', ocr_pages: [1], ocr_confidence: 0.94 },
     ] }, ...over,

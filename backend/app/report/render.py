@@ -35,7 +35,7 @@ SHEET_PAGE = {"property": 2, "in_place_rent": 2, "capital": 3, "underwriting": 3
               "occupancy": 9, "status": 10}
 # The report reserves the word DRAFT for the incomplete-version marker, so the appendix names an
 # AI-written value differently from the review screen's 'AI draft' chip.
-ORIGIN_LABELS = (("extracted", "Extracted"), ("ocr", "Extracted by OCR"), ("computed", "Calculated"),
+ORIGIN_LABELS = (("extracted", "Extracted"), ("inferred", "Inferred"), ("ocr", "Extracted by OCR"), ("computed", "Calculated"),
                  ("manual", "Entered by reviewer"), ("ai_draft", "AI-written"), ("missing", "Not found"))
 ORIGIN_LABEL = dict(ORIGIN_LABELS)
 env = Environment(loader=FileSystemLoader(REPORT_DIR / "templates"), autoescape=select_autoescape(["html"]),
