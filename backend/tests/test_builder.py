@@ -110,6 +110,22 @@ def test_build_end_to_end():
     assert v("status.fields.next_quarter_label") == "3Q26"
 
 
+def test_future_completion_under_recent_deliveries_is_retained_but_not_reported():
+    pdf_text = COSTAR_PDF_TEXT.replace(
+        "2330 Union St",
+        "Future Community\n2    105    1    Sep 2026    Sep 2027\n2330 Union St",
+    )
+    part = pdf_part(pdf_text, DocType.COSTAR_SUBMARKET_PDF, file_id="f11", filename="costar.pdf")
+    extraction = run_extractor(part)
+    assert any(project["name"] == "Future Community" for project in extraction.data["construction_projects"])
+    files = [file for file in sample_files() if file["id"] != "f11"] + [file_of("f11", "costar.pdf", part)]
+
+    data, notes = build({"id": "p", "name": "P"}, files)
+
+    assert data.value("submarket.fields.recent_deliveries") == "Montage at Midtown (321 units, Jun 2026)"
+    assert any("Future Community" in note["message"] and "excluded" in note["message"] for note in notes)
+
+
 def test_build_with_only_financials_flags_missing_but_does_not_fail():
     data, notes = build({"id": "p", "name": "P"}, sample_files()[:1])
     assert data.value("financials.tables.lines.rows.noi.ptd_actual") == 550

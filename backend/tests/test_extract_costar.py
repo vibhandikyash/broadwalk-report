@@ -30,3 +30,30 @@ def test_costar_pdf_parsing():
     assert d["deliveries"][0] == {"name": "Montage at Midtown", "units": 321, "stories": 4, "start": "Apr 2024", "complete": "Jun 2026", "page": 3}
     ex = extract_pdf(pdf_part(COSTAR_PDF_TEXT, DocType.COSTAR_SUBMARKET_PDF))
     assert ex.data["submarket"] == "Western Lee County"
+
+
+def test_construction_rows_keep_their_headings_across_pages():
+    pages = [
+        "\n".join([
+            "Construction", "RECENT DELIVERIES", "Property Name/Address Rating Units Stories Start Complete",
+            "Completed Community", "1 100 2 Jan 2025 May 2026",
+            "UNDER CONSTRUCTION", "Building Community Jan 2027", "1 200 3 Feb 2025",
+        ]),
+        "\n".join([
+            "Construction", "Another Building Community Feb 2027", "2 150 2 Mar 2025",
+            "PROPOSED", "Planned Community", "1 105 1 Sep 2026 Sep 2027",
+        ]),
+        "\n".join(["Sales Past 12 Months", "Unclassified Community", "1 90 2 Jan 2025 May 2026"]),
+    ]
+
+    data = parse_costar_text(pages)
+
+    assert [project["name"] for project in data["deliveries"]] == ["Completed Community"]
+    assert [(project["name"], project["category"], project["page"])
+            for project in data["construction_projects"]] == [
+                ("Completed Community", "recent_deliveries", 1),
+                ("Building Community", "under_construction", 1),
+                ("Another Building Community", "under_construction", 2),
+                ("Planned Community", "proposed", 2),
+            ]
+    assert data["construction_projects"][1]["complete"] == "Jan 2027"

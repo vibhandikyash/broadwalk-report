@@ -816,7 +816,13 @@ def _submarket(ctx: Ctx, data: ReportData) -> Section:  # noqa: C901
                 _conflict(ctx, f[key], f"submarket.fields.{key}", label, [(ks[ks_key], cp.source("key indicators"), "CoStar PDF key indicators, report date")], tolerance=0.05)
         f["submarket_name"] = F("Submarket", "text", cp.data.get("submarket"), cp.source("page 1"))
         f["market_name"] = F("Market", "text", cp.data.get("market"), cp.source("page 1"))
-        dl = cp.data.get("deliveries", [])
+        dl = []
+        for delivery in cp.data.get("deliveries", []):
+            completed = dt.datetime.strptime(delivery["complete"], "%b %Y").date()
+            if (completed.year, completed.month) > (p.end.year, p.end.month):
+                ctx.note("warning", f"CoStar recent delivery '{delivery['name']}' has a completion month after the reporting period; excluded from the recent-deliveries caption", "submarket.fields.recent_deliveries")
+                continue
+            dl.append(delivery)
         f["recent_deliveries"] = F("Recent deliveries", "text", "; ".join(f"{d['name']} ({d['units']} units, {d['complete']})" for d in dl) or None,
                                    cp.source("recent deliveries") if dl else None)
     else:

@@ -20,6 +20,14 @@ _TREND_ROW = re.compile(
 )
 _SALE_ROW = re.compile(r"^(\d+) (\S+) (\d{4}) ([\d,]+) ([\d.]+)% (\d{1,2}/\d{1,2}/\d{4}) \$([\d,]+) \$([\d,]+) \$([\d,]+)$")
 _DELIVERY_ROW = re.compile(r"^(\d+) (\d+) (\d+) ([A-Z][a-z]{2} \d{4}) ([A-Z][a-z]{2} \d{4})$")
+_CONSTRUCTION_ROW = re.compile(r"^(\d+) (\d+) (\d+) ([A-Z][a-z]{2} \d{4})$")
+_MONTH_YEAR = re.compile(r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}\b")
+_CONSTRUCTION_SECTIONS = {
+    "recent deliveries": "recent_deliveries",
+    "under construction": "under_construction",
+    "proposed": "proposed",
+}
+_NON_CONSTRUCTION_HEADINGS = {"overview", "sales past 12 months", "recent significant sales", "key indicators"}
 
 
 def _pct(s: str) -> float | None:
@@ -29,12 +37,18 @@ def _pct(s: str) -> float | None:
 
 def parse_costar_text(pages: list[str]) -> dict:
     out: dict = {"submarket": None, "market": None, "state": None, "report_date": None, "licensed_to": None,
-                 "overview": {}, "key_stats": {}, "trends": {}, "sales": [], "deliveries": []}
+                 "overview": {}, "key_stats": {}, "trends": {}, "sales": [], "deliveries": [],
+                 "construction_projects": []}
+    construction_section = None
     for pno, text in enumerate(pages, start=1):
         raw_lines = [ln for ln in text.splitlines() if ln.strip()]
         lines = [re.sub(r"\s+", " ", ln).strip() for ln in raw_lines]
         for i, line in enumerate(lines):
             low = line.lower()
+            if low in _CONSTRUCTION_SECTIONS:
+                construction_section = _CONSTRUCTION_SECTIONS[low]
+            elif low in _NON_CONSTRUCTION_HEADINGS:
+                construction_section = None
             if out["submarket"] is None and "multi-family submarket report" in low and i + 1 < len(lines):
                 out["submarket"] = lines[i + 1]
                 if i + 2 < len(lines) and (mm := _MARKET_RE.match(lines[i + 2])):
@@ -64,10 +78,21 @@ def parse_costar_text(pages: list[str]) -> dict:
                                      "sale_date": d.isoformat() if d else None, "price": to_number(msale.group(7)),
                                      "price_per_unit": to_number(msale.group(8)), "price_psf": to_number(msale.group(9)),
                                      "page": pno})
-            if i > 0 and (mdel := _DELIVERY_ROW.match(line)):
+            mdel = _DELIVERY_ROW.match(line) if construction_section else None
+            munder = _CONSTRUCTION_ROW.match(line) if construction_section == "under_construction" else None
+            if i > 0 and (mdel or munder):
+                row = mdel or munder
                 name = re.split(r"\s{2,}", raw_lines[i - 1].strip())[0]
-                out["deliveries"].append({"name": name, "units": int(mdel.group(2)), "stories": int(mdel.group(3)),
-                                          "start": mdel.group(4), "complete": mdel.group(5), "page": pno})
+                completion = mdel.group(5) if mdel else None
+                if munder and (estimated := _MONTH_YEAR.search(lines[i - 1])):
+                    completion = estimated.group(0)
+                    if estimated.group(0) in name:
+                        name = name.split(estimated.group(0), 1)[0].strip()
+                project = {"name": name, "units": int(row.group(2)), "stories": int(row.group(3)),
+                           "start": row.group(4), "complete": completion, "page": pno}
+                out["construction_projects"].append({**project, "category": construction_section})
+                if construction_section == "recent_deliveries":
+                    out["deliveries"].append(project)
     return out
 
 
