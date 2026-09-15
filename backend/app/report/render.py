@@ -28,6 +28,8 @@ EXTRA_LINE_COST = 0.68
 HEADING_COST = 1.3
 CHARS_PER_LINE = {"label": 40, "detail": 78}
 MAX_DETAIL_CHARS = 600  # no single row may be taller than a sheet
+INLINE_TEXT_LIMIT = 220
+DETAIL_PAGE_CHARS = 450
 # Which printed page a section's values land on. Section.page is the review screen's grouping; the
 # cover repeats a few property and capital figures whose detail belongs with pages 2 and 3.
 SHEET_PAGE = {"property": 2, "in_place_rent": 2, "capital": 3, "underwriting": 3, "rent_trend": 3,
@@ -256,8 +258,9 @@ def paginate(items: list[dict], per_page: float = APPENDIX_ROWS_PER_PAGE) -> lis
     return pages
 
 
-def number_pages(by_page: dict[int, list[dict]], per_page: int = APPENDIX_ROWS_PER_PAGE) -> tuple[dict[int, int], dict[int, list[dict]], int]:
-    """Interleave: each fixed page, then its provenance sheets, then the closing summary.
+def number_pages(by_page: dict[int, list[dict]], per_page: int = APPENDIX_ROWS_PER_PAGE,
+                 detail_counts: dict[int, int] | None = None, closing_pages: int = 2) -> tuple[dict[int, int], dict[int, list[dict]], int]:
+    """Interleave: each fixed page, its full-value details, its provenance sheets, then closing pages.
 
     Returns the printed number of each fixed page, the sheets that follow it (each carrying its own
     printed number and its position within that page's set), and the total page count.
@@ -268,13 +271,14 @@ def number_pages(by_page: dict[int, list[dict]], per_page: int = APPENDIX_ROWS_P
     for body in range(1, BODY_PAGES + 1):
         n += 1
         printed[body] = n
+        n += (detail_counts or {}).get(body, 0)
         chunks = paginate(by_page.get(body, []), per_page)
         entries = []
         for index, items in enumerate(chunks, start=1):
             n += 1
             entries.append({"items": items, "page": n, "index": index, "count": len(chunks)})
         sheets[body] = entries
-    return printed, sheets, n + 2  # + the closing source-file summary and the method sheet after it
+    return printed, sheets, n + closing_pages
 
 
 def context(data: ReportData, project: dict | None = None, assets: dict[str, str] | None = None, draft_gaps: int = 0,
@@ -302,16 +306,46 @@ def context(data: ReportData, project: dict | None = None, assets: dict[str, str
     from ..config import settings
 
     annotated = settings.report_provenance if provenance_appendix is None else provenance_appendix
-    if annotated:
-        printed, sheets, total = number_pages(appendix_items(data))
-    else:
-        printed, sheets, total = {n: n for n in range(1, BODY_PAGES + 1)}, {}, BODY_PAGES
+    long_text = {
+        path: field for path, field in data.iter_fields()
+        if ".fields." in path and field.kind in ("text", "longtext")
+        and isinstance(field.effective, str) and len(field.effective) > INLINE_TEXT_LIMIT
+        and path.split(".", 1)[0] in SHEET_PAGE
+    }
+    detail_pages_by_body: dict[int, list[dict]] = {}
+    for path, field in long_text.items():
+        value = field.effective
+        chunks = [value[i:i + DETAIL_PAGE_CHARS] for i in range(0, len(value), DETAIL_PAGE_CHARS)]
+        body = SHEET_PAGE[path.split(".", 1)[0]]
+        for index, chunk in enumerate(chunks, start=1):
+            detail_pages_by_body.setdefault(body, []).append({
+                "path": path, "label": field.label, "text": chunk,
+                "part": index, "parts": len(chunks), "source": field.source,
+            })
+    detail_counts = {body: len(pages) for body, pages in detail_pages_by_body.items()}
+    printed, sheets, total = number_pages(appendix_items(data) if annotated else {},
+                                          detail_counts=detail_counts,
+                                          closing_pages=2 if annotated else 0)
+    first_detail_page = {}
+    for body, pages in detail_pages_by_body.items():
+        for offset, detail in enumerate(pages, start=1):
+            detail["page"] = printed[body] + offset
+            first_detail_page.setdefault(detail["path"], detail["page"])
+
+    def v(path: str):
+        value = data.value(path)
+        if path not in long_text:
+            return value
+        preview = value[:INLINE_TEXT_LIMIT].rsplit(" ", 1)[0] or value[:INLINE_TEXT_LIMIT]
+        return f"{preview}… [complete value on page {first_detail_page[path]}]"
+
     return {
         "v": v, "f": data.field, "meta": data.meta, "project": project or {}, "MINUS": MINUS, "NONE": NONE, "assets": assets or {}, "draft_gaps": int(draft_gaps or 0),
         "pno": printed, "prov_sheets": sheets, "prov_origins": ORIGIN_LABELS, "provenance": annotated,
         "prov_counts": counts(data) if annotated else {},
         "prov_files": source_files(data) if annotated else [],
         "body_pages": BODY_PAGES, "total_pages": total,
+        "detail_pages_by_body": detail_pages_by_body,
         "css": (REPORT_DIR / "static" / "report.css").read_text(), "fonts_css": _fonts_css(),
         "ipr_rows": _rows(data.table("in_place_rent.tables.by_floor_plan")), "ipr_totals": _totals(data.table("in_place_rent.tables.by_floor_plan")),
         "uw_groups": uw_groups, "uw_sub": uw_sub, "uw_totals": _totals(data.table("underwriting.tables.budget")), "chart_svg": chart_svg,

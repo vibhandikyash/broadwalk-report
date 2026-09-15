@@ -25,6 +25,15 @@
 {# The data-sources sheet(s) for the page just printed: every value on it, where it was read from, and
    why any dash is a dash. 'SOURCE PROVENANCE' in the tag is how a checker tells these from the fixed pages. #}
 {% macro sheets(n, title) %}
+{% for detail in detail_pages_by_body.get(n, []) %}
+<section class="page">
+{{ header('Complete Value Details', detail.label ~ ' · PART ' ~ detail.part ~ ' OF ' ~ detail.parts) }}
+<div class="col-h"><span>{{ detail.label }}</span><span class="v">{{ detail.path }}</span></div>
+<div class="full-value">{{ detail.text }}</div>
+{% if detail.source %}<p class="small">Source: {{ detail.source.filename }}{% if detail.source.locator %} · {{ detail.source.locator }}{% endif %}</p>{% endif %}
+{{ footer('Complete Value Details', detail.page) }}
+</section>
+{% endfor %}
 {% for sheet in prov_sheets.get(n, []) %}
 <section class="page annex">
 <div class="annex-hdr">

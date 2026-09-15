@@ -65,6 +65,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .col-body { font-size: 7.6pt; }
 .col-body h4 { font-family: "JetBrains Mono", Menlo, monospace; font-size: 6pt; color: var(--mute); margin: 6pt 0 2pt; letter-spacing: 0.06em; text-transform: uppercase; }
 .col-body p { margin: 0 0 4pt; }
+.full-value { font-size: 8.5pt; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .term { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 12pt; font-size: 7.5pt; }
 .term .lab { margin-bottom: 0; }
 .chart { width: 100%; height: auto; }

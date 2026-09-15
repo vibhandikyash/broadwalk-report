@@ -1,4 +1,5 @@
-"""PDF output: page count and size, embedded fonts, footers as end-of-content markers, and overflow rejection."""
+"""PDF output: page count, embedded fonts, full-value pagination, and overflow rejection."""
+import html as html_lib
 import re
 
 import pytest
@@ -70,17 +71,48 @@ def test_each_page_is_followed_by_its_own_data_sources_sheet(tmp_path):
 
 
 @needs_chromium
-def test_overflowing_text_is_rejected_with_page_and_section(tmp_path):
+def test_long_scalar_text_is_preserved_on_complete_value_pages(tmp_path):
+    import pdfplumber
+
     data = _data()
     data.field("status.fields.status1_title").override = "Long"
-    data.field("status.fields.status1_body").override = "word " * 900
+    full_value = "start " + "word " * 900 + "end"
+    data.field("status.fields.status1_body").override = full_value
     html = tmp_path / "long.html"
-    html.write_text(render_html(data, {"name": "P"}, provenance_appendix=False), encoding="utf-8")
-    with pytest.raises(LayoutOverflow) as e:
-        render_pdf(html, tmp_path / "long.pdf")
-    msg = str(e.value)
-    assert "page 10" in msg and "Status Update" in msg and "too tall" in msg and "shorten" in msg
-    assert not (tmp_path / "long.pdf").exists() and not (tmp_path / "long.pdf.partial").exists()
+    content = render_html(data, {"name": "P"}, provenance_appendix=False)
+    html.write_text(content, encoding="utf-8")
+    chunks = re.findall(r'<div class="full-value">(.*?)</div>', content, flags=re.S)
+    assert html_lib.unescape("".join(chunks)) == full_value
+    assert check_layout(html) == []
+    pdf = tmp_path / "long.pdf"
+    render_pdf(html, pdf)
+    with pdfplumber.open(pdf) as doc:
+        pages = [page.extract_text() or "" for page in doc.pages]
+    text = " ".join(pages)
+    assert "Complete Value Details" in text and "start" in text and "end" in text
+    status_page = next(i for i, page in enumerate(pages) if "STATUS UPDATE & GOALS" in page)
+    assert "Complete Value Details" in pages[status_page + 1]
+
+
+@needs_chromium
+def test_long_list_field_does_not_overflow_the_summary_page(tmp_path):
+    data = _data()
+    full_value = "; ".join(f"Project {i} ({100 + i} units, May 2026)" for i in range(35))
+    data.field("submarket.fields.recent_deliveries").override = full_value
+    html = tmp_path / "deliveries.html"
+    content = render_html(data, {"name": "P"}, provenance_appendix=False)
+    html.write_text(content, encoding="utf-8")
+    chunks = re.findall(r'<div class="full-value">(.*?)</div>', content, flags=re.S)
+    assert html_lib.unescape("".join(chunks)) == full_value
+    assert check_layout(html) == []
+    pdf = tmp_path / "deliveries.pdf"
+    render_pdf(html, pdf)
+    import pdfplumber
+
+    with pdfplumber.open(pdf) as doc:
+        pages = [page.extract_text() or "" for page in doc.pages]
+    submarket_page = next(i for i, page in enumerate(pages) if "Submarket Comparison" in page)
+    assert "Complete Value Details" in pages[submarket_page + 1]
 
 
 @needs_chromium
