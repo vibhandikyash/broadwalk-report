@@ -1,8 +1,10 @@
 # backend/tests/test_extract_misc.py
 from app.classify.classifier import DocType
+from app.extract.base import ExtractionError
 from app.extract.rent_chart import extract as extract_chart
 from app.extract.slate import extract_capital_calls, extract_distributions, parse_capital_calls_text, parse_distributions_text
 from tests.helpers import CAPITAL_CALLS_TEXT, DISTRIBUTIONS_TEXT, RENT_CHART_ROWS, pdf_part, sheet_part
+import pytest
 
 
 def test_rent_chart_months_totals_and_names():
@@ -36,3 +38,39 @@ def test_slate_distributions():
     assert d2["distributions"] == [{"title": "Q2 Distribution", "date": "2026-07-20", "gross": 100000.0, "net": 95000.0}]
     assert d2["total_gross"] == 100000.0 and d2["none"] is False
     assert extract_distributions(pdf_part(DISTRIBUTIONS_TEXT, DocType.SLATE_DISTRIBUTIONS)).data["entity"] == "The Boardwalk Owner, LLC"
+
+
+def test_wrapped_distribution_cells_reconcile_to_net_summary():
+    text = """New Distribution
+$208,244.54
+Distributed from this Entity (Net)
+Title Date Gross Amount Net Amount
+Dec GP
+This 2 $125,0 $125,0
+Distribution Published - 22nd, 100%
+00 00
+2022
+Aug LP
+This 2 $83,24 $83,24
+Distribution Published - 1st, 100%
+4.54 4.54
+2022
+"""
+    data = extract_distributions(pdf_part(text, DocType.SLATE_DISTRIBUTIONS)).data
+    assert [(r["date"], r["net"]) for r in data["distributions"]] == [
+        ("2022-12-22", 125000), ("2022-08-01", 83244.54)]
+    assert data["stated_total_net"] == 208244.54
+
+
+def test_wrapped_distribution_mismatch_raises():
+    text = """New Distribution
+$200,000.00
+Distributed from this Entity (Net)
+Dec GP
+This 2 $125,0 $125,0
+Distribution Published - 22nd, 100%
+00 00
+2022
+"""
+    with pytest.raises(ExtractionError, match="reconcile"):
+        extract_distributions(pdf_part(text, DocType.SLATE_DISTRIBUTIONS))

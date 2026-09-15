@@ -4,11 +4,12 @@ from __future__ import annotations
 from typing import Callable
 
 from ..classify.classifier import DocType, Part
-from . import (costar_excel, costar_pdf, generalized, hellodata_comps, hellodata_listings, rent_chart, slate, yardi_balance_sheet,
+from . import (annual_statement, costar_excel, costar_pdf, generalized, hellodata_comps, hellodata_listings, rent_chart, slate, yardi_balance_sheet,
                yardi_budget, yardi_lto, yardi_rent_roll, yardi_rent_schedule)
 from .base import Extraction, ExtractionError
 
 EXTRACTORS: dict[str, Callable[[Part], Extraction]] = {
+    DocType.ANNUAL_FINANCIAL_STATEMENT.value: annual_statement.extract,
     DocType.YARDI_BUDGET_COMPARISON.value: yardi_budget.extract,
     DocType.YARDI_BALANCE_SHEET.value: yardi_balance_sheet.extract,
     DocType.YARDI_RENT_ROLL.value: yardi_rent_roll.extract,

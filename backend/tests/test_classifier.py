@@ -40,3 +40,17 @@ def test_classifies_pdfs():
 def test_part_json_shape():
     p = classify(xdoc(b=BUDGET_ROWS))[0]
     assert set(p.to_json()) == {"doc_type", "confidence", "locator"} and 0.6 <= p.to_json()["confidence"] <= 1
+
+
+def test_rent_roll_summary_below_first_hundred_rows():
+    rows = [["Rent Roll"], ["As Of = 03/31/2026"]] + [["unit detail", i] for i in range(150)]
+    rows += [["Summary Groups", "# Of Units", "% Unit Occupancy"],
+             ["Occupied Units", 198, 82.5], ["Total Vacant Units", 42], ["Totals:", 240]]
+    assert classify(xdoc(occupancy=rows))[0].doc_type == DocType.YARDI_RENT_ROLL
+    assert classify(xdoc(unrelated=[["Rent Roll"], ["As Of = 03/31/2026"]] + rows[2:152]))[0].doc_type == DocType.UNKNOWN
+
+
+def test_recognizes_dated_annual_statement():
+    rows = [["Annual Statement"], ["Period = Jan 2024-Dec 2025"], [None, "EOY", "EOY"],
+            [None, "Dec 2024", "Dec 2025"], ["Revenue", 100, 200]]
+    assert classify(xdoc(history=rows))[0].doc_type == DocType.ANNUAL_FINANCIAL_STATEMENT

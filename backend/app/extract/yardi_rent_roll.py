@@ -49,7 +49,7 @@ def extract(part: Part) -> Extraction:
                                   "occupancy_pct": occupied / total if total else None, "future_applicants": None})
         if snapshots:
             return Extraction(doc_type=part.doc_type, locator=part.locator, data={"_snapshots": snapshots})
-    hb = sh.header_block(["summary groups", "# of"], max_rows=3, search_rows=120)
+    hb = sh.header_block(["summary groups", "# of"], max_rows=3, search_rows=sh.nrows)
     if hb is None:
         raise ExtractionError("Rent Roll summary block ('Summary Groups' with '# Of Units') not found")
     hrow, k, headers = hb
@@ -78,6 +78,8 @@ def extract(part: Part) -> Extraction:
     if tot_units is None:
         tot_units, _, _ = _pick(found, _ROW_PATTERNS["current"])
     total_units = tot_units if tot_units else ((occ_units or 0) + (vac_units or 0)) or None
+    if total_units is None or total_units <= 0 or occ_units < 0 or occ_units > total_units:
+        raise ExtractionError("Rent Roll summary has inconsistent occupied and total unit counts")
     occupancy = as_fraction(occ_pct) if occ_pct is not None else (occ_units / total_units if total_units else None)
 
     avg_market = avg_resident = None

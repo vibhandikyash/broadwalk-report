@@ -13,6 +13,7 @@ from ..readers.document import Document, Page, Sheet, norm
 
 class DocType(str, Enum):
     YARDI_BUDGET_COMPARISON = "yardi_budget_comparison"
+    ANNUAL_FINANCIAL_STATEMENT = "annual_financial_statement"
     YARDI_BALANCE_SHEET = "yardi_balance_sheet"
     YARDI_RENT_ROLL = "yardi_rent_roll"
     YARDI_MARKET_RENT_SCHEDULE = "yardi_market_rent_schedule"
@@ -33,6 +34,7 @@ class DocType(str, Enum):
 
 DOC_TYPE_LABELS: dict[DocType, str] = {
     DocType.YARDI_BUDGET_COMPARISON: "Yardi Budget Comparison (P&L and capital)",
+    DocType.ANNUAL_FINANCIAL_STATEMENT: "Annual financial statement",
     DocType.YARDI_BALANCE_SHEET: "Yardi Balance Sheet",
     DocType.YARDI_RENT_ROLL: "Yardi Rent Roll summary (occupancy)",
     DocType.YARDI_MARKET_RENT_SCHEDULE: "Yardi Market Rent Schedule (rent by unit type)",
@@ -54,6 +56,7 @@ DOC_TYPE_LABELS: dict[DocType, str] = {
 Signature = tuple[DocType, list[str], list[str]]
 
 SHEET_SIGNATURES: list[Signature] = [
+    (DocType.ANNUAL_FINANCIAL_STATEMENT, ["annual statement", "eoy"], ["period", "revenue", "expense"]),
     (DocType.YARDI_BUDGET_COMPARISON, ["budget comparison"], ["ptd actual", "ytd actual", "mtd actual", "% var", "annual"]),
     (DocType.YARDI_BALANCE_SHEET, ["balance sheet"], ["beginning", "net change", "total assets", "current period"]),
     (DocType.YARDI_RENT_ROLL, ["rent roll", "summary groups"], ["% unit occupancy", "occupied units", "future residents", "# of units"]),
@@ -120,6 +123,10 @@ def classify(doc: Document) -> list[Part]:
                     t, conf = DocType.YARDI_BALANCE_SHEET, 0.75
                 elif all(x in text for x in ("as of", "unit type", "# of units", "average resident rent")):
                     t, conf = DocType.YARDI_MARKET_RENT_SCHEDULE, 0.8
+                elif "rent roll" in text and "as of" in text and sh.header_block(
+                    ["summary groups", "# of"], max_rows=3, search_rows=sh.nrows
+                ) is not None:
+                    t, conf = DocType.YARDI_RENT_ROLL, 0.8
                 elif all(x in text for x in ("as of", "# of units", "occupied units", "vacant units")):
                     t, conf = DocType.YARDI_RENT_ROLL, 0.8
                 elif all(x in text for x in ("lease id", "property name", "event type", "lease rent")):
